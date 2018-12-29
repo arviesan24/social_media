@@ -80,6 +80,10 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 AUTH_USER_MODEL = 'accounts.User'
 
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
