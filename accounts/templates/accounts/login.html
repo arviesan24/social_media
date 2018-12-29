@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block css %}
+.card {
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5%;
+    -moz-border-radius: 5%;
+    -webkit-border-radius: 5%;
+}
+
+.errorlist {
+    padding: 5px;
+    list-style-type: none;
+}
+.form-group .errorlist li {
+    color: #F4433C;
+    list-style: none;
+}
+{% endblock css %}
+
+{% block content %}
+<div class="card col-lg-4 col-md-6 col-sm-8 col-12">
+    
+    <div class="card-body">
+        <h5 class="card-title">Login</h5>
+        <form method="post" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+            <div class="alert-danger">{{ form.non_field_errors }}</div>
+            <div class="form-group">
+                <label for="username" class="bmd-label-floating">Username</label>
+                <input type="text" class="form-control" name="username" id="username">
+                {{ form.username.errors }}
+            </div>
+            <div class="form-group">
+                <label for="password" class="bmd-label-floating">Password</label>
+                <input type="password" class="form-control" name="password" id="password">
+                {{ form.password.errors }}
+            </div>
+            <input class="btn btn-info btn-raised" type="submit" value="Login">
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{% endblock js %}
