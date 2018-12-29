@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block css %}
+
+.row {
+    margin-top: 5rem;
+}
+{% endblock css %}
+
+{% block content %}
+<div class="row">
+    <div class="card col-lg-3 col-md-4 col-sm-12 col-12">
+        <div class="card-body">
+            <h5 class="card-title">Stainless Talong</h5>
+            <p class="card-text">Already have an account? Login <a href="{% url 'accounts:login' %}" class="card-link">here</a>.</p>
+            <p class="card-text">Wanna join the fun? Register <a href="#" class="card-link">here</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
