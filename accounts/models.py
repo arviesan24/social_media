@@ -4,6 +4,36 @@ from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
 
+class UserManager(BaseUserManager):
+    """User model Manager."""
+
+    def create_user(
+            self, username, email, password=None, is_active=True,
+            is_staff=False, is_admin=False):
+        if not username:
+            raise ValueError('User must have a username.')
+        if not password:
+            raise ValueError('User must have a password.')
+        user = self.model(
+            username = self.normalize_email(username))
+        user.set_password(password)
+        user.active = is_active
+        user.staff = is_staff
+        user.admin = is_admin
+        user.save(using=self._db)
+        return user
+
+    def create_staffuser(self, username, email, password=None):
+        user = self.create_user(
+            username, email, password=password, is_staff=True)
+        return user
+    
+    def create_superuser(self, username, email, password=None):
+        user = self.create_user(
+            username, email, password=password, is_staff=True, is_admin=True)
+        return user
+
+
 class User(AbstractBaseUser):
     """Model Extending AbstractBaseUser."""
 
