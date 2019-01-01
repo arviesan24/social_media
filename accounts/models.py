@@ -45,7 +45,17 @@ class User(AbstractBaseUser):
     datetime_modified = models.DateTimeField(auto_now=True)
     
     USERNAME_FIELD = 'username' # used for login field
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
+
+    objects = UserManager()
+
+    def has_perm(self, perm, obj=None):
+        #giving permissions to the user
+        return True
+
+    def has_module_perms(self, app_label):
+        #giving permissions to the user in django-admin
+        return True
 
     @property
     def is_staff(self):
