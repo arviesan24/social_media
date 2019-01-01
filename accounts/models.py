@@ -12,6 +12,9 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+    
+    USERNAME_FIELD = 'username' # used for login field
+    REQUIRED_FIELDS = []
 
 
 class Relationship(models.Model):
