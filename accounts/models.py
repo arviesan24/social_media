@@ -6,7 +6,12 @@ from django.db import models
 class User(AbstractBaseUser):
     """Model Extending AbstractBaseUser."""
 
-
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
+    active = models.BooleanField(default=True)
+    staff = models.BooleanField(default=False)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
 
 
 class Relationship(models.Model):
