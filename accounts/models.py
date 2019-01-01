@@ -16,6 +16,18 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username' # used for login field
     REQUIRED_FIELDS = []
 
+    @property
+    def is_staff(self):
+        return self.staff
+    
+    @property
+    def is_admin(self):
+        return self.admin
+    
+    @property
+    is_active(self):
+        return self.active
+
 
 class Relationship(models.Model):
     """Model for Relationship."""
