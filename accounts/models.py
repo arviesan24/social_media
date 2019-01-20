@@ -1,40 +1,9 @@
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class UserManager(BaseUserManager):
-    """User model Manager."""
-
-    def create_user(
-            self, username, email, password=None, is_active=True,
-            is_staff=False, is_admin=False):
-        if not username:
-            raise ValueError('User must have a username.')
-        if not password:
-            raise ValueError('User must have a password.')
-        user = self.model(
-            username = self.normalize_email(username))
-        user.set_password(password)
-        user.active = is_active
-        user.staff = is_staff
-        user.admin = is_admin
-        user.save(using=self._db)
-        return user
-
-    def create_staffuser(self, username, email, password=None):
-        user = self.create_user(
-            username, email, password=password, is_staff=True)
-        return user
-    
-    def create_superuser(self, username, email, password=None):
-        user = self.create_user(
-            username, email, password=password, is_staff=True, is_admin=True)
-        return user
-
-
-class User(AbstractBaseUser):
+class User(AbstractUser):
     """Model Extending AbstractBaseUser."""
 
     username = models.CharField(max_length=255, unique=True)
@@ -47,27 +16,40 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username' # used for login field
     REQUIRED_FIELDS = ['email']
 
-    objects = UserManager()
 
-    def has_perm(self, perm, obj=None):
-        #giving permissions to the user
-        return True
+class Profile(models.Model):
+    """Model for Profile."""
 
-    def has_module_perms(self, app_label):
-        #giving permissions to the user in django-admin
-        return True
+    CHOICE_MALE = 'm'
+    CHOICE_FEMALE = 'f'
 
-    @property
-    def is_staff(self):
-        return self.staff
+    CHOICE_MEN = 'men'
+    CHOICE_WOMEN = 'women'
+    CHOICE_BOTH = 'both'
+
+    GENDER_CHOICES = (
+        (CHOICE_MALE, 'Male'),
+        (CHOICE_FEMALE, 'Female'),
+    )
+
+    PREFERENCE_CHOICES = (
+        (CHOICE_MEN, 'Men'),
+        (CHOICE_WOMEN, 'Women'),
+        (CHOICE_BOTH, 'Both'),
+    )
     
-    @property
-    def is_admin(self):
-        return self.admin
-    
-    @property
-    def is_active(self):
-        return self.active
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=250, blank=False, null=False)
+    last_name = models.CharField(max_length=250, blank=False, null=False)
+    gender = models.CharField(
+        max_length=1, blank=False, null=False, choices=GENDER_CHOICES)
+    preference = models.CharField(max_length=5, choices=PREFERENCE_CHOICES)
+    birth_date = models.DateField(blank=False, null=False)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    address = models.CharField(max_length=250, blank=True, null=True)
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
 
 
 class Relationship(models.Model):
