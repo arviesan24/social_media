@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
 from .forms import RegisterForm
+from .forms import CreateProfileForm
 
 from .models import Profile
 from .models import User
