@@ -36,3 +36,11 @@ class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterForm
     success_url = reverse_lazy('accounts:login')
+
+
+class CreateProfileView(CreateView):
+    """View for Create Profile"""
+
+    template_name = 'accounts/create_profile.html'
+    form_class = CreateProfileForm
+    success_url = reverse_lazy('accounts:profile')
