@@ -1,8 +1,9 @@
 from django import forms
-from .models import Profile
-from .models import User
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import UserCreationForm
+
+from .models import Profile
+from .models import User
 
 
 class UserAdminCreationForm(forms.ModelForm):
