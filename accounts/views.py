@@ -39,9 +39,32 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('accounts:login')
 
 
-class CreateProfileView(CreateView):
+class CreateProfileView(LoginRequiredMixin, CreateView):
     """View for Create Profile"""
 
     template_name = 'accounts/create_profile.html'
     form_class = ProfileForm
+    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy('accounts:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        """Redirect to create profile form if user has no profile set."""
+        if Profile.objects.filter(id=request.user.id):
+            return HttpResponseRedirect(
+                reverse_lazy('accounts:profile'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        """Save profile for current user."""
+        response = form.save(commit=False)
+        response.user = self.request.user
+        
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        """Insert the dropdown options into the context dict."""
+        context = {}
+        context['preferences'] = Profile.PREFERENCE_CHOICES
+        context['genders'] = Profile.GENDER_CHOICES
+        context.update(kwargs)
+        return super().get_context_data(**context)
