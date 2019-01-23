@@ -17,6 +17,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
     login_url = reverse_lazy('accounts:login')
 
     def get_object(self):
+        """Get user object without using URL kwargs."""
         return get_object_or_404(User, pk=self.request.user.id)
 
 
