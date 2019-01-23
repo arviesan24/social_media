@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
 from .forms import RegisterForm
-from .forms import CreateProfileForm
+from .forms import ProfileForm
 
 from .models import Profile
 from .models import User
@@ -43,5 +43,5 @@ class CreateProfileView(CreateView):
     """View for Create Profile"""
 
     template_name = 'accounts/create_profile.html'
-    form_class = CreateProfileForm
+    form_class = ProfileForm
     success_url = reverse_lazy('accounts:profile')
