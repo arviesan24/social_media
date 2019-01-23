@@ -12,6 +12,9 @@ urlpatterns = [
     path('logout/',
         LogoutView.as_view(next_page=reverse_lazy('accounts:login')),
         name='logout'),
+    path(
+        'create-profile/',
+        views.CreateProfileView.as_view(), name='create-profile'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('register/', views.RegisterView.as_view(), name='register'),
 ]
