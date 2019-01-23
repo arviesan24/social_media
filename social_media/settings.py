@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -80,8 +82,8 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 AUTH_USER_MODEL = 'accounts.User'
 
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGIN_URL = reverse_lazy('accounts:login')
+LOGIN_REDIRECT_URL = reverse_lazy('accounts:create-profile')
 
 
 # Database
