@@ -23,13 +23,6 @@ class ProfileView(LoginRequiredMixin, DetailView):
         """Get user object without using URL kwargs."""
         return get_object_or_404(User, pk=self.request.user.id)
 
-    def dispatch(self, request, *args, **kwargs):
-        """Redirect to create profile form if user has no profile set."""
-        if not Profile.objects.filter(id=request.user.id):
-            return HttpResponseRedirect(
-                reverse_lazy('accounts:create-profile'))
-        return super().dispatch(request, *args, **kwargs)
-
 
 class RegisterView(CreateView):
     """View for User Registration"""
