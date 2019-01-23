@@ -14,6 +14,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
     template_name='accounts/profile.html'
+    login_url = reverse_lazy('accounts:login')
 
     def get_object(self):
         return get_object_or_404(User, pk=self.request.user.id)
