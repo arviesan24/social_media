@@ -42,7 +42,7 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         """Redirect to create profile form if user has no profile set."""
-        if Profile.objects.filter(id=request.user.id):
+        if Profile.objects.filter(user__id=request.user.id):
             return HttpResponseRedirect(
                 reverse_lazy('accounts:profile'))
         return super().dispatch(request, *args, **kwargs)
