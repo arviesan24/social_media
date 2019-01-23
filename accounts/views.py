@@ -10,7 +10,7 @@ from .forms import RegisterForm
 from .models import User
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
     template_name='accounts/profile.html'
