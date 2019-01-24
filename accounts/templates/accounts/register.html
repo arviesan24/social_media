@@ -32,22 +32,22 @@
             <div class="alert-danger">{{ form.non_field_errors }}</div>
             <div class="form-group">
                 <label for="email" class="bmd-label-floating">E-mail</label>
-                <input type="email" class="form-control" name="email" id="email">
+                <input type="email" class="form-control" name="email" id="email" data-toggle="tooltip" data-placement="bottom" title="Required">
                 {{ form.email.errors }}
             </div>
             <div class="form-group">
                 <label for="username" class="bmd-label-floating">Username</label>
-                <input type="text" class="form-control" name="username" id="username" data-toggle="tooltip" data-placement="bottom" title="Optional">
+                <input type="text" class="form-control" name="username" id="username" data-toggle="tooltip" data-placement="bottom" title="Required">
                 {{ form.username.errors }}
             </div>
             <div class="form-group">
                 <label for="password1" class="bmd-label-floating">Password</label>
-                <input type="password" class="form-control" name="password1" id="password1">
+                <input type="password" class="form-control" name="password1" id="password1" data-toggle="tooltip" data-placement="bottom" title="Required">
                 {{ form.password1.errors }}
             </div>
             <div class="form-group">
                 <label for="password2" class="bmd-label-floating">Confirm Password</label>
-                <input type="password" class="form-control" name="password2" id="password2">
+                <input type="password" class="form-control" name="password2" id="password2" data-toggle="tooltip" data-placement="bottom" title="Required">
                 {{ form.password2.errors }}
             </div>
             <input class="btn btn-info btn-raised float-right" type="submit" value="Register">
