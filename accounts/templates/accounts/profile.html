@@ -4,7 +4,7 @@
 
 {% block css %}
 .card {
-    margin-top: 120px;
+    margin-top: 160px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 10px;
@@ -20,13 +20,36 @@
     color: #F4433C;
     list-style: none;
 }
+.profile-placeholder {
+    font-size:170px;
+}
+.profile-outer-div {
+    border-radius: 15px;
+    border-color: #41B6E6;
+    border-style: solid;
+    width: 170px;
+    height: 170px;
+    padding: 5px 5px 5px 5px;
+    margin: -100px auto auto auto;
+    background-color: #fff;
+}
+.profile-inner-div {
+    border-radius: 15px;
+    border-color: #41B6E6;
+    border-style: solid;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 {% endblock css %}
 
 {% block content %}
 <div class="card col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
     
     <div class="card-body">
-
+        <div class="profile-outer-div"><div class="profile-inner-div">
+            <i class="fas fa-user-tie profile-placeholder"></i>
+        </div></div>
     </div>
 </div>
 {% endblock content %}
