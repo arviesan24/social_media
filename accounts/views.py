@@ -21,7 +21,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         """Get user object without using URL kwargs."""
-        return get_object_or_404(User, pk=self.request.user.id)
+        return get_object_or_404(Profile, user__id=self.request.user.id)
 
 
 class RegisterView(CreateView):
