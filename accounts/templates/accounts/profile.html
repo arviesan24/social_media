@@ -50,6 +50,45 @@
         <div class="profile-outer-div"><div class="profile-inner-div">
             <i class="fas fa-user-tie profile-placeholder"></i>
         </div></div>
+        <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
+        <!--start of Slider-->
+        <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+            <header class="bmd-layout-header">
+                <div class="navbar navbar-light bg-faded">
+                    <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-p1">
+                        <span class="sr-only">Toggle drawer</span>
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">Posts</li>
+                    </ul>
+                </div>
+            </header>
+        <div id="dw-p1" class="bmd-layout-drawer bg-faded">
+            <header>
+                <a class="navbar-brand">About</a>
+            </header>
+            <ul class="list-group">
+                <p><strong>Gender: </strong>{{ profile.get_gender_display }}</p>
+                <p><strong>Preference: </strong>{{ profile.get_preference_display }}</p>
+                <p><strong>Birthday: </strong>{{ profile.birth_date }}</p>
+                <p><strong>Contact No: </strong>{{ profile.phone_number }}</p>
+                <p><strong>Address:</strong></p>
+                <p>{{ profile.address }}</p>
+                <p><strong>Description:</strong></p>
+                <p>{{ profile.description }}</p>
+            </ul>
+        </div>
+            <main class="bmd-layout-content">
+                <div class="container">
+                <!-- main content -->
+                <div class="form-group">
+                    <label for="post" class="bmd-label-floating">What are you thinking?</label>
+                    <textarea class="form-control" name="post" id="post" rows="6"></textarea>
+                </div>
+                </div>
+            </main>
+        </div>
     </div>
 </div>
 {% endblock content %}
