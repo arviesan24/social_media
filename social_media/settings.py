@@ -82,7 +82,12 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 AUTH_USER_MODEL = 'accounts.User'
 
 
+#
+# LOGIN SETTINGS
+#
+
 LOGIN_URL = reverse_lazy('accounts:login')
+# redirect user to create profile to check if profile already exists
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:create-profile')
 
 
