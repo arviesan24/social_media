@@ -4,7 +4,21 @@ from django.db import models
 
 
 class User(AbstractUser):
-    """Model Extending AbstractUser."""
+    """Model Extending AbstractBaseUser."""
+
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
+    active = models.BooleanField(default=True)
+    staff = models.BooleanField(default=False)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
+    
+    USERNAME_FIELD = 'username' # used for login field
+    REQUIRED_FIELDS = ['email']
+
+
+class Profile(models.Model):
+    """Model for Profile."""
 
     CHOICE_MALE = 'm'
     CHOICE_FEMALE = 'f'
@@ -23,10 +37,15 @@ class User(AbstractUser):
         (CHOICE_WOMEN, 'Women'),
         (CHOICE_BOTH, 'Both'),
     )
-
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    
+    user = models.OneToOneField(
+        User, related_name='profile', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=250, blank=False, null=False)
+    last_name = models.CharField(max_length=250, blank=False, null=False)
+    gender = models.CharField(
+        max_length=1, blank=False, null=False, choices=GENDER_CHOICES)
     preference = models.CharField(max_length=5, choices=PREFERENCE_CHOICES)
-    birth_date = models.DateField(blank=True, null=True)
+    birth_date = models.DateField(blank=False, null=False)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     address = models.CharField(max_length=250, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
