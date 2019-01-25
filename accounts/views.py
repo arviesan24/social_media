@@ -62,3 +62,26 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
         context['genders'] = Profile.GENDER_CHOICES
         context.update(kwargs)
         return super().get_context_data(**context)
+
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    """View for Update Profile"""
+
+    template_name = 'accounts/edit_profile.html'
+    form_class = ProfileForm
+    login_url = reverse_lazy('accounts:login')
+    success_url = reverse_lazy('accounts:profile')
+
+    def get_object(self, queryset=None):
+        """
+        Get current user object.
+        """
+        return get_object_or_404(Profile, user__id=self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        """Insert the dropdown options into the context dict."""
+        context = {}
+        context['preferences'] = Profile.PREFERENCE_CHOICES
+        context['genders'] = Profile.GENDER_CHOICES
+        context.update(kwargs)
+        return super().get_context_data(**context)
