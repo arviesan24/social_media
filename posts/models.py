@@ -11,7 +11,7 @@ class Post(models.Model):
     PRIVACY_CHOICES = (
         (CHOICE_PRIVATE, 'Private'),
         (CHOICE_FRIENDS, 'Only friends'),
-        (CHOICE_PUBLIC, 'public'),
+        (CHOICE_PUBLIC, 'Public'),
     )
 
     owner = models.ForeignKey(
