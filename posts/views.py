@@ -8,7 +8,6 @@ from .forms import PostForm
 class PostCreateView(LoginRequiredMixin, CreateView):
     """View for Creating posts."""
 
-    # template_name = 'posts/form.html'
     form_class = PostForm
     success_url = reverse_lazy('accounts:profile')
 
