@@ -13,6 +13,7 @@ from .models import Profile
 from .models import User
 
 from posts import forms as post_form
+from posts import models as post_model
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
