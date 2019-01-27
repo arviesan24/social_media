@@ -87,7 +87,7 @@ SUMMERNOTE_THEME = 'bs4'
 
 SUMMERNOTE_CONFIG = {
     'width': '100%',
-    'height': '250',
+    'height': '300',
 }
 
 
