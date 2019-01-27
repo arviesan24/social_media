@@ -80,6 +80,18 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 
 
 #
+# SUMMERNOTE CUSTOMIZATION
+#
+
+SUMMERNOTE_THEME = 'bs4'
+
+SUMMERNOTE_CONFIG = {
+    'width': '100%',
+    'height': '250',
+}
+
+
+#
 # DEFINE CUSTOM USER MODEL
 #
 
