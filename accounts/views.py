@@ -26,9 +26,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
         return get_object_or_404(Profile, user__id=self.request.user.id)
     
     def get_context_data(self, **kwargs):
-        """Add `PostForm` to context data"""
+        """Retuns context data needed in `Profile`"""
         kwargs = super().get_context_data()
+        # add `post form` in context data
         kwargs['post_form'] = post_form.PostForm
+        # add `post list` in context data
+        kwargs['post_list'] = (
+            post_model.Post.objects.filter(owner=self.request.user).order_by('-id'))
         return kwargs
 
 
