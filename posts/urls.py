@@ -5,4 +5,6 @@ from . import views
 
 
 urlpatterns = [
+    path('create/',
+        views.PostCreateView.as_view(),name='create-post'),
 ]
