@@ -90,8 +90,9 @@ AUTH_USER_MODEL = 'accounts.User'
 # LOGIN SETTINGS
 #
 
+# login url to redirect for `LoginRequiredMixin`
 LOGIN_URL = reverse_lazy('accounts:login')
-# redirect user to create profile to check if profile already exists
+# redirect user to create profile to check if profile already exists after login
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:create-profile')
 
 
