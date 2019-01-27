@@ -18,7 +18,6 @@ class ProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
     template_name='accounts/profile.html'
-    login_url = reverse_lazy('accounts:login')
 
     def get_object(self):
         """Get user object without using URL kwargs."""
@@ -38,7 +37,6 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
 
     template_name = 'accounts/create_profile.html'
     form_class = ProfileForm
-    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy('accounts:profile')
 
     def dispatch(self, request, *args, **kwargs):
@@ -69,7 +67,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     template_name = 'accounts/edit_profile.html'
     form_class = ProfileForm
-    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy('accounts:profile')
 
     def get_object(self, queryset=None):
