@@ -12,6 +12,8 @@ from .forms import ProfileForm
 from .models import Profile
 from .models import User
 
+from posts import forms as post_form
+
 
 class ProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
@@ -21,6 +23,12 @@ class ProfileView(LoginRequiredMixin, DetailView):
     def get_object(self):
         """Get user object without using URL kwargs."""
         return get_object_or_404(Profile, user__id=self.request.user.id)
+    
+    def get_context_data(self, **kwargs):
+        """Add `PostForm` to context data"""
+        kwargs = super().get_context_data()
+        kwargs['post_form'] = post_form.PostForm
+        return kwargs
 
 
 class RegisterView(CreateView):
