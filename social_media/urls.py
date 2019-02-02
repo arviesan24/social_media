@@ -35,6 +35,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
 
     # DRF URLs
+    path('', include('comments.urls_api')),
     path('api/', include('rest_framework.urls')),
 ]
 
