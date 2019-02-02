@@ -36,7 +36,10 @@ urlpatterns = [
 
     # DRF URLs
     path('', include('comments.urls_api')),
-    path('api/', include('rest_framework.urls')),
+    path('', include('accounts.urls_api')),
+    path('', include('posts.urls_api')),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 
