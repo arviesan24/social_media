@@ -1,3 +1,4 @@
 Django==2.1.5
 django-summernote==0.8.11.4
+djangorestframework==3.9.1
 pytz==2018.7
