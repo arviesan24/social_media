@@ -42,6 +42,10 @@ INSTALLED_APPS = [
 
     # project apps
     'accounts',
+    'posts',
+
+    #third party apps
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +80,18 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 
 
 #
+# SUMMERNOTE CUSTOMIZATION
+#
+
+SUMMERNOTE_THEME = 'bs4'
+
+SUMMERNOTE_CONFIG = {
+    'width': '100%',
+    'height': '300',
+}
+
+
+#
 # DEFINE CUSTOM USER MODEL
 #
 
@@ -86,8 +102,9 @@ AUTH_USER_MODEL = 'accounts.User'
 # LOGIN SETTINGS
 #
 
+# login url to redirect for `LoginRequiredMixin`
 LOGIN_URL = reverse_lazy('accounts:login')
-# redirect user to create profile to check if profile already exists
+# redirect user to create profile to check if profile already exists after login
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:create-profile')
 
 

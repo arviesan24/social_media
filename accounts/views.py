@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
@@ -13,16 +12,28 @@ from .forms import ProfileForm
 from .models import Profile
 from .models import User
 
+from posts import forms as post_form
+from posts import models as post_model
+
 
 class ProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
     template_name='accounts/profile.html'
-    login_url = reverse_lazy('accounts:login')
 
     def get_object(self):
         """Get user object without using URL kwargs."""
         return get_object_or_404(Profile, user__id=self.request.user.id)
+    
+    def get_context_data(self, **kwargs):
+        """Retuns context data needed in `Profile`"""
+        kwargs = super().get_context_data()
+        # add `post form` in context data
+        kwargs['post_form'] = post_form.PostForm
+        # add `post list` in context data
+        kwargs['post_list'] = (
+            post_model.Post.objects.filter(owner=self.request.user).order_by('-id'))
+        return kwargs
 
 
 class RegisterView(CreateView):
@@ -38,7 +49,6 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
 
     template_name = 'accounts/create_profile.html'
     form_class = ProfileForm
-    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy('accounts:profile')
 
     def dispatch(self, request, *args, **kwargs):
@@ -69,7 +79,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     template_name = 'accounts/edit_profile.html'
     form_class = ProfileForm
-    login_url = reverse_lazy('accounts:login')
     success_url = reverse_lazy('accounts:profile')
 
     def get_object(self, queryset=None):

@@ -3,7 +3,7 @@
 {% block title %}Profile{% endblock title %}
 
 {% block css %}
-.card {
+.row-div {
     margin-top: 160px;
     margin-left: auto;
     margin-right: auto;
@@ -41,10 +41,15 @@
     height: 100%;
     overflow: hidden;
 }
+.post-card {
+    border-color: #41B6E6;
+    border-style: solid;
+    margin: 5px auto 5px auto;
+}
 {% endblock css %}
 
 {% block content %}
-<div class="card col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
+<div class="card row-div col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
     
     <div class="card-body">
         <div class="profile-outer-div"><div class="profile-inner-div">
@@ -81,11 +86,34 @@
         </div>
             <main class="bmd-layout-content">
                 <div class="container">
-                <!-- main content -->
-                <div class="form-group">
-                    <label for="post" class="bmd-label-floating">What are you thinking?</label>
-                    <textarea class="form-control" name="post" id="post" rows="6"></textarea>
-                </div>
+                    <!-- main content -->
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+                        What's on your mind?
+                    </button>
+                    <div class="collapse" id="collapseForm">
+                        <form method="post" action="{% url 'posts:create-post' %}">
+                            {% csrf_token %}
+                            {{ post_form.content }}
+                            <strong>{{ post_form.privacy.label }}:</strong> {{ post_form.privacy }}
+                            <input class="btn btn-info btn-raised float-right" type="submit" value="Post">
+                        </form>
+                    </div>
+                    {% for post in post_list %}
+                        <div class="card post-card">
+                            <h6 class="card-subtitle mb-2 mt-2 ml-3">
+                                <i class="fas fa-user-tie"></i> {{ post.owner.profile.first_name }} {{ post.owner.profile.last_name }}
+                            </h6>
+                            <div class="card-body ml-5">
+                                {{ post.content|safe }}
+                            </div>
+                            <div class="card-footer text-muted">
+                            Posted {{ post.datetime_created|timesince }} ago
+                            <span class="float-right">
+                                Last edited {{ post.datetime_modified|timesince }} ago
+                            </span>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </main>
         </div>
