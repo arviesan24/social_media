@@ -1,4 +1,4 @@
-"""Router config for Comments APIs"""
+"""Router config for Accounts APIs."""
 
 from social_media.urls import router
 from .viewsets import UserViewSet
