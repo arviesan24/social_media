@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     #third party apps
     'django_summernote',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
