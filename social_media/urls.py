@@ -29,6 +29,9 @@ urlpatterns = [
         include(('posts.urls', 'posts'), namespace="posts")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+
+    # DRF URLs
+    path('api/', include('rest_framework.urls')),
 ]
 
 
