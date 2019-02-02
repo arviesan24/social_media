@@ -23,7 +23,7 @@ from django.views.generic.base import TemplateView
 from rest_framework import routers
 
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
