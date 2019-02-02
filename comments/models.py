@@ -27,3 +27,6 @@ class Reply(models.Model):
     content = models.TextField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'replies'
