@@ -20,6 +20,10 @@ from django.urls import path
 from django.urls import include
 from django.views.generic.base import TemplateView
 
+from rest_framework import routers
+
+
+router = routers.SimpleRouter()
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
