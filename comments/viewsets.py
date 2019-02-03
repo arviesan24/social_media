@@ -25,3 +25,4 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
