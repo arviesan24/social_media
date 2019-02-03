@@ -26,3 +26,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+
+
+class ReplyViewSet(viewsets.ModelViewSet):
+    queryset = models.Reply.objects.all()
+    serializer_class = serializers.ReplySerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
