@@ -9,7 +9,7 @@ from . import models
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
-    Custom permission to only allow comment owner to edit it.
+    Custom permission to only allow object owner to edit it.
     """
 
     def has_object_permission(self, request, view, obj):
