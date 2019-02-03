@@ -23,12 +23,16 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """Viewset for CommentSerializer."""
+
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
 
 
 class ReplyViewSet(viewsets.ModelViewSet):
+    """Viewset for ReplySerializer."""
+
     queryset = models.Reply.objects.all()
     serializer_class = serializers.ReplySerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)

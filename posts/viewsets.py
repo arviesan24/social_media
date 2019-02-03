@@ -23,6 +23,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    """Viewset for PostSerializer."""
+
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
