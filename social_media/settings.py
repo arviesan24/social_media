@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 from django.urls import reverse_lazy
 
@@ -26,7 +27,7 @@ SECRET_KEY = os.getenv(
     'SECRET_KEY', '4dwe^ro^_2_gp2z7u^z=zx!_f%7vxqexy5t)k-p2y)3s@ksyo)')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = json.loads(os.getenv('DEBUG', 'false'))
 
 ALLOWED_HOSTS = []
 
