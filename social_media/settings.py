@@ -87,6 +87,32 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 
 
 #
+# PROTOCOL TO USE
+#
+
+USE_HTTPS = json.loads(os.getenv('USE_HTTPS', 'true'))
+
+CURRENT_PROTOCOL = 'http://'
+
+if USE_HTTPS:
+    CURRENT_PROTOCOL = 'https://'
+
+
+#
+# DOMAIN NAME TO USE
+#
+
+CURRENT_DOMAIN = os.getenv('CURRENT_DOMAIN', '127.0.0.1:8000/')
+
+
+#
+# API ROOT URL
+#
+
+API_ROOT_URL = f'{CURRENT_PROTOCOL}{CURRENT_DOMAIN}api/'
+
+
+#
 # REST_FRAMEWORK SETTINGS
 #
 
