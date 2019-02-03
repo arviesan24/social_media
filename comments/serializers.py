@@ -3,6 +3,7 @@
 from rest_framework import serializers
 
 from .models import Comment
+from .models import Reply
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
