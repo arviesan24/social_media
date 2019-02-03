@@ -7,6 +7,8 @@ from .models import Reply
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Comment model."""
+
     class Meta:
         model = Comment
         fields = (
