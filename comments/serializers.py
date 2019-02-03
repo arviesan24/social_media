@@ -12,3 +12,13 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'owner', 'post', 'content', 'datetime_created',
             'datetime_modified')
+
+
+class ReplySerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Reply Model."""
+
+    class Meta:
+        model = Reply
+        fields = (
+            'url', 'owner', 'comment', 'content', 'datetime_created',
+            'datetime_modified')
