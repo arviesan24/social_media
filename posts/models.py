@@ -1,3 +1,6 @@
+"""Models for Posts app."""
+
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from comments.models import Comment
