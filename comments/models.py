@@ -37,3 +37,7 @@ class Comment(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
 
     objects = CommentManager()
+
+    def children(self):
+        """Return replies of a comment."""
+        return Comment.objects.filter(parent=self)
