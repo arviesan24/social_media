@@ -17,7 +17,7 @@ class ContentObjectRelatedField(serializers.RelatedField):
         if isinstance(value, Post):
             print(value)
             return value.__class__.__name__
-        raise Exception('Unexpected type of tagged object')
+        raise Exception('Unexpected type of commented object')
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
