@@ -6,6 +6,8 @@ from .models import Post
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Post model."""
+
     class Meta:
         model = Post
         fields = (
