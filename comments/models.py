@@ -35,3 +35,5 @@ class Comment(models.Model):
     content = models.TextField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+
+    objects = CommentManager()
