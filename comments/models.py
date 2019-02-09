@@ -41,3 +41,10 @@ class Comment(models.Model):
     def children(self):
         """Return replies of a comment."""
         return Comment.objects.filter(parent=self)
+
+    @property
+    def is_parent(self):
+        """Return `True` if instance is a parent."""
+        if self.parent is not None:
+            return False
+        return True
