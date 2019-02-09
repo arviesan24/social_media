@@ -44,7 +44,28 @@
 .post-card {
     border-color: #41B6E6;
     border-style: solid;
-    margin: 5px auto 5px auto;
+    margin: 5px 0px 5px 0px;
+    padding-bottom: 1em;
+}
+.comment-card {
+    margin: 3px 1em 3px 1em;
+    background-color: #90CAF9;
+    width: 95%;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+}
+.reply-card {
+    margin: 3px 1em 3px 2em;
+    background-color: #69F0AE;
+    width: 93%;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+}
+@media only screen and (max-width: 600px) {
+    .card {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
 }
 {% endblock css %}
 
@@ -103,7 +124,7 @@
                             <h6 class="card-subtitle mb-2 mt-2 ml-3">
                                 <i class="fas fa-user-tie"></i> {{ post.owner.profile.first_name }} {{ post.owner.profile.last_name }}
                             </h6>
-                            <div class="card-body ml-5">
+                            <div class="card-body">
                                 {{ post.content|safe }}
                             </div>
                             <div class="card-footer text-muted">
@@ -112,10 +133,34 @@
                                     Last edited {{ post.datetime_modified|timesince }} ago
                                 </span>
                             </div>
-                            <div class="comment-section ml-2">
-                                <div class="comment-body">
+                            {% for comment in post.comments %}
+                                <div class="comment-card">
+                                    <h6 class="card-subtitle mb-2 mt-2">
+                                        <i class="fas fa-user-tie"></i> {{ comment.owner.profile.first_name }} {{ comment.owner.profile.last_name }}
+                                    </h6>
+                                    <div class="comment-body ml-3">
+                                        {{ comment.content }}
+                                    </div>
+                                    <div class="footer text-muted mt-1">
+                                        <small>Commented {{ comment.datetime_created|timesince }} ago</small>
+                                        <small class="float-right">Edited {{ comment.datetime_modified|timesince }} ago</small>
+                                    </div>
                                 </div>
-                            </div>
+                                {% for reply in comment.children %}
+                                    <div class="reply-card">
+                                        <h6 class="card-subtitle mb-2 mt-2">
+                                            <i class="fas fa-user-tie"></i> {{ reply.owner.profile.first_name }} {{ reply.owner.profile.last_name }}
+                                        </h6>
+                                        <div class="comment-body ml-3">
+                                            {{ reply.content }}
+                                        </div>
+                                        <div class="footer text-muted mt-1">
+                                            <small>Replied {{ reply.datetime_created|timesince }} ago</small>
+                                            <small class="float-right">Edited {{ reply.datetime_modified|timesince }} ago</small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
                         </div>
                     {% endfor %}
                 </div>
