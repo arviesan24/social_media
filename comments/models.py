@@ -12,7 +12,9 @@ class Comment(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    # If not null, instance is a reply.
+    parent = models.ForeignKey(
+        'self', on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
-
