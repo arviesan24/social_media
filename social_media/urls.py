@@ -20,6 +20,10 @@ from django.urls import path
 from django.urls import include
 from django.views.generic.base import TemplateView
 
+from rest_framework import routers
+
+
+router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
@@ -29,6 +33,13 @@ urlpatterns = [
         include(('posts.urls', 'posts'), namespace="posts")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+
+    # DRF URLs
+    path('', include('comments.urls_api')),
+    path('', include('accounts.urls_api')),
+    path('', include('posts.urls_api')),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 

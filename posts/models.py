@@ -1,4 +1,9 @@
+"""Models for Posts app."""
+
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
+from comments.models import Comment
 
 
 class Post(models.Model):
@@ -21,3 +26,15 @@ class Post(models.Model):
     privacy = models.CharField(max_length=20, choices=PRIVACY_CHOICES)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+
+    @property
+    def comments(self):
+        """Return all comments associated to the post."""
+        qs = Comment.objects.filter_by_instance(self)
+        return qs
+
+    @property
+    def get_content_type(self):
+        """Return model class."""
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return content_type
