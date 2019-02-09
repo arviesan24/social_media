@@ -32,3 +32,9 @@ class Post(models.Model):
         """Return all comments associated to the post."""
         qs = Comment.objects.filter_by_instance(self)
         return qs
+
+    @property
+    def get_content_type(self):
+        """Return model class."""
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return content_type
