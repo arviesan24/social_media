@@ -11,5 +11,5 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
         fields = (
-            'url', 'owner', 'post', 'content', 'datetime_created',
-            'datetime_modified')
+            'url', 'owner', 'object_id', 'content_object', 'content',
+            'datetime_created', 'datetime_modified')
