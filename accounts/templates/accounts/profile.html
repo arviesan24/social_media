@@ -145,6 +145,18 @@
                                     <span class="float-right">Last edited {{ post.datetime_modified|timesince }} ago</span>
                                 {% endif %}
                             </div>
+                            <div class="comment-form mx-3">
+                                <form method="post" action="{% url 'comments:create-comment' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="object_id" value="{{ post.id }}">
+                                    <div class="form-group">
+                                        <label for="content" class="bmd-label-floating">Write a comment...</label>
+                                        <input type="text" class="form-control" name="content" id="comment-content">
+                                        {{ comment_form.content.errors }}
+                                    </div>
+                                    <input class="btn btn-info btn-raised float-right" type="submit" value="Save">
+                                </form>
+                            </div>
                             {% for comment in post.comments %}
                                 <div class="comment-card">
                                     <h6 class="card-subtitle mb-2 mt-2">
