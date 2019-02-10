@@ -14,6 +14,8 @@ class CommentForm(forms.ModelForm):
         self.content_type_value = kwargs.pop('content_type_value', None)
         super().__init__(*args, **kwargs)
 
+    content_type = forms.CharField(required=False)
+
     class Meta:
         model = Comment
         fields = (
