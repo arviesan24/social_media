@@ -63,8 +63,19 @@
 }
 @media only screen and (max-width: 600px) {
     .card {
-        margin-left: -20px;
-        margin-right: -20px;
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+    }
+    .main-div {
+        padding-left: 0.1em;
+        padding-right: 0.2em;
+    }
+    .card-body {
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+    }
+    .reply-card {
+        width: 90.4%;
     }
 }
 {% endblock css %}
@@ -128,10 +139,11 @@
                                 {{ post.content|safe }}
                             </div>
                             <div class="card-footer text-muted">
-                                Posted {{ post.datetime_created|timesince }} ago
-                                <span class="float-right">
-                                    Last edited {{ post.datetime_modified|timesince }} ago
-                                </span>
+                                {% if post.datetime_created|timesince == post.datetime_modified|timesince %}
+                                    <span class="float-right">Posted {{ post.datetime_created|timesince }} ago</span>
+                                {% else %}
+                                    <span class="float-right">Last edited {{ post.datetime_modified|timesince }} ago</span>
+                                {% endif %}
                             </div>
                             {% for comment in post.comments %}
                                 <div class="comment-card">
@@ -141,9 +153,12 @@
                                     <div class="comment-body ml-3">
                                         {{ comment.content }}
                                     </div>
-                                    <div class="footer text-muted mt-1">
-                                        <small>Commented {{ comment.datetime_created|timesince }} ago</small>
-                                        <small class="float-right">Edited {{ comment.datetime_modified|timesince }} ago</small>
+                                    <div class="footer text-muted mt-1 float-right">
+                                        {% if comment.datetime_created|timesince == comment.datetime_modified|timesince %}
+                                            <small>Commented {{ comment.datetime_created|timesince }} ago</small>
+                                        {% else %}
+                                            <small>Edited {{ comment.datetime_modified|timesince }} ago</small>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 {% for reply in comment.children %}
@@ -154,9 +169,12 @@
                                         <div class="comment-body ml-3">
                                             {{ reply.content }}
                                         </div>
-                                        <div class="footer text-muted mt-1">
-                                            <small>Replied {{ reply.datetime_created|timesince }} ago</small>
-                                            <small class="float-right">Edited {{ reply.datetime_modified|timesince }} ago</small>
+                                        <div class="footer text-muted mt-1 float-right">
+                                            {% if reply.datetime_created|timesince == reply.datetime_modified|timesince %}
+                                                <small>Replied {{ reply.datetime_created|timesince }} ago</small>
+                                            {% else %}
+                                                <small>Edited {{ reply.datetime_modified|timesince }} ago</small>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}
