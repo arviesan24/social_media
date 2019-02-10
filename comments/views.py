@@ -30,3 +30,15 @@ class PostCommentCreateView(BasePostCommentCreateView):
         comment.parent = None
         comment.owner = self.request.user
         return super().form_valid(form)
+
+
+class PostReplyCreateView(BasePostCommentCreateView):
+    """View for Post Reply creation."""
+
+    def form_valid(self, form):
+        """Save comment."""
+        comment = form.save(commit=False)
+        comment.object_id = form.cleaned_data.get('object_id')
+        comment.parent.id = form.cleaned_data.get('parent')
+        comment.owner = self.request.user
+        return super().form_valid(form)
