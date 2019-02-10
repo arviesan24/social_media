@@ -150,11 +150,11 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="object_id" value="{{ post.id }}">
                                     <div class="form-group">
-                                        <label for="content" class="bmd-label-floating">Write a comment...</label>
+                                        <label for="content" class="bmd-label-floating">Comment on this post...</label>
                                         <input type="text" class="form-control" name="content" id="comment-content">
                                         {{ comment_form.content.errors }}
                                     </div>
-                                    <input class="btn btn-info btn-raised float-right" type="submit" value="Save">
+                                    <input class="btn btn-info btn-raised float-right" type="submit" value="Comment">
                                 </form>
                             </div>
                             {% for comment in post.comments %}
@@ -190,6 +190,19 @@
                                         </div>
                                     </div>
                                 {% endfor %}
+                                <div class="reply-form mx-5">
+                                    <form method="post" action="{% url 'comments:create-reply' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="object_id" value="{{ post.id }}">
+                                        <input type="hidden" name="parent" value="{{ comment.id }}">
+                                        <div class="form-group">
+                                            <label for="content" class="bmd-label-floating">Reply to this comment...</label>
+                                            <input type="text" class="form-control" name="content" id="reply-content">
+                                            {{ comment_form.content.errors }}
+                                        </div>
+                                        <input class="btn btn-success btn-raised float-right" type="submit" value="Reply">
+                                    </form>
+                                </div>
                             {% endfor %}
                         </div>
                     {% endfor %}
@@ -201,4 +214,5 @@
 {% endblock content %}
 
 {% block js %}
+comment-card
 {% endblock js %}
