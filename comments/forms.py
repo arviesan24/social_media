@@ -18,7 +18,7 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-         fields = ('content_type', 'object_id', 'parent', 'content')
+        fields = ('content_type', 'object_id', 'parent', 'content')
 
     def clean_content_type(self):
         """Get `content_type` from `__init__` instead from templates form."""
