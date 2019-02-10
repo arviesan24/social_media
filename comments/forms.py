@@ -18,6 +18,4 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = (
-            'content_type', 'object_id', 'content_object',
-            'parent', 'content')
+         fields = ('content_type', 'object_id', 'parent', 'content')
