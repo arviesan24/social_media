@@ -7,8 +7,8 @@ from django.views.generic.edit import CreateView
 from .forms import CommentForm
 
 
-class PostCommentCreateView(LoginRequiredMixin, CreateView):
-    """View for Comment creation."""
+class BasePostCommentCreateView(LoginRequiredMixin, CreateView):
+    """Base view for comment CreateView"""
 
     form_class = CommentForm
     success_url = reverse_lazy('accounts:profile')
@@ -18,6 +18,10 @@ class PostCommentCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['content_type_value'] = 'post'
         return kwargs 
+
+
+class PostCommentCreateView(BasePostCommentCreateView):
+    """View for Post Comment creation."""
 
     def form_valid(self, form):
         """Save comment."""
