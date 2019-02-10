@@ -9,6 +9,11 @@ from django.models import Comment
 class CommentForm(forms.ModelForm):
     """Form for Comment."""
 
+    def __init__(self, *args, **kwargs):
+        """Initialize `content_type_value` from views."""
+        self.content_type_value = kwargs.pop('content_type_value', None)
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model = Comment
         fields = (
