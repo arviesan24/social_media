@@ -33,4 +33,4 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         model = Comment
         fields = (
             'url', 'owner', 'object_id', 'content_object', 'content',
-            'datetime_created', 'datetime_modified')
+            'children', 'is_parent', 'datetime_created', 'datetime_modified')
