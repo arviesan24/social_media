@@ -34,3 +34,10 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'owner', 'object_id', 'content_object', 'content',
             'children', 'is_parent', 'datetime_created', 'datetime_modified')
+
+    def get_children(self, obj):
+        """Return `children` serialized objects."""
+        data = dj_serializers.serialize('json', obj.children())
+        # change `data` string to json
+        json_data = json.loads(data)
+        return json_data
