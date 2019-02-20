@@ -20,7 +20,6 @@ class ContentObjectRelatedField(serializers.RelatedField):
         if isinstance(value, Comment):
             return value.__class__.__name__
         if isinstance(value, Post):
-            print(value)
             return value.__class__.__name__
         raise Exception('Unexpected type of commented object')
 
