@@ -27,6 +27,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for Comment model."""
 
     content_object = ContentObjectRelatedField(queryset=Comment.objects.all())
+    children = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
