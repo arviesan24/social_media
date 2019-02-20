@@ -1,6 +1,7 @@
 """Serializers for Comments app."""
 
 from django.core import serializers as dj_serializers
+from django.http import HttpResponse
 
 from rest_framework import serializers
 
