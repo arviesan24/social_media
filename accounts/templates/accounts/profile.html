@@ -205,6 +205,28 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <script>
+                            $(document).ready(function(){
+                                $("#post-{{ post.id }}").submit(function(e){
+                                    e.preventDefault();
+                                    var serialized_data = $(this).serialize() + "&owner=" + USER_URL;
+                                    $.ajax({
+                                        // Submit comment via ajax request.
+                                        type: "POST",
+                                        url : API_ROOT_URL + 'comments/',
+                                        headers: {
+                                            Authorization: 'Token ' + USER_AUTH_KEY,
+                                        },
+                                        format: 'json',
+                                        csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
+                                        data: serialized_data,
+                                        error: function(err){
+                                            console.log(err.responseText);
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                     {% endfor %}
                 </div>
             </main>
