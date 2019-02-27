@@ -13,18 +13,6 @@ from .models import Comment
 from posts.models import Post
 
 
-class ContentObjectRelatedField(serializers.RelatedField):
-    """A custom field to use for the `content_object` generic relationship."""
-
-    def to_representation(self, value):
-        """Serialize content objects to a class name representation."""
-        if isinstance(value, Comment):
-            return value.__class__.__name__
-        if isinstance(value, Post):
-            return value.__class__.__name__
-        raise Exception('Unexpected type of commented object')
-
-
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for Comment model."""
 
