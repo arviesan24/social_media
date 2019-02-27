@@ -16,6 +16,8 @@ from posts.models import Post
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for Comment model."""
 
+    # Reference link: https://stackoverflow.com/questions/24970610/
+    # set-contenttype-by-name-in-generic-relation-in-django-rest-framework
     content_type = serializers.SlugRelatedField(
         queryset=ContentType.objects.all(), slug_field='model')
     children = serializers.SerializerMethodField()
