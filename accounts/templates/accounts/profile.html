@@ -214,4 +214,12 @@
 {% endblock content %}
 
 {% block js %}
+<script>
+    $(document).ready(function(){
+        API_ROOT_URL = '{{ API_ROOT_URL }}';
+        USER_AUTH_KEY = '{{ user.auth_token }}';
+        USER_URL = API_ROOT_URL + 'users/' + {{ user.id }} + "/"
+
+    });
+</script>
 {% endblock js %}
