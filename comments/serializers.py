@@ -28,6 +28,8 @@ class ContentObjectRelatedField(serializers.RelatedField):
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for Comment model."""
 
+    content_type = serializers.SlugRelatedField(
+        queryset=ContentType.objects.all(), slug_field='model')
     content_object = ContentObjectRelatedField(queryset=Comment.objects.all())
     children = serializers.SerializerMethodField()
 
