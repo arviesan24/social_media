@@ -2,6 +2,7 @@
 
 import json
 
+from django.contrib.contenttypes.models import ContentType
 from django.core import serializers as dj_serializers
 from django.http import HttpResponse
 
