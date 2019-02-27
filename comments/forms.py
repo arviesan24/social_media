@@ -19,11 +19,3 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content_type', 'object_id', 'parent', 'content')
-
-    def clean_content_type(self):
-        """Get `content_type` from `__init__` instead from templates form."""
-        content_type = ContentType.objects.get(model=self.content_type_value)
-        if not content_type:
-            raise forms.ValidationError('Invalid content type.')
-
-        return content_type
