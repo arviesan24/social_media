@@ -30,7 +30,6 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
     content_type = serializers.SlugRelatedField(
         queryset=ContentType.objects.all(), slug_field='model')
-    content_object = ContentObjectRelatedField(queryset=Comment.objects.all())
     children = serializers.SerializerMethodField()
 
     class Meta:
