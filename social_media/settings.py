@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'posts',
 
     #third party apps
+    'django_filters',
     'django_summernote',
     'rest_framework',
     'rest_framework.authtoken',
