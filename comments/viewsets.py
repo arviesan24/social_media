@@ -23,6 +23,27 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.owner == request.user
 
 
+class CommentFilterSet(django_filters.FilterSet):
+    """FilterSet for CommentViewSet."""
+
+    def get_content_type():
+        """Return list for `content_type` choices."""
+        item_list = []
+        content_list = ContentType.objects.all()
+        for item in content_list:
+            item_list.append((item.id, item.name))
+        return item_list
+
+    content_type = django_filters.ChoiceFilter(
+        choices=get_content_type(), field_name='content_type__id',
+        lookup_expr='iexact')
+    object_id = django_filters.CharFilter(lookup_expr='iexact')
+
+    class Meta:
+        model = models.Comment
+        fields = ['content_type', 'object_id']
+
+
 class CommentViewSet(viewsets.ModelViewSet):
     """Viewset for CommentSerializer."""
 
