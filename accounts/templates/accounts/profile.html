@@ -221,6 +221,9 @@
                                         format: 'json',
                                         csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
                                         data: serialized_data,
+                                        success: function() {
+                                            $("#post-{{ post.id }}")[0].reset();
+                                        },
                                         error: function(err){
                                             console.log(err.responseText);
                                         }
