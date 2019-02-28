@@ -1,7 +1,5 @@
 """Viewsets for Comments app."""
-
-import django_filters
-
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import viewsets
 from rest_framework import permissions
 
