@@ -50,3 +50,4 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+    filter_backends = (django_filters.DjangoFilterBackend,)
