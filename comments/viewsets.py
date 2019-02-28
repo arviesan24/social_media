@@ -1,5 +1,7 @@
 """Viewsets for Comments app."""
 
+import django_filters
+
 from rest_framework import viewsets
 from rest_framework import permissions
 
@@ -28,4 +30,3 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
-
