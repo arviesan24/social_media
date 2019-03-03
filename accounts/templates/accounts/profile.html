@@ -157,6 +157,52 @@
                                     </div>
                                     <input class="btn btn-info btn-raised float-right" type="submit" value="Comment">
                                 </form>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#post-{{ post.id }}").submit(function(e){
+                                            e.preventDefault();
+                                            var serialized_data = $(this).serialize() + "&owner=" + USER_URL;
+                                            $.ajax({
+                                                // Submit comment via ajax request.
+                                                type: "POST",
+                                                url : API_ROOT_URL + 'comments/',
+                                                headers: {
+                                                    Authorization: 'Token ' + USER_AUTH_KEY,
+                                                },
+                                                format: 'json',
+                                                csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
+                                                data: serialized_data,
+                                                success: function() {
+                                                    // clear form fields.
+                                                    $("#post-{{ post.id }}")[0].reset();
+                                                    // reload comments.
+                                                    $.ajax({
+                                                        // Submit comment via ajax request.
+                                                        type: "GET",
+                                                        url : API_ROOT_URL + 'comments/',
+                                                        headers: {
+                                                            Authorization: 'Token ' + USER_AUTH_KEY,
+                                                        },
+                                                        format: 'json',
+                                                        data: {
+                                                            content_type: "post",
+                                                            object_id: "{{ post.id }}"
+                                                        },
+                                                        success: function(res) {
+                                                            console.log(res);
+                                                        },
+                                                        error: function(err){
+                                                            console.log(err.responseText);
+                                                        }
+                                                    });
+                                                },
+                                                error: function(err){
+                                                    console.log(err.responseText);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
                             </div>
                             {% for comment in post.comments %}
                                 <div class="comment-card">
@@ -206,52 +252,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <script>
-                            $(document).ready(function(){
-                                $("#post-{{ post.id }}").submit(function(e){
-                                    e.preventDefault();
-                                    var serialized_data = $(this).serialize() + "&owner=" + USER_URL;
-                                    $.ajax({
-                                        // Submit comment via ajax request.
-                                        type: "POST",
-                                        url : API_ROOT_URL + 'comments/',
-                                        headers: {
-                                            Authorization: 'Token ' + USER_AUTH_KEY,
-                                        },
-                                        format: 'json',
-                                        csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
-                                        data: serialized_data,
-                                        success: function() {
-                                            // clear form fields.
-                                            $("#post-{{ post.id }}")[0].reset();
-                                            // reload comments.
-                                            $.ajax({
-                                                // Submit comment via ajax request.
-                                                type: "GET",
-                                                url : API_ROOT_URL + 'comments/',
-                                                headers: {
-                                                    Authorization: 'Token ' + USER_AUTH_KEY,
-                                                },
-                                                format: 'json',
-                                                data: {
-                                                    content_type: "post",
-                                                    object_id: "{{ post.id }}"
-                                                },
-                                                success: function(res) {
-                                                    console.log(res);
-                                                },
-                                                error: function(err){
-                                                    console.log(err.responseText);
-                                                }
-                                            });
-                                        },
-                                        error: function(err){
-                                            console.log(err.responseText);
-                                        }
-                                    });
-                                });
-                            });
-                        </script>
                     {% endfor %}
                 </div>
             </main>
