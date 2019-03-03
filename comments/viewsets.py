@@ -31,7 +31,7 @@ class CommentFilterSet(django_filters.FilterSet):
         item_list = []
         content_list = ContentType.objects.all()
         for item in content_list:
-            item_list.append((item.id, item.name))
+            item_list.append((item.name, item.name))
         return item_list
 
     content_type = django_filters.ChoiceFilter(
