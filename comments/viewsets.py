@@ -35,7 +35,7 @@ class CommentFilterSet(django_filters.FilterSet):
         return item_list
 
     content_type = django_filters.ChoiceFilter(
-        choices=get_content_type(), field_name='content_type__id',
+        choices=get_content_type(), field_name='content_type__model',
         lookup_expr='iexact')
     object_id = django_filters.CharFilter(lookup_expr='iexact')
 
