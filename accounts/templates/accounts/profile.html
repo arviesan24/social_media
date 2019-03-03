@@ -222,7 +222,28 @@
                                         csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
                                         data: serialized_data,
                                         success: function() {
+                                            // clear form fields.
                                             $("#post-{{ post.id }}")[0].reset();
+                                            // reload comments.
+                                            $.ajax({
+                                                // Submit comment via ajax request.
+                                                type: "GET",
+                                                url : API_ROOT_URL + 'comments/',
+                                                headers: {
+                                                    Authorization: 'Token ' + USER_AUTH_KEY,
+                                                },
+                                                format: 'json',
+                                                data: {
+                                                    content_type: "post",
+                                                    object_id: "{{ post.id }}"
+                                                },
+                                                success: function(res) {
+                                                    console.log(res);
+                                                },
+                                                error: function(err){
+                                                    console.log(err.responseText);
+                                                }
+                                            });
                                         },
                                         error: function(err){
                                             console.log(err.responseText);
