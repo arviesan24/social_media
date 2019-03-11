@@ -169,8 +169,8 @@
                                     });
                                 </script>
                             </div>
+                            <div id="post-{{ post.id }}-comment-list" class="comments-parent">
                             {% for comment in post.comments %}
-                            <div class="comments-parent">
                                 <div class="comment-card">
                                     <h6 class="card-subtitle mb-2 mt-2">
                                         <i class="fas fa-user-tie"></i> {{ comment.owner.profile.first_name }} {{ comment.owner.profile.last_name }}
@@ -216,8 +216,8 @@
                                         <input class="btn btn-success btn-raised float-right" type="submit" value="Reply">
                                     </form>
                                 </div>
-                            </div>
                             {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
