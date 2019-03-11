@@ -47,7 +47,7 @@
     margin: 5px 0px 5px 0px;
     padding-bottom: 1em;
 }
-.comment-card {
+.comments-parent > .comment-card {
     margin: 3px 1em 3px 1em;
     background-color: #90CAF9;
     width: 95%;
@@ -169,6 +169,7 @@
                                 </script>
                             </div>
                             {% for comment in post.comments %}
+                            <div class="comments-parent">
                                 <div class="comment-card">
                                     <h6 class="card-subtitle mb-2 mt-2">
                                         <i class="fas fa-user-tie"></i> {{ comment.owner.profile.first_name }} {{ comment.owner.profile.last_name }}
@@ -214,6 +215,7 @@
                                         <input class="btn btn-success btn-raised float-right" type="submit" value="Reply">
                                     </form>
                                 </div>
+                            </div>
                             {% endfor %}
                         </div>
                     {% endfor %}
