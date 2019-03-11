@@ -229,7 +229,7 @@
     $(document).ready(function(){
         API_ROOT_URL = '{{ API_ROOT_URL }}';
         USER_AUTH_KEY = '{{ user.auth_token }}';
-        USER_URL = API_ROOT_URL + 'users/' + {{ user.id }} + "/"
+        USER_URL = API_ROOT_URL + 'users/' + {{ user.id }} + "/";
     });
     function post_comment(post_id, serialized_data) {
         $.ajax({
