@@ -236,7 +236,7 @@
     });
     function post_comment(post_id, serialized_data) {
         $.ajax({
-            // Submit comment via ajax request.
+            // Submit comment via ajax post request.
             type: "POST",
             url : API_ROOT_URL + 'comments/',
             headers: {
@@ -250,7 +250,7 @@
                 $("#post-"+post_id)[0].reset();
                 // reload comments.
                 $.ajax({
-                    // Submit comment via ajax request.
+                    // fetch comments via ajax get request.
                     type: "GET",
                     url : API_ROOT_URL + 'comments/',
                     headers: {
