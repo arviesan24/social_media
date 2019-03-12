@@ -262,7 +262,8 @@
                         object_id: post_id
                     },
                     success: function(res) {
-                        console.log(res);
+                        // populate the comments with updated list
+                        reload_comments_list(post_id, res);
                     },
                     error: function(err){
                         console.log(err.responseText);
@@ -273,6 +274,18 @@
                 console.log(err.responseText);
             }
         });
+    }
+    function reload_comments_list(post_id, json_data) {
+        var parent_div ="#post-"+post_id+"-comment-list";
+        $(parent_div).empty();
+        var parent_div_content = '';
+        for (var i = 0; i < json_data.length; i++) {
+            parent_div_content += '<div class="comment-card">'
+            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i>'+json_data[i].owner+' '+json_data[i].owner+'</h6>'
+            +'<div class="comment-body ml-3">'+json_data[i].content+'</div>'
+            +'</div>';
+        }
+        $(parent_div).html(parent_div_content);
     }
 </script>
 {% endblock js %}
