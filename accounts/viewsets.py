@@ -28,3 +28,11 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    """Viewset for ProfileSerializer"""
+
+    queryset = models.Profile.objects.all()
+    serializer_class = serializers.ProfileSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
