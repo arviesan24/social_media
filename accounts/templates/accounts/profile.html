@@ -234,6 +234,16 @@
         USER_AUTH_KEY = '{{ user.auth_token }}';
         USER_URL = API_ROOT_URL + 'users/' + {{ user.id }} + "/";
     });
+    var profile_list = function() {
+        return $.ajax({
+            type: "GET",
+            url : API_ROOT_URL + 'profiles/',
+            headers: {
+                Authorization: 'Token ' + USER_AUTH_KEY,
+            }
+        });
+    }
+
     function post_comment(post_id, serialized_data) {
         $.ajax({
             // Submit comment via ajax post request.
