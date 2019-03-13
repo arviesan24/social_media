@@ -61,3 +61,5 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ProfileSerializer
     permission_classes = (
         permissions.IsAuthenticated, IsProfileOwnerOrReadOnly,)
+    filter_backends = (django_filters.DjangoFilterBackend,)
+    filterset_class = ProfileFilterSet
