@@ -38,6 +38,14 @@ class IsProfileOwnerOrReadOnly(permissions.BasePermission):
         return obj.user == request.user
 
 
+class ProfileFilterSet(django_filters.FilterSet):
+    """FilterSet for ProfileViewSet."""
+
+    class Meta:
+        model = models.Profile
+        fields = ['user', 'first_name', 'last_name']
+
+
 class UserViewSet(viewsets.ModelViewSet):
     """Viewset for UserSerializer"""
 
