@@ -254,35 +254,28 @@
             },
             format: 'json',
             csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
-            data: serialized_data,
-            success: function() {
-                // clear form fields.
-                $("#post-"+post_id)[0].reset();
-                // reload comments.
-                $.ajax({
-                    // fetch comments via ajax get request.
-                    type: "GET",
-                    url : API_ROOT_URL + 'comments/',
-                    headers: {
-                        Authorization: 'Token ' + USER_AUTH_KEY,
-                    },
-                    format: 'json',
-                    data: {
-                        content_type: "post",
-                        object_id: post_id
-                    },
-                    success: function(res) {
-                        // populate the comments with updated list
-                        reload_comments_list(post_id, res);
-                    },
-                    error: function(err){
-                        console.log(err.responseText);
-                    }
-                });
-            },
-            error: function(err){
-                console.log(err.responseText);
-            }
+            data: serialized_data
+        })
+        .then(function() {
+            // clear form fields.
+            $("#post-"+post_id)[0].reset();
+            // reload comments.
+            return $.ajax({
+                // fetch comments via ajax get request.
+                type: "GET",
+                url : API_ROOT_URL + 'comments/',
+                headers: {
+                    Authorization: 'Token ' + USER_AUTH_KEY,
+                },
+                format: 'json',
+                data: {
+                    content_type: "post",
+                    object_id: post_id
+                }
+            });
+        })
+        .then(function(res) {
+            reload_comments_list(post_id, res);
         });
     }
     function reload_comments_list(post_id, json_data) {
