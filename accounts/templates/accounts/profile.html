@@ -260,7 +260,7 @@
             // clear form fields.
             $("#post-"+post_id)[0].reset();
             // reload comments.
-            return $.ajax({
+            var resultComments = $.ajax({
                 // fetch comments via ajax get request.
                 type: "GET",
                 url : API_ROOT_URL + 'comments/',
@@ -273,21 +273,39 @@
                     object_id: post_id
                 }
             });
+            // load profiles
+            var promiseProfiles = profile_list();
+
+            // return 2 promises
+            return Promise.all([resultComments, promiseProfiles])
         })
-        .then(function(res) {
-            reload_comments_list(post_id, res);
+        .then(function([resultComments, resultProfiles]) {
+            reload_comments_list(post_id, resultProfiles, resultComments);
         });
     }
-    function reload_comments_list(post_id, json_data) {
+
+    // get the profile base on the owner url
+    var selected_profile = function(profile_owner, profiles) {
+        for (var p=0; p<profiles.length; p++) {
+            if (profiles[p]['user'] == profile_owner) {
+                return profiles[p];
+            }
+        }
+    }
+
+    function reload_comments_list(post_id, profiles, comments) {
         var parent_div ="#post-"+post_id+"-comment-list";
         $(parent_div).empty();
         var parent_div_content = '';
-        for (var i = 0; i < json_data.length; i++) {
+        for (var i = 0; i < comments.length; i++) {
+            // get the owner info
+            var owner_info = selected_profile(comments[i].owner, profiles);
             parent_div_content += '<div class="comment-card">'
-            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i>'+json_data[i].owner+' '+json_data[i].owner+'</h6>'
-            +'<div class="comment-body ml-3">'+json_data[i].content+'</div>'
+            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
+            +'<div class="comment-body ml-3">'+comments[i].content+'</div>'
             +'</div>';
         }
+        // populate the div by the new contents
         $(parent_div).html(parent_div_content);
     }
 </script>
