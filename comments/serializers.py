@@ -48,6 +48,6 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
             created_value = timesince.timesince(obj.datetime_created)
             return f'Commented {created_value} ago'
         
-        #returns datetime 
+        #returns datetime modified
         modified_value = timesince.timesince(obj.datetime_modified)
         return f'Edited {modified_value} ago'
