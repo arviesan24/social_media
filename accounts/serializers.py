@@ -1,5 +1,4 @@
 """Serializers for Accounts app."""
-from django.utils import timesince
 from rest_framework import serializers
 
 from .models import Profile
