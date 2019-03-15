@@ -19,6 +19,11 @@ class CommentManager(models.Manager):
             content_type=content_type, object_id=obj_id, parent=None)
         return qs
 
+    def replies(self):
+        """Return results of instance with parent."""
+        qs = super().filter(parent__isnull=False)
+        return qs
+
 
 class Comment(models.Model):
     """Model for comments."""
