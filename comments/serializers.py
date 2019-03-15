@@ -7,6 +7,7 @@ from django.core import serializers as dj_serializers
 from django.http import HttpResponse
 from django.utils import timesince
 
+from datetime import datetime
 from rest_framework import serializers
 
 from .models import Comment
@@ -22,12 +23,14 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     content_type = serializers.SlugRelatedField(
         queryset=ContentType.objects.all(), slug_field='model')
     children = serializers.SerializerMethodField()
+    date_to_display = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = (
             'url', 'owner', 'content_type', 'object_id', 'parent', 'content',
-            'children', 'is_parent', 'datetime_created', 'datetime_modified')
+            'children', 'is_parent', 'datetime_created', 'datetime_modified',
+            'date_to_display')
 
     def get_children(self, obj):
         """Return `children` serialized objects."""
@@ -35,3 +38,16 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         # change `data` string to json
         json_data = json.loads(data)
         return json_data
+
+    def get_date_to_display(self, obj):
+        """Return timesince formatted date."""
+
+        # returns datetime created
+        if timesince.timesince(obj.datetime_created) == (
+                timesince.timesince(obj.datetime_modified)):
+            created_value = timesince.timesince(obj.datetime_created)
+            return f'Commented {created_value} ago'
+        
+        #returns datetime 
+        modified_value = timesince.timesince(obj.datetime_modified)
+        return f'Edited {modified_value} ago'
