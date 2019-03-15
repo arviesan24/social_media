@@ -7,5 +7,6 @@ from.viewsets import ReplyViewSet
 
 
 router.register('comments', CommentViewSet)
+router.register('replies', ReplyViewSet)
 
 urlpatterns = []
