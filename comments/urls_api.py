@@ -3,6 +3,7 @@
 from social_media.urls import router
 
 from .viewsets import CommentViewSet
+from.viewsets import ReplyViewSet
 
 
 router.register('comments', CommentViewSet)
