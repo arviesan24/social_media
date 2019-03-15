@@ -52,3 +52,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
     filterset_class = CommentFilterSet
+
+
+class ReplyViewSet(viewsets.ModelViewSet):
+    """Viewset for ReplySerializer."""
+
+    queryset = models.Comment.objects.replies()
+    serializer_class = serializers.CommentSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+    filter_backends = (django_filters.DjangoFilterBackend,)
+    filterset_class = CommentFilterSet
