@@ -41,7 +41,7 @@ class CommentFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Comment
-        fields = ['content_type', 'object_id']
+        fields = ['content_type', 'object_id', 'parent__id']
 
 
 class CommentViewSet(viewsets.ModelViewSet):
