@@ -204,7 +204,7 @@
                                     </div>
                                 {% endfor %}
                                 <div class="reply-form mx-5">
-                                    <form method="post" action="{% url 'comments:create-reply' %}">
+                                    <form method="post" id="post-{{ post.id }}-comment-{{ comment.id }}" action="{% url 'comments:create-reply' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="object_id" value="{{ post.id }}">
                                         <input type="hidden" name="parent" value="{{ comment.id }}">
