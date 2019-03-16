@@ -46,7 +46,11 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         if timesince.timesince(obj.datetime_created) == (
                 timesince.timesince(obj.datetime_modified)):
             created_value = timesince.timesince(obj.datetime_created)
-            return f'Commented {created_value} ago'
+            comment_string = 'Replied'
+            if obj.is_parent:
+                comment_string = 'Commented'
+
+            return f'{comment_string} {created_value} ago'
         
         #returns datetime modified
         modified_value = timesince.timesince(obj.datetime_modified)
