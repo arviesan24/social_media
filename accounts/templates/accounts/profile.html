@@ -55,7 +55,7 @@
     padding: 5px 10px 5px 10px;
     overflow: auto;
 }
-.reply-card {
+.replies-parent > .reply-card {
     margin: 3px 1em 3px 2em;
     background-color: #69F0AE;
     width: 93%;
@@ -186,6 +186,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                                <div id="post-{{ post.id }}-comment-{{ comment.id }}-reply-list" class="replies-parent">
                                 {% for reply in comment.children %}
                                     <div class="reply-card">
                                         <h6 class="card-subtitle mb-2 mt-2">
@@ -203,11 +204,12 @@
                                         </div>
                                     </div>
                                 {% endfor %}
+                                </div>
                                 <div class="reply-form mx-5">
                                     <form method="post" id="post-{{ post.id }}-comment-{{ comment.id }}" action="{% url 'comments:create-reply' %}">
                                         {% csrf_token %}
+                                        <input type="hidden" name="content_type" value="post">
                                         <input type="hidden" name="object_id" value="{{ post.id }}">
-                                        <input type="hidden" name="parent" value="{{ comment.id }}">
                                         <div class="form-group">
                                             <label for="content" class="bmd-label-floating">Reply to this comment...</label>
                                             <input type="text" class="form-control" name="content" id="reply-content">
@@ -305,6 +307,65 @@
             +'<div class="comment-body ml-3">'+comments[i].content+'</div>'
             +'<div class="footer text-muted mt-1 float-right">'
             +'<small>'+comments[i].date_to_display+'</small>'
+            +'</div></div>';
+        }
+        // populate the div by the new contents
+        $(parent_div).html(parent_div_content);
+    }
+
+    function post_reply(post_id, parent_id, serialized_data) {
+        serialized_data += "&parent=" + API_ROOT_URL + 'comments/' + parent_id + "/";
+        $.ajax({
+            // Submit reply via ajax post request.
+            type: "POST",
+            url : API_ROOT_URL + 'comments/',
+            headers: {
+                Authorization: 'Token ' + USER_AUTH_KEY,
+            },
+            format: 'json',
+            csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
+            data: serialized_data,
+        })
+        .then(function(res) {
+            {% comment %} // clear form fields.
+            $("#post-"+post_id)[0].reset();
+            // reload comments.
+            var resultComments = $.ajax({
+                // fetch comments via ajax get request.
+                type: "GET",
+                url : API_ROOT_URL + 'comments/',
+                headers: {
+                    Authorization: 'Token ' + USER_AUTH_KEY,
+                },
+                format: 'json',
+                data: {
+                    content_type: "post",
+                    object_id: post_id
+                }
+            });
+            // load profiles
+            var promiseProfiles = profile_list();
+
+            // return 2 promises
+            return Promise.all([resultComments, promiseProfiles])
+        })
+        .then(function([resultComments, resultProfiles]) {
+            reload_comments_list(post_id, resultProfiles, resultComments); {% endcomment %}
+        });
+    }
+
+    function reload_replies_list(post_id, comment_id, profiles, replies) {
+        var parent_div ="post-"+post_id+"-comment-"+comment_id+"-reply-list";
+        $(parent_div).empty();
+        var parent_div_content = '';
+        for (var i = 0; i < replies.length; i++) {
+            // get the owner info
+            var owner_info = selected_profile(replies[i].owner, profiles);
+            parent_div_content += '<div class="reply-card">'
+            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
+            +'<div class="comment-body ml-3">'+replies[i].content+'</div>'
+            +'<div class="footer text-muted mt-1 float-right">'
+            +'<small>'+replies[i].date_to_display+'</small>'
             +'</div></div>';
         }
         // populate the div by the new contents
