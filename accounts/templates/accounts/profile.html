@@ -324,6 +324,21 @@
         $(parent_div).html(parent_div_content);
     }
 
+    function post_reply(post_id, parent_id, serialized_data) {
+        serialized_data += "&parent=" + API_ROOT_URL + 'comments/' + parent_id + "/";
+        $.ajax({
+            // Submit reply via ajax post request.
+            type: "POST",
+            url : API_ROOT_URL + 'comments/',
+            headers: {
+                Authorization: 'Token ' + USER_AUTH_KEY,
+            },
+            format: 'json',
+            csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
+            data: serialized_data,
+        });
+    }
+
     function reload_replies_list(post_id, comment_id, profiles, replies) {
         var parent_div ="post-"+post_id+"-comment-"+comment_id+"-reply-list";
         $(parent_div).empty();
