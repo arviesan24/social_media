@@ -217,6 +217,17 @@
                                         </div>
                                         <input class="btn btn-success btn-raised float-right" type="submit" value="Reply">
                                     </form>
+                                    <script>
+                                        $(document).ready(function(){
+                                            $("#post-{{ post.id }}-comment-{{ comment.id }}").submit(function(e){
+                                                e.preventDefault();
+                                                var serialized_data = $(this).serialize() + "&owner=" + USER_URL;
+                                                var post_id = "{{ post.id }}";
+                                                var parent_id = "{{ comment.id }}";
+                                                post_reply(post_id, parent_id, serialized_data);
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             {% endfor %}
                             </div>
