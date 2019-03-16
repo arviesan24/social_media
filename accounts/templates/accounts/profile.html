@@ -55,7 +55,7 @@
     padding: 5px 10px 5px 10px;
     overflow: auto;
 }
-.reply-card {
+.replies-parent > .reply-card {
     margin: 3px 1em 3px 2em;
     background-color: #69F0AE;
     width: 93%;
@@ -186,6 +186,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                                <div id="post-{{ post.id }}-comment-{{ comment.id }}-reply-list" class="replies-parent">
                                 {% for reply in comment.children %}
                                     <div class="reply-card">
                                         <h6 class="card-subtitle mb-2 mt-2">
@@ -203,11 +204,12 @@
                                         </div>
                                     </div>
                                 {% endfor %}
+                                </div>
                                 <div class="reply-form mx-5">
                                     <form method="post" id="post-{{ post.id }}-comment-{{ comment.id }}" action="{% url 'comments:create-reply' %}">
                                         {% csrf_token %}
+                                        <input type="hidden" name="content_type" value="post">
                                         <input type="hidden" name="object_id" value="{{ post.id }}">
-                                        <input type="hidden" name="parent" value="{{ comment.id }}">
                                         <div class="form-group">
                                             <label for="content" class="bmd-label-floating">Reply to this comment...</label>
                                             <input type="text" class="form-control" name="content" id="reply-content">
