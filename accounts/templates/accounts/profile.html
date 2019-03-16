@@ -336,11 +336,39 @@
             format: 'json',
             csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
             data: serialized_data,
+        })
+        .then(function(res) {
+            // clear form fields.
+            $("#post-"+post_id+"-comment-"+parent_id)[0].reset();
+            // reload replies.
+            var resultReplies = $.ajax({
+                // fetch replies via ajax get request.
+                type: "GET",
+                url : API_ROOT_URL + 'comments/',
+                headers: {
+                    Authorization: 'Token ' + USER_AUTH_KEY,
+                },
+                format: 'json',
+                data: {
+                    content_type: "post",
+                    object_id: post_id,
+                    parent__id: parent_id,
+                }
+            });
+            // load profiles
+            var promiseProfiles = profile_list();
+
+            // return 2 promises
+            return Promise.all([resultReplies, promiseProfiles])
+        })
+        .then(function([resultReplies, resultProfiles]) {
+            console.log(resultReplies)
+            reload_replies_list(post_id, parent_id, resultProfiles, resultReplies);
         });
     }
 
     function reload_replies_list(post_id, comment_id, profiles, replies) {
-        var parent_div ="post-"+post_id+"-comment-"+comment_id+"-reply-list";
+        var parent_div ="#post-"+post_id+"-comment-"+comment_id+"-reply-list";
         $(parent_div).empty();
         var parent_div_content = '';
         for (var i = 0; i < replies.length; i++) {
