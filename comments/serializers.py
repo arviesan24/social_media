@@ -29,7 +29,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         model = Comment
         fields = (
             'url', 'id', 'owner', 'content_type', 'object_id', 'parent',
-            'content', 'children', 'is_parent', 'datetime_created',
+            'is_parent', 'content', 'children', 'datetime_created',
             'datetime_modified', 'date_to_display')
 
     def get_children(self, obj):
