@@ -257,6 +257,15 @@
         });
     }
 
+    // get the profile base on the owner url
+    var selected_profile = function(profile_owner, profiles) {
+        for (var p=0; p<profiles.length; p++) {
+            if (profiles[p]['user'] == profile_owner) {
+                return profiles[p];
+            }
+        }
+    }
+
     function post_comment(post_id, serialized_data) {
         $.ajax({
             // Submit comment via ajax post request.
@@ -295,15 +304,6 @@
         .then(function([resultComments, resultProfiles]) {
             reload_comments_list(post_id, resultProfiles, resultComments);
         });
-    }
-
-    // get the profile base on the owner url
-    var selected_profile = function(profile_owner, profiles) {
-        for (var p=0; p<profiles.length; p++) {
-            if (profiles[p]['user'] == profile_owner) {
-                return profiles[p];
-            }
-        }
     }
 
     function reload_comments_list(post_id, profiles, comments) {
