@@ -304,6 +304,46 @@
         });
     }
 
+    // load replies after post comment based only on `post id`.
+    var post_comment_load_replies = function(post_id, comments, profiles) {
+        return $.ajax({
+            // fetch replies via ajax get request.
+            type: "GET",
+            url : API_ROOT_URL + 'comments/',
+            headers: {
+                Authorization: 'Token ' + USER_AUTH_KEY,
+            },
+            format: 'json',
+            data: {
+                content_type: "post",
+                object_id: post_id,
+            }
+        }).then(function(replies) {
+            // loop through comments to identify the parent div of replies
+            for (var j = 0; j < comments.length; j++) {
+                var parent_div ="#post-"+post_id+"-comment-"+comments[j].id+"-reply-list";
+                $(parent_div).empty();
+                var parent_div_content = '';
+                // loop through replies to populate
+                for (var i = 0; i < replies.length; i++) {
+                    // get the owner info
+                    var owner_info = select_profile(replies[i].owner, profiles);
+                    // only append content if the current comment is the parent of the reply
+                    if (replies[i].parent === comments[j].url) {
+                        parent_div_content += '<div class="reply-card">'
+                        +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
+                        +'<div class="comment-body ml-3">'+replies[i].content+'</div>'
+                        +'<div class="footer text-muted mt-1 float-right">'
+                        +'<small>'+replies[i].date_to_display+'</small>'
+                        +'</div></div>';
+                    }
+                }
+                // populate the div by the new contents
+                $(parent_div).html(parent_div_content);
+            }
+        });
+    }
+
     function post_comment(post_id, serialized_data) {
         $.ajax({
             // Submit comment via ajax post request.
