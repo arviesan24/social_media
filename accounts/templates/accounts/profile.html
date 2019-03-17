@@ -268,6 +268,24 @@
         }
     }
 
+    // load replies based on `post id` and `parent id`.
+    var load_replies = function(post_id, parent_id) {
+        return $.ajax({
+            // fetch replies via ajax get request.
+            type: "GET",
+            url : API_ROOT_URL + 'comments/',
+            headers: {
+                Authorization: 'Token ' + USER_AUTH_KEY,
+            },
+            format: 'json',
+            data: {
+                content_type: "post",
+                object_id: post_id,
+                parent__id: parent_id,
+            }
+        });
+    }
+
     function post_comment(post_id, serialized_data) {
         $.ajax({
             // Submit comment via ajax post request.
@@ -342,21 +360,10 @@
         .then(function(res) {
             // clear form fields.
             $("#post-"+post_id+"-comment-"+parent_id)[0].reset();
-            // reload replies.
-            var resultReplies = $.ajax({
-                // fetch replies via ajax get request.
-                type: "GET",
-                url : API_ROOT_URL + 'comments/',
-                headers: {
-                    Authorization: 'Token ' + USER_AUTH_KEY,
-                },
-                format: 'json',
-                data: {
-                    content_type: "post",
-                    object_id: post_id,
-                    parent__id: parent_id,
-                }
-            });
+
+            // reload replies
+            var resultReplies = load_replies(post_id, parent_id);
+
             // load profiles
             var promiseProfiles = profile_list();
 
