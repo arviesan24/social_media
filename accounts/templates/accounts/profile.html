@@ -327,6 +327,7 @@
     }
 
     function reload_comments_list(post_id, profiles, comments) {
+
         var parent_div ="#post-"+post_id+"-comment-list";
         $(parent_div).empty();
         var parent_div_content = '';
@@ -357,7 +358,7 @@
             csrfmiddlewaretoken: serialized_data.csrfmiddlewaretoken,
             data: serialized_data,
         })
-        .then(function(res) {
+        .then(function() {
             // clear form fields.
             $("#post-"+post_id+"-comment-"+parent_id)[0].reset();
 
@@ -371,7 +372,6 @@
             return Promise.all([resultReplies, promiseProfiles])
         })
         .then(function([resultReplies, resultProfiles]) {
-            console.log(resultReplies)
             reload_replies_list(post_id, parent_id, resultProfiles, resultReplies);
         });
     }
