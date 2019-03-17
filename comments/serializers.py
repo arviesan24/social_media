@@ -28,9 +28,9 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
         fields = (
-            'url', 'owner', 'content_type', 'object_id', 'parent', 'content',
-            'children', 'is_parent', 'datetime_created', 'datetime_modified',
-            'date_to_display')
+            'url', 'id', 'owner', 'content_type', 'object_id', 'parent',
+            'content', 'children', 'is_parent', 'datetime_created',
+            'datetime_modified', 'date_to_display')
 
     def get_children(self, obj):
         """Return `children` serialized objects."""
