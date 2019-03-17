@@ -389,7 +389,9 @@
             +'<div class="comment-body ml-3">'+comments[i].content+'</div>'
             +'<div class="footer text-muted mt-1 float-right">'
             +'<small>'+comments[i].date_to_display+'</small>'
-            +'</div></div>';
+            +'</div></div>'
+            +'<div id="post-'+post_id+'-comment-'+comments[i].id+'-reply-list" class="replies-parent">'
+            +'</div>';
         }
         // populate the div by the new contents
         $(parent_div).html(parent_div_content);
