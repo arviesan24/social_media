@@ -330,11 +330,11 @@
             return Promise.all([resultComments, promiseProfiles])
         })
         .then(function([resultComments, resultProfiles]) {
-            reload_comments_list(post_id, resultProfiles, resultComments);
+            display_comments(post_id, resultProfiles, resultComments);
         });
     }
 
-    function reload_comments_list(post_id, profiles, comments) {
+    function display_comments(post_id, profiles, comments) {
 
         var parent_div ="#post-"+post_id+"-comment-list";
         $(parent_div).empty();
