@@ -247,6 +247,8 @@
         USER_AUTH_KEY = '{{ user.auth_token }}';
         USER_URL = API_ROOT_URL + 'users/' + {{ user.id }} + "/";
     });
+
+    // load all profiles
     var profile_list = function() {
         return $.ajax({
             type: "GET",
