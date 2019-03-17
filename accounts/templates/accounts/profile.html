@@ -270,7 +270,7 @@
 
     // load replies based on `post id`.
     var load_comments = function(post_id) {
-        return = $.ajax({
+        return $.ajax({
             // fetch comments via ajax get request.
             type: "GET",
             url : API_ROOT_URL + 'comments/',
