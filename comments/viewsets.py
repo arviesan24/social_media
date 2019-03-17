@@ -34,6 +34,16 @@ class CommentFilterSet(django_filters.FilterSet):
             item_list.append((item.name, item.name))
         return item_list
 
+    def get_is_parent(self, queryset, name, value):
+        """Filters queryset based on `is_parent` field."""
+        if value == True:
+            queryset = queryset.filter(parent__isnull=True)
+        else:
+            queryset = queryset.filter(parent__isnull=False)
+
+        return queryset
+
+    is_parent = django_filters.BooleanFilter(method='get_is_parent')
     content_type = django_filters.ChoiceFilter(
         choices=get_content_type(), field_name='content_type__model',
         lookup_expr='iexact')
@@ -41,7 +51,7 @@ class CommentFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Comment
-        fields = ['content_type', 'object_id', 'parent__id']
+        fields = ['content_type', 'object_id', 'parent__id', 'is_parent']
 
 
 class CommentViewSet(viewsets.ModelViewSet):
