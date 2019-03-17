@@ -380,11 +380,11 @@
             return Promise.all([resultReplies, promiseProfiles])
         })
         .then(function([resultReplies, resultProfiles]) {
-            reload_replies_list(post_id, parent_id, resultProfiles, resultReplies);
+            display_replies(post_id, parent_id, resultProfiles, resultReplies);
         });
     }
 
-    function reload_replies_list(post_id, comment_id, profiles, replies) {
+    function display_replies(post_id, comment_id, profiles, replies) {
         var parent_div ="#post-"+post_id+"-comment-"+comment_id+"-reply-list";
         $(parent_div).empty();
         var parent_div_content = '';
