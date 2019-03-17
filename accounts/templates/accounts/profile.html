@@ -249,7 +249,7 @@
     });
 
     // load all profiles
-    var profile_list = function() {
+    var load_profiles = function() {
         return $.ajax({
             type: "GET",
             url : API_ROOT_URL + 'profiles/',
@@ -324,7 +324,7 @@
             var resultComments = load_comments(post_id);
 
             // load profiles
-            var promiseProfiles = profile_list();
+            var promiseProfiles = load_profiles();
 
             // return 2 promises
             return Promise.all([resultComments, promiseProfiles])
@@ -374,7 +374,7 @@
             var resultReplies = load_replies(post_id, parent_id);
 
             // load profiles
-            var promiseProfiles = profile_list();
+            var promiseProfiles = load_profiles();
 
             // return 2 promises
             return Promise.all([resultReplies, promiseProfiles])
