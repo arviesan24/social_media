@@ -458,8 +458,8 @@
         });
     }
 
-    function display_replies(postId, comment_id, profiles, replies) {
-        var parentDiv ="#post-"+postId+"-comment-"+comment_id+"-reply-list";
+    function display_replies(postId, commentId, profiles, replies) {
+        var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
         $(parentDiv).empty();
         var parent_div_content = '';
         for (var i = 0; i < replies.length; i++) {
