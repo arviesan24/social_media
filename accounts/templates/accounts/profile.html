@@ -325,12 +325,12 @@
                 var parentDiv ="#post-"+postId+"-comment-"+comments[j].id+"-reply-list";
                 var formParent = '#post-'+postId+'-comment-'+comments[j].id+'-parent';
                 $(parentDiv).empty();
-                var parent_div_content = '';
+                var parentDivContent = '';
                 for (var i = 0; i < replies.length; i++) {
                     // get the owner info
                     var owner_info = commentOwnerProfile(replies[i].owner, profiles);
                     if (replies[i].parent === comments[j].url) {
-                        parent_div_content += '<div class="reply-card">'
+                        parentDivContent += '<div class="reply-card">'
                         +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
                         +'<div class="comment-body ml-3">'+replies[i].content+'</div>'
                         +'<div class="footer text-muted mt-1 float-right">'
@@ -339,7 +339,7 @@
                     }
                 }
                 // populate the div by the new contents
-                $(parentDiv).html(parent_div_content);
+                $(parentDiv).html(parentDivContent);
                 var form_div_content = '';
                 // generate html form
                 form_div_content += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
@@ -410,11 +410,11 @@
 
         var parentDiv ="#post-"+postId+"-comment-list";
         $(parentDiv).empty();
-        var parent_div_content = '';
+        var parentDivContent = '';
         for (var i = 0; i < comments.length; i++) {
             // get the owner info
             var owner_info = commentOwnerProfile(comments[i].owner, profiles);
-            parent_div_content += '<div class="comment-card">'
+            parentDivContent += '<div class="comment-card">'
             +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
             +'<div class="comment-body ml-3">'+comments[i].content+'</div>'
             +'<div class="footer text-muted mt-1 float-right">'
@@ -424,7 +424,7 @@
             +'</div>';
         }
         // populate the div by the new contents
-        $(parentDiv).html(parent_div_content);
+        $(parentDiv).html(parentDivContent);
     }
 
     function postReply(postId, parentId, serializeData) {
@@ -461,11 +461,11 @@
     function display_replies(postId, commentId, profiles, replies) {
         var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
         $(parentDiv).empty();
-        var parent_div_content = '';
+        var parentDivContent = '';
         for (var i = 0; i < replies.length; i++) {
             // get the owner info
             var owner_info = commentOwnerProfile(replies[i].owner, profiles);
-            parent_div_content += '<div class="reply-card">'
+            parentDivContent += '<div class="reply-card">'
             +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+owner_info['first_name']+' '+owner_info['last_name']+'</h6>'
             +'<div class="comment-body ml-3">'+replies[i].content+'</div>'
             +'<div class="footer text-muted mt-1 float-right">'
@@ -473,7 +473,7 @@
             +'</div></div>';
         }
         // populate the div by the new contents
-        $(parentDiv).html(parent_div_content);
+        $(parentDiv).html(parentDivContent);
     }
 </script>
 {% endblock js %}
