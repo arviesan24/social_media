@@ -371,7 +371,7 @@
         });
     }
 
-    function postComment(postId, serializeData) {
+    var postComment = function(postId, serializeData) {
         $.ajax({
             // Submit comment via ajax post request.
             type: "POST",
