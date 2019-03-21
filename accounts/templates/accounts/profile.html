@@ -341,6 +341,7 @@
                 // populate the div by the new contents
                 $(parent_div).html(parent_div_content);
                 var form_div_content = '';
+                // generate html form
                 form_div_content += '<div class="reply-form mx-5" id="post-'+post_id+'-comment-'+comments[j].id+'-parent">'
                     +'<form method="post" id="post-'+post_id+'-comment-'+comments[j].id+'">'
                     +'{% csrf_token %}'
@@ -354,6 +355,8 @@
                     +'</form></div>';
                 $(parent_div).after(form_div_content);
                 var form_js_code = '';
+                // create the jquery code to catch the reply form event
+                // converting string to javascript function
                 form_js_code = Function('$(document).ready(function(){'
                     +'$("#post-'+post_id+'-comment-'+comments[j].id+'").submit(function(e){'
                     +'e.preventDefault();'
