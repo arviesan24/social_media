@@ -246,7 +246,7 @@
 <script>
     $(document).ready(function(){
         apiRootUrl = '{{ API_ROOT_URL }}';
-        USER_AUTH_KEY = '{{ user.auth_token }}';
+        userAuthKey = '{{ user.auth_token }}';
         USER_URL = apiRootUrl + 'users/' + {{ user.id }} + "/";
     });
 
@@ -256,7 +256,7 @@
             type: "GET",
             url : apiRootUrl + 'profiles/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             }
         });
     }
@@ -277,7 +277,7 @@
             type: "GET",
             url : apiRootUrl + 'comments/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             },
             format: 'json',
             data: {
@@ -295,7 +295,7 @@
             type: "GET",
             url : apiRootUrl + 'comments/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             },
             format: 'json',
             data: {
@@ -313,7 +313,7 @@
             type: "GET",
             url : apiRootUrl + 'comments/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             },
             format: 'json',
             data: {
@@ -377,7 +377,7 @@
             type: "POST",
             url : apiRootUrl + 'comments/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             },
             format: 'json',
             csrfmiddlewaretoken: serializeData.csrfmiddlewaretoken,
@@ -434,7 +434,7 @@
             type: "POST",
             url : apiRootUrl + 'comments/',
             headers: {
-                Authorization: 'Token ' + USER_AUTH_KEY,
+                Authorization: 'Token ' + userAuthKey,
             },
             format: 'json',
             csrfmiddlewaretoken: serializeData.csrfmiddlewaretoken,
