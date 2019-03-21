@@ -164,7 +164,7 @@
                                     $(document).ready(function(){
                                         $("#post-{{ post.id }}").submit(function(e){
                                             e.preventDefault();
-                                            var serializeData = $(this).serialize() + "&owner=" + USER_URL;
+                                            var serializeData = $(this).serialize() + "&owner=" + userUrl;
                                             var postId = "{{ post.id }}";
                                             postComment(postId, serializeData);
                                         });
@@ -223,7 +223,7 @@
                                         $(document).ready(function(){
                                             $("#post-{{ post.id }}-comment-{{ comment.id }}").submit(function(e){
                                                 e.preventDefault();
-                                                var serializeData = $(this).serialize() + "&owner=" + USER_URL;
+                                                var serializeData = $(this).serialize() + "&owner=" + userUrl;
                                                 var postId = "{{ post.id }}";
                                                 var parentId = "{{ comment.id }}";
                                                 postReply(postId, parentId, serializeData);
@@ -247,7 +247,7 @@
     $(document).ready(function(){
         apiRootUrl = '{{ API_ROOT_URL }}';
         userAuthKey = '{{ user.auth_token }}';
-        USER_URL = apiRootUrl + 'users/' + {{ user.id }} + "/";
+        userUrl = apiRootUrl + 'users/' + {{ user.id }} + "/";
     });
 
     // load all profiles
@@ -360,7 +360,7 @@
                 replyFormEventCatcher = Function('$(document).ready(function(){'
                     +'$("#post-'+postId+'-comment-'+comments[j].id+'").submit(function(e){'
                     +'e.preventDefault();'
-                    +'var serializeData = $(this).serialize() + "&owner=" + USER_URL;'
+                    +'var serializeData = $(this).serialize() + "&owner=" + userUrl;'
                     +'postReply('+postId+', '+comments[j].id+', serializeData);'
                     +'});'
                     +'});');
