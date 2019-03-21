@@ -307,7 +307,7 @@
     }
 
     // load replies after post comment based only on `post id`.
-    var post_comment_load_replies = function(postId, comments, profiles) {
+    var commentPostEventLoadReplies = function(postId, comments, profiles) {
         return $.ajax({
             // fetch replies via ajax get request.
             type: "GET",
@@ -402,7 +402,7 @@
             return [resultComments, resultProfiles];
         })
         .then(function([resultComments, resultProfiles]) {
-            post_comment_load_replies(postId, resultComments, resultProfiles);
+            commentPostEventLoadReplies(postId, resultComments, resultProfiles);
         });
     }
 
