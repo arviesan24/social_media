@@ -398,7 +398,7 @@
             return Promise.all([resultComments, promiseProfiles])
         })
         .then(function([resultComments, resultProfiles]) {
-            display_comments(postId, resultProfiles, resultComments);
+            displayComments(postId, resultProfiles, resultComments);
             return [resultComments, resultProfiles];
         })
         .then(function([resultComments, resultProfiles]) {
@@ -406,7 +406,7 @@
         });
     }
 
-    function display_comments(postId, profiles, comments) {
+    var displayComments = function(postId, profiles, comments) {
 
         var parentDiv ="#post-"+postId+"-comment-list";
         $(parentDiv).empty();
