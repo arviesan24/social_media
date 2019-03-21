@@ -454,11 +454,11 @@
             return Promise.all([resultReplies, promiseProfiles])
         })
         .then(function([resultReplies, resultProfiles]) {
-            display_replies(postId, parentId, resultProfiles, resultReplies);
+            displayReplies(postId, parentId, resultProfiles, resultReplies);
         });
     }
 
-    function display_replies(postId, commentId, profiles, replies) {
+    var displayReplies = function(postId, commentId, profiles, replies) {
         var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
         $(parentDiv).empty();
         var parentDivContent = '';
