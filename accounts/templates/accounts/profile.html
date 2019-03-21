@@ -323,6 +323,7 @@
         }).then(function(replies) {
             for (var j = 0; j < comments.length; j++) {
                 var parent_div ="#post-"+post_id+"-comment-"+comments[j].id+"-reply-list";
+                var formParent = '#post-'+post_id+'-comment-'+comments[j].id+'-parent';
                 $(parent_div).empty();
                 var parent_div_content = '';
                 for (var i = 0; i < replies.length; i++) {
@@ -339,6 +340,30 @@
                 }
                 // populate the div by the new contents
                 $(parent_div).html(parent_div_content);
+                var form_div_content = '';
+                form_div_content += '<div class="reply-form mx-5" id="post-'+post_id+'-comment-'+comments[j].id+'-parent">'
+                    +'<form method="post" id="post-'+post_id+'-comment-'+comments[j].id+'">'
+                    +'{% csrf_token %}'
+                    +'<input type="hidden" name="content_type" value="post">'
+                    +'<input type="hidden" name="object_id" value="'+post_id+'">'
+                    +'<div class="form-group">'
+                    +'<label for="content" class="bmd-label-floating">Reply to this comment...</label>'
+                    +'<input type="text" class="form-control" name="content" id="reply-content">'
+                    +'</div>'
+                    +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
+                    +'</form></div>';
+                $(parent_div).after(form_div_content);
+                var form_js_code = '';
+                form_js_code = Function('$(document).ready(function(){'
+                    +'$("#post-'+post_id+'-comment-'+comments[j].id+'").submit(function(e){'
+                    +'e.preventDefault();'
+                    +'var serialized_data = $(this).serialize() + "&owner=" + USER_URL;'
+                    +'post_reply('+post_id+', '+comments[j].id+', serialized_data);'
+                    +'});'
+                    +'});');
+
+                // add redered form to formParent element
+                $(formParent).after(form_js_code);
             }
         });
     }
