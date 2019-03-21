@@ -166,7 +166,7 @@
                                             e.preventDefault();
                                             var serializeData = $(this).serialize() + "&owner=" + USER_URL;
                                             var postId = "{{ post.id }}";
-                                            post_comment(postId, serializeData);
+                                            postComment(postId, serializeData);
                                         });
                                     });
                                 </script>
@@ -371,7 +371,7 @@
         });
     }
 
-    function post_comment(postId, serializeData) {
+    function postComment(postId, serializeData) {
         $.ajax({
             // Submit comment via ajax post request.
             type: "POST",
