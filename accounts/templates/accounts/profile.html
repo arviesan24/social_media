@@ -226,7 +226,7 @@
                                                 var serializeData = $(this).serialize() + "&owner=" + USER_URL;
                                                 var postId = "{{ post.id }}";
                                                 var parentId = "{{ comment.id }}";
-                                                post_reply(postId, parentId, serializeData);
+                                                postReply(postId, parentId, serializeData);
                                             });
                                         });
                                     </script>
@@ -361,7 +361,7 @@
                     +'$("#post-'+postId+'-comment-'+comments[j].id+'").submit(function(e){'
                     +'e.preventDefault();'
                     +'var serializeData = $(this).serialize() + "&owner=" + USER_URL;'
-                    +'post_reply('+postId+', '+comments[j].id+', serializeData);'
+                    +'postReply('+postId+', '+comments[j].id+', serializeData);'
                     +'});'
                     +'});');
 
@@ -427,7 +427,7 @@
         $(parent_div).html(parent_div_content);
     }
 
-    function post_reply(postId, parentId, serializeData) {
+    function postReply(postId, parentId, serializeData) {
         serializeData += "&parent=" + API_ROOT_URL + 'comments/' + parentId + "/";
         $.ajax({
             // Submit reply via ajax post request.
