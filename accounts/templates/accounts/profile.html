@@ -322,9 +322,9 @@
             }
         }).then(function(replies) {
             for (var j = 0; j < comments.length; j++) {
-                var parent_div ="#post-"+postId+"-comment-"+comments[j].id+"-reply-list";
+                var parentDiv ="#post-"+postId+"-comment-"+comments[j].id+"-reply-list";
                 var formParent = '#post-'+postId+'-comment-'+comments[j].id+'-parent';
-                $(parent_div).empty();
+                $(parentDiv).empty();
                 var parent_div_content = '';
                 for (var i = 0; i < replies.length; i++) {
                     // get the owner info
@@ -339,7 +339,7 @@
                     }
                 }
                 // populate the div by the new contents
-                $(parent_div).html(parent_div_content);
+                $(parentDiv).html(parent_div_content);
                 var form_div_content = '';
                 // generate html form
                 form_div_content += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
@@ -353,7 +353,7 @@
                     +'</div>'
                     +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
                     +'</form></div>';
-                $(parent_div).after(form_div_content);
+                $(parentDiv).after(form_div_content);
                 var replyFormEventCatcher = '';
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
@@ -408,8 +408,8 @@
 
     function display_comments(postId, profiles, comments) {
 
-        var parent_div ="#post-"+postId+"-comment-list";
-        $(parent_div).empty();
+        var parentDiv ="#post-"+postId+"-comment-list";
+        $(parentDiv).empty();
         var parent_div_content = '';
         for (var i = 0; i < comments.length; i++) {
             // get the owner info
@@ -424,7 +424,7 @@
             +'</div>';
         }
         // populate the div by the new contents
-        $(parent_div).html(parent_div_content);
+        $(parentDiv).html(parent_div_content);
     }
 
     function postReply(postId, parentId, serializeData) {
@@ -459,8 +459,8 @@
     }
 
     function display_replies(postId, comment_id, profiles, replies) {
-        var parent_div ="#post-"+postId+"-comment-"+comment_id+"-reply-list";
-        $(parent_div).empty();
+        var parentDiv ="#post-"+postId+"-comment-"+comment_id+"-reply-list";
+        $(parentDiv).empty();
         var parent_div_content = '';
         for (var i = 0; i < replies.length; i++) {
             // get the owner info
@@ -473,7 +473,7 @@
             +'</div></div>';
         }
         // populate the div by the new contents
-        $(parent_div).html(parent_div_content);
+        $(parentDiv).html(parent_div_content);
     }
 </script>
 {% endblock js %}
