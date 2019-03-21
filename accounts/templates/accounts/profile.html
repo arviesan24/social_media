@@ -165,8 +165,8 @@
                                         $("#post-{{ post.id }}").submit(function(e){
                                             e.preventDefault();
                                             var serializeData = $(this).serialize() + "&owner=" + USER_URL;
-                                            var post_id = "{{ post.id }}";
-                                            post_comment(post_id, serializeData);
+                                            var postId = "{{ post.id }}";
+                                            post_comment(postId, serializeData);
                                         });
                                     });
                                 </script>
@@ -224,9 +224,9 @@
                                             $("#post-{{ post.id }}-comment-{{ comment.id }}").submit(function(e){
                                                 e.preventDefault();
                                                 var serializeData = $(this).serialize() + "&owner=" + USER_URL;
-                                                var post_id = "{{ post.id }}";
+                                                var postId = "{{ post.id }}";
                                                 var parent_id = "{{ comment.id }}";
-                                                post_reply(post_id, parent_id, serializeData);
+                                                post_reply(postId, parent_id, serializeData);
                                             });
                                         });
                                     </script>
@@ -271,7 +271,7 @@
     }
 
     // load comments based on `post id`.
-    var load_comments = function(post_id) {
+    var load_comments = function(postId) {
         return $.ajax({
             // fetch comments via ajax get request.
             type: "GET",
@@ -282,14 +282,14 @@
             format: 'json',
             data: {
                 content_type: "post",
-                object_id: post_id,
+                object_id: postId,
                 is_parent: true,
             }
         });
     }
 
     // load replies based on `post id` and `parent id`.
-    var load_replies = function(post_id, parent_id) {
+    var load_replies = function(postId, parent_id) {
         return $.ajax({
             // fetch replies via ajax get request.
             type: "GET",
@@ -300,14 +300,14 @@
             format: 'json',
             data: {
                 content_type: "post",
-                object_id: post_id,
+                object_id: postId,
                 parent__id: parent_id,
             }
         });
     }
 
     // load replies after post comment based only on `post id`.
-    var post_comment_load_replies = function(post_id, comments, profiles) {
+    var post_comment_load_replies = function(postId, comments, profiles) {
         return $.ajax({
             // fetch replies via ajax get request.
             type: "GET",
@@ -318,12 +318,12 @@
             format: 'json',
             data: {
                 content_type: "post",
-                object_id: post_id,
+                object_id: postId,
             }
         }).then(function(replies) {
             for (var j = 0; j < comments.length; j++) {
-                var parent_div ="#post-"+post_id+"-comment-"+comments[j].id+"-reply-list";
-                var formParent = '#post-'+post_id+'-comment-'+comments[j].id+'-parent';
+                var parent_div ="#post-"+postId+"-comment-"+comments[j].id+"-reply-list";
+                var formParent = '#post-'+postId+'-comment-'+comments[j].id+'-parent';
                 $(parent_div).empty();
                 var parent_div_content = '';
                 for (var i = 0; i < replies.length; i++) {
@@ -342,11 +342,11 @@
                 $(parent_div).html(parent_div_content);
                 var form_div_content = '';
                 // generate html form
-                form_div_content += '<div class="reply-form mx-5" id="post-'+post_id+'-comment-'+comments[j].id+'-parent">'
-                    +'<form method="post" id="post-'+post_id+'-comment-'+comments[j].id+'">'
+                form_div_content += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
+                    +'<form method="post" id="post-'+postId+'-comment-'+comments[j].id+'">'
                     +'{% csrf_token %}'
                     +'<input type="hidden" name="content_type" value="post">'
-                    +'<input type="hidden" name="object_id" value="'+post_id+'">'
+                    +'<input type="hidden" name="object_id" value="'+postId+'">'
                     +'<div class="form-group">'
                     +'<label for="content" class="bmd-label-floating">Reply to this comment...</label>'
                     +'<input type="text" class="form-control" name="content" id="reply-content">'
@@ -358,10 +358,10 @@
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
                 form_js_code = Function('$(document).ready(function(){'
-                    +'$("#post-'+post_id+'-comment-'+comments[j].id+'").submit(function(e){'
+                    +'$("#post-'+postId+'-comment-'+comments[j].id+'").submit(function(e){'
                     +'e.preventDefault();'
                     +'var serializeData = $(this).serialize() + "&owner=" + USER_URL;'
-                    +'post_reply('+post_id+', '+comments[j].id+', serializeData);'
+                    +'post_reply('+postId+', '+comments[j].id+', serializeData);'
                     +'});'
                     +'});');
 
@@ -371,7 +371,7 @@
         });
     }
 
-    function post_comment(post_id, serializeData) {
+    function post_comment(postId, serializeData) {
         $.ajax({
             // Submit comment via ajax post request.
             type: "POST",
@@ -385,11 +385,11 @@
         })
         .then(function() {
             // clear form fields.
-            $("#post-"+post_id)[0].reset();
+            $("#post-"+postId)[0].reset();
             // reload comments.
 
             // load comments
-            var resultComments = load_comments(post_id);
+            var resultComments = load_comments(postId);
 
             // load profiles
             var promiseProfiles = load_profiles();
@@ -398,17 +398,17 @@
             return Promise.all([resultComments, promiseProfiles])
         })
         .then(function([resultComments, resultProfiles]) {
-            display_comments(post_id, resultProfiles, resultComments);
+            display_comments(postId, resultProfiles, resultComments);
             return [resultComments, resultProfiles];
         })
         .then(function([resultComments, resultProfiles]) {
-            post_comment_load_replies(post_id, resultComments, resultProfiles);
+            post_comment_load_replies(postId, resultComments, resultProfiles);
         });
     }
 
-    function display_comments(post_id, profiles, comments) {
+    function display_comments(postId, profiles, comments) {
 
-        var parent_div ="#post-"+post_id+"-comment-list";
+        var parent_div ="#post-"+postId+"-comment-list";
         $(parent_div).empty();
         var parent_div_content = '';
         for (var i = 0; i < comments.length; i++) {
@@ -420,14 +420,14 @@
             +'<div class="footer text-muted mt-1 float-right">'
             +'<small>'+comments[i].date_to_display+'</small>'
             +'</div></div>'
-            +'<div id="post-'+post_id+'-comment-'+comments[i].id+'-reply-list" class="replies-parent">'
+            +'<div id="post-'+postId+'-comment-'+comments[i].id+'-reply-list" class="replies-parent">'
             +'</div>';
         }
         // populate the div by the new contents
         $(parent_div).html(parent_div_content);
     }
 
-    function post_reply(post_id, parent_id, serializeData) {
+    function post_reply(postId, parent_id, serializeData) {
         serializeData += "&parent=" + API_ROOT_URL + 'comments/' + parent_id + "/";
         $.ajax({
             // Submit reply via ajax post request.
@@ -442,10 +442,10 @@
         })
         .then(function() {
             // clear form fields.
-            $("#post-"+post_id+"-comment-"+parent_id)[0].reset();
+            $("#post-"+postId+"-comment-"+parent_id)[0].reset();
 
             // reload replies
-            var resultReplies = load_replies(post_id, parent_id);
+            var resultReplies = load_replies(postId, parent_id);
 
             // load profiles
             var promiseProfiles = load_profiles();
@@ -454,12 +454,12 @@
             return Promise.all([resultReplies, promiseProfiles])
         })
         .then(function([resultReplies, resultProfiles]) {
-            display_replies(post_id, parent_id, resultProfiles, resultReplies);
+            display_replies(postId, parent_id, resultProfiles, resultReplies);
         });
     }
 
-    function display_replies(post_id, comment_id, profiles, replies) {
-        var parent_div ="#post-"+post_id+"-comment-"+comment_id+"-reply-list";
+    function display_replies(postId, comment_id, profiles, replies) {
+        var parent_div ="#post-"+postId+"-comment-"+comment_id+"-reply-list";
         $(parent_div).empty();
         var parent_div_content = '';
         for (var i = 0; i < replies.length; i++) {
