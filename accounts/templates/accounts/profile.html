@@ -271,7 +271,7 @@
     }
 
     // load comments based on `post id`.
-    var load_comments = function(postId) {
+    var loadComments = function(postId) {
         return $.ajax({
             // fetch comments via ajax get request.
             type: "GET",
@@ -389,7 +389,7 @@
             // reload comments.
 
             // load comments
-            var resultComments = load_comments(postId);
+            var resultComments = loadComments(postId);
 
             // load profiles
             var promiseProfiles = loadProfiles();
