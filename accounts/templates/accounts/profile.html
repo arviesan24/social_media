@@ -225,8 +225,8 @@
                                                 e.preventDefault();
                                                 var serializeData = $(this).serialize() + "&owner=" + USER_URL;
                                                 var postId = "{{ post.id }}";
-                                                var parent_id = "{{ comment.id }}";
-                                                post_reply(postId, parent_id, serializeData);
+                                                var parentId = "{{ comment.id }}";
+                                                post_reply(postId, parentId, serializeData);
                                             });
                                         });
                                     </script>
@@ -289,7 +289,7 @@
     }
 
     // load replies based on `post id` and `parent id`.
-    var load_replies = function(postId, parent_id) {
+    var load_replies = function(postId, parentId) {
         return $.ajax({
             // fetch replies via ajax get request.
             type: "GET",
@@ -301,7 +301,7 @@
             data: {
                 content_type: "post",
                 object_id: postId,
-                parent__id: parent_id,
+                parent__id: parentId,
             }
         });
     }
@@ -427,8 +427,8 @@
         $(parent_div).html(parent_div_content);
     }
 
-    function post_reply(postId, parent_id, serializeData) {
-        serializeData += "&parent=" + API_ROOT_URL + 'comments/' + parent_id + "/";
+    function post_reply(postId, parentId, serializeData) {
+        serializeData += "&parent=" + API_ROOT_URL + 'comments/' + parentId + "/";
         $.ajax({
             // Submit reply via ajax post request.
             type: "POST",
@@ -442,10 +442,10 @@
         })
         .then(function() {
             // clear form fields.
-            $("#post-"+postId+"-comment-"+parent_id)[0].reset();
+            $("#post-"+postId+"-comment-"+parentId)[0].reset();
 
             // reload replies
-            var resultReplies = load_replies(postId, parent_id);
+            var resultReplies = load_replies(postId, parentId);
 
             // load profiles
             var promiseProfiles = load_profiles();
@@ -454,7 +454,7 @@
             return Promise.all([resultReplies, promiseProfiles])
         })
         .then(function([resultReplies, resultProfiles]) {
-            display_replies(postId, parent_id, resultProfiles, resultReplies);
+            display_replies(postId, parentId, resultProfiles, resultReplies);
         });
     }
 
