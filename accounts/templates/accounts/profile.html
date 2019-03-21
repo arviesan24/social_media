@@ -427,7 +427,7 @@
         $(parentDiv).html(parentDivContent);
     }
 
-    function postReply(postId, parentId, serializeData) {
+    var postReply = function(postId, parentId, serializeData) {
         serializeData += "&parent=" + apiRootUrl + 'comments/' + parentId + "/";
         $.ajax({
             // Submit reply via ajax post request.
