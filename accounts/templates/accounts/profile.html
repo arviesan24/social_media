@@ -354,10 +354,10 @@
                     +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
                     +'</form></div>';
                 $(parent_div).after(form_div_content);
-                var form_js_code = '';
+                var replyFormEventCatcher = '';
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
-                form_js_code = Function('$(document).ready(function(){'
+                replyFormEventCatcher = Function('$(document).ready(function(){'
                     +'$("#post-'+postId+'-comment-'+comments[j].id+'").submit(function(e){'
                     +'e.preventDefault();'
                     +'var serializeData = $(this).serialize() + "&owner=" + USER_URL;'
@@ -366,7 +366,7 @@
                     +'});');
 
                 // add redered form to formParent element
-                $(formParent).after(form_js_code);
+                $(formParent).after(replyFormEventCatcher);
             }
         });
     }
