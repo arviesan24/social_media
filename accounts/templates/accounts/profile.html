@@ -289,7 +289,7 @@
     }
 
     // load replies based on `post id` and `parent id`.
-    var load_replies = function(postId, parentId) {
+    var loadReplies = function(postId, parentId) {
         return $.ajax({
             // fetch replies via ajax get request.
             type: "GET",
@@ -445,7 +445,7 @@
             $("#post-"+postId+"-comment-"+parentId)[0].reset();
 
             // reload replies
-            var resultReplies = load_replies(postId, parentId);
+            var resultReplies = loadReplies(postId, parentId);
 
             // load profiles
             var promiseProfiles = loadProfiles();
