@@ -340,9 +340,9 @@
                 }
                 // populate the div by the new contents
                 $(parentDiv).html(parentDivContent);
-                var form_div_content = '';
+                var replyFormContent = '';
                 // generate html form
-                form_div_content += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
+                replyFormContent += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
                     +'<form method="post" id="post-'+postId+'-comment-'+comments[j].id+'">'
                     +'{% csrf_token %}'
                     +'<input type="hidden" name="content_type" value="post">'
@@ -353,7 +353,7 @@
                     +'</div>'
                     +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
                     +'</form></div>';
-                $(parentDiv).after(form_div_content);
+                $(parentDiv).after(replyFormContent);
                 var replyFormEventCatcher = '';
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
