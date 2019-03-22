@@ -259,7 +259,7 @@
                 Authorization: 'Token ' + userAuthKey,
             }
         });
-    }
+    };
 
     // get the profile base on the owner url
     var commentOwnerProfile = function(profile_owner, profiles) {
@@ -268,7 +268,7 @@
                 return profiles[p];
             }
         }
-    }
+    };
 
     // load comments based on `post id`.
     var loadComments = function(postId) {
@@ -286,7 +286,7 @@
                 is_parent: true,
             }
         });
-    }
+    };
 
     // load replies based on `post id` and `parent id`.
     var loadReplies = function(postId, parentId) {
@@ -304,7 +304,7 @@
                 parent__id: parentId,
             }
         });
-    }
+    };
 
     // load replies after post comment based only on `post id`.
     var commentPostEventLoadReplies = function(postId, comments, profiles) {
@@ -371,7 +371,7 @@
                 $(formParent).after(replyFormEventCatcher);
             });
         });
-    }
+    };
 
     var postComment = function(postId, serializeData) {
         $.ajax({
@@ -406,7 +406,7 @@
         .then(function([resultComments, resultProfiles]) {
             commentPostEventLoadReplies(postId, resultComments, resultProfiles);
         });
-    }
+    };
 
     var displayComments = function(postId, profiles, comments) {
 
@@ -427,7 +427,7 @@
         });
         // populate the div by the new contents
         $(parentDiv).html(parentDivContent);
-    }
+    };
 
     var postReply = function(postId, parentId, serializeData) {
         serializeData += "&parent=" + apiRootUrl + 'comments/' + parentId + "/";
@@ -458,7 +458,7 @@
         .then(function([resultReplies, resultProfiles]) {
             displayReplies(postId, parentId, resultProfiles, resultReplies);
         });
-    }
+    };
 
     var displayReplies = function(postId, commentId, profiles, replies) {
         var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
@@ -476,6 +476,6 @@
         });
         // populate the div by the new contents
         $(parentDiv).html(parentDivContent);
-    }
+    };
 </script>
 {% endblock js %}
