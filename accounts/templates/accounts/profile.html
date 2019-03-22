@@ -321,16 +321,16 @@
                 object_id: postId,
             }
         }).then(function(replies) {
-            for (var j = 0; j < comments.length; j++) {
-                var parentDiv ="#post-"+postId+"-comment-"+comments[j].id+"-reply-list";
-                var formParent = '#post-'+postId+'-comment-'+comments[j].id+'-parent';
+            comments.forEach(function(comment) {
+                var parentDiv ="#post-"+postId+"-comment-"+comment.id+"-reply-list";
+                var formParent = '#post-'+postId+'-comment-'+comment.id+'-parent';
                 $(parentDiv).empty();
                 var parentDivContent = '';
                 // loop through replies
                 replies.forEach(function(reply) {
                     // get the owner info
                     var ownerInfo = commentOwnerProfile(reply.owner, profiles);
-                    if (reply.parent === comments[j].url) {
+                    if (reply.parent === comment.url) {
                         parentDivContent += '<div class="reply-card">'
                         +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+ownerInfo['first_name']+' '+ownerInfo['last_name']+'</h6>'
                         +'<div class="comment-body ml-3">'+reply.content+'</div>'
@@ -343,8 +343,8 @@
                 $(parentDiv).html(parentDivContent);
                 var replyFormContent = '';
                 // generate html form
-                replyFormContent += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comments[j].id+'-parent">'
-                    +'<form method="post" id="post-'+postId+'-comment-'+comments[j].id+'">'
+                replyFormContent += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comment.id+'-parent">'
+                    +'<form method="post" id="post-'+postId+'-comment-'+comment.id+'">'
                     +'{% csrf_token %}'
                     +'<input type="hidden" name="content_type" value="post">'
                     +'<input type="hidden" name="object_id" value="'+postId+'">'
@@ -360,16 +360,16 @@
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
                 replyFormEventCatcher = Function('$(document).ready(function(){'
-                    +'$("#post-'+postId+'-comment-'+comments[j].id+'").submit(function(e){'
+                    +'$("#post-'+postId+'-comment-'+comment.id+'").submit(function(e){'
                     +'e.preventDefault();'
                     +'var serializeData = $(this).serialize() + "&owner=" + userUrl;'
-                    +'postReply('+postId+', '+comments[j].id+', serializeData);'
+                    +'postReply('+postId+', '+comment.id+', serializeData);'
                     +'});'
                     +'});');
 
                 // render `replyFormEventCatcher` after `formParent` element
                 $(formParent).after(replyFormEventCatcher);
-            }
+            });
         });
     }
 
