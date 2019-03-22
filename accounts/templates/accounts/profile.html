@@ -464,16 +464,16 @@
         var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
         $(parentDiv).empty();
         var parentDivContent = '';
-        for (var i = 0; i < replies.length; i++) {
+        replies.forEach(function(reply) {
             // get the owner info
-            var ownerInfo = commentOwnerProfile(replies[i].owner, profiles);
+            var ownerInfo = commentOwnerProfile(reply.owner, profiles);
             parentDivContent += '<div class="reply-card">'
             +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+ownerInfo['first_name']+' '+ownerInfo['last_name']+'</h6>'
-            +'<div class="comment-body ml-3">'+replies[i].content+'</div>'
+            +'<div class="comment-body ml-3">'+reply.content+'</div>'
             +'<div class="footer text-muted mt-1 float-right">'
-            +'<small>'+replies[i].date_to_display+'</small>'
+            +'<small>'+reply.date_to_display+'</small>'
             +'</div></div>';
-        }
+        });
         // populate the div by the new contents
         $(parentDiv).html(parentDivContent);
     }
