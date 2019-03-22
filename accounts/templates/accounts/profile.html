@@ -338,7 +338,7 @@
                         +'</div></div>';
                     }
                 }
-                // populate the div by the new contents
+                // populate the `parentDiv` by the `parentDivContent`
                 $(parentDiv).html(parentDivContent);
                 var replyFormContent = '';
                 // generate html form
@@ -353,6 +353,7 @@
                     +'</div>'
                     +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
                     +'</form></div>';
+                // append `replyFormContent` after `parentDiv` element
                 $(parentDiv).after(replyFormContent);
                 var replyFormEventCatcher = '';
                 // create the jquery code to catch the reply form event
@@ -365,7 +366,7 @@
                     +'});'
                     +'});');
 
-                // add redered form to formParent element
+                // render `replyFormEventCatcher` after `formParent` element
                 $(formParent).after(replyFormEventCatcher);
             }
         });
