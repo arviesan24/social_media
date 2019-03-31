@@ -13,3 +13,13 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'id', 'location', 'album', 'privacy', 'datetime_created',
             'datetime_modified')
+
+
+class AlbumSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Image model."""
+
+    class Meta:
+        model = models.Album
+        fields = (
+            'url', 'id', 'owner', 'name', 'description', 'privacy',
+            'datetime_created', 'datetime_modified')
