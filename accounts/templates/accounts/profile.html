@@ -81,6 +81,14 @@
         width: 90.4%;
     }
 }
+#edit-profilepic-btn-container {
+    width : 16px;
+    height : 17px;
+    position: absolute; /* not relative anymore */
+    /* z-index:5; It's already stacked above if positioned.
+    Needed if other positioned elements are there (a value of 1 would be enough) */
+    transform: translate(130px, -170px); /* replaces relative positioning (left and top => X and Y) */
+}
 {% endblock css %}
 
 {% block content %}
@@ -89,6 +97,7 @@
     <div class="card-body">
         <div class="profile-outer-div"><div class="profile-inner-div">
             <i class="fas fa-user-tie profile-placeholder"></i>
+            <div id="edit-profilepic-btn-container"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
         </div></div>
         <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
         <!--start of Slider-->
