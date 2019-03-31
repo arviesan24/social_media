@@ -12,6 +12,8 @@ from .forms import ProfileForm
 from .models import Profile
 from .models import User
 
+from comments import forms as comment_form
+
 from posts import forms as post_form
 from posts import models as post_model
 
@@ -32,7 +34,10 @@ class ProfileView(LoginRequiredMixin, DetailView):
         kwargs['post_form'] = post_form.PostForm
         # add `post list` in context data
         kwargs['post_list'] = (
-            post_model.Post.objects.filter(owner=self.request.user).order_by('-id'))
+            post_model.Post.objects.filter(
+                owner=self.request.user).order_by('-id'))
+        # add `comment form` in context data
+        kwargs['comment_form'] = comment_form.CommentForm
         return kwargs
 
 

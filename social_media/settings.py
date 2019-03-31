@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 from django.urls import reverse_lazy
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +26,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4dwe^ro^_2_gp2z7u^z=zx!_f%7vxqexy5t)k-p2y)3s@ksyo)'
+SECRET_KEY = os.getenv(
+    'SECRET_KEY', '4dwe^ro^_2_gp2z7u^z=zx!_f%7vxqexy5t)k-p2y)3s@ksyo)')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = json.loads(os.getenv('DEBUG', 'false'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # don't forget to update `USE_HTTPS` and `CURRENT_DOMAIN` too for APIs
 
 
 # Application definition
@@ -42,10 +47,14 @@ INSTALLED_APPS = [
 
     # project apps
     'accounts',
+    'comments',
     'posts',
 
     #third party apps
+    'django_filters',
     'django_summernote',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -71,12 +80,56 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_media.context_processors.global_template_variables',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'social_media.wsgi.application'
+
+
+#
+# PROTOCOL TO USE
+#
+
+USE_HTTPS = json.loads(os.getenv('USE_HTTPS', 'true'))
+
+CURRENT_PROTOCOL = 'http://'
+
+if USE_HTTPS:
+    CURRENT_PROTOCOL = 'https://'
+
+
+#
+# DOMAIN NAME TO USE
+#
+
+CURRENT_DOMAIN = os.getenv('CURRENT_DOMAIN', '127.0.0.1:8000/')
+
+
+#
+# API ROOT URL
+#
+
+API_ROOT_URL = f'{CURRENT_PROTOCOL}{CURRENT_DOMAIN}api/'
+
+
+#
+# REST_FRAMEWORK SETTINGS
+#
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 
 #
