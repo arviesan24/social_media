@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # project apps
     'accounts',
     'comments',
+    'images',
     'posts',
 
     #third party apps
