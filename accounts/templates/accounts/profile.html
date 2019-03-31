@@ -348,9 +348,9 @@
                     +'{% csrf_token %}'
                     +'<input type="hidden" name="content_type" value="post">'
                     +'<input type="hidden" name="object_id" value="'+postId+'">'
-                    +'<div class="form-group">'
+                    +'<div class="form-group bmd-form-group">'
                     +'<label for="content" class="bmd-label-floating">Reply to this comment...</label>'
-                    +'<input type="text" class="form-control" name="content" id="reply-content">'
+                    +'<input type="text" class="form-control" name="content" id="reply-content-'+comment.id+'">'
                     +'</div>'
                     +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
                     +'</form></div>';
@@ -360,11 +360,15 @@
                 // create the jquery code to catch the reply form event
                 // converting string to javascript function
                 replyFormEventCatcher = Function('$(document).ready(function(){'
+                    // override submit button for reply form
                     +'$("#post-'+postId+'-comment-'+comment.id+'").submit(function(e){'
                     +'e.preventDefault();'
                     +'var serializeData = $(this).serialize() + "&owner=" + userUrl;'
-                    +'postReply('+postId+', '+comment.id+', serializeData);'
-                    +'});'
+                    +'postReply('+postId+', '+comment.id+', serializeData);});'
+                    // animate label upwards when focussed
+                    +'$("#post-'+postId+'-comment-'+comment.id+' #reply-content-'+comment.id+'").focus(function() {$("#post-'+postId+'-comment-'+comment.id+' .bmd-form-group").addClass("is-focused");});'
+                    // animate label downwards when not focussed
+                    +'$("#post-'+postId+'-comment-'+comment.id+' #reply-content-'+comment.id+'").blur(function() {$("#post-'+postId+'-comment-'+comment.id+' .bmd-form-group").removeClass("is-focused");});'
                     +'});');
 
                 // render `replyFormEventCatcher` after `formParent` element
