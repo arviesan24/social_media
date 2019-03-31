@@ -1,9 +1,10 @@
 """Router config for Accounts APIs."""
 
 from social_media.urls import router
-from .viewsets import UserViewSet
+from . import viewsets
 
 
-router.register('users', UserViewSet)
+router.register('profiles', viewsets.ProfileViewSet)
+router.register('users', viewsets.UserViewSet)
 
 urlpatterns = []

@@ -6,8 +6,8 @@ from django.db import models
 class CommentManager(models.Manager):
     """Model manager for `Comment` model."""
 
-    def all(self):
-        """Return results of instance with no parent (not a reply)."""
+    def comments(self):
+        """Return results of instance with no parent."""
         qs = super().filter(parent=None)
         return qs
 
@@ -17,6 +17,11 @@ class CommentManager(models.Manager):
         obj_id = instance.id
         qs = super().filter(
             content_type=content_type, object_id=obj_id, parent=None)
+        return qs
+
+    def replies(self):
+        """Return results of instance with parent."""
+        qs = super().filter(parent__isnull=False)
         return qs
 
 

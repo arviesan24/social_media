@@ -2,9 +2,9 @@
 
 from social_media.urls import router
 
-from .viewsets import CommentViewSet
+from . import viewsets
 
 
-router.register('comments', CommentViewSet)
+router.register('comments', viewsets.CommentViewSet)
 
 urlpatterns = []

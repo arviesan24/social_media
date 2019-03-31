@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = json.loads(os.getenv('DEBUG', 'false'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # don't forget to update `USE_HTTPS` and `CURRENT_DOMAIN` too for APIs
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'posts',
 
     #third party apps
+    'django_filters',
     'django_summernote',
     'rest_framework',
     'rest_framework.authtoken',
