@@ -171,7 +171,7 @@
                                     });
                                 </script>
                             </div>
-                            <div id="post-{{ post.id }}-comment-list" class="comments-parent">
+                            <div id="post-{{ post.id }}-comment-list" class="comments-parent hidden">
                             {% for comment in post.comments %}
                                 <div class="comment-card">
                                     <h6 class="card-subtitle mb-2 mt-2">
@@ -233,6 +233,19 @@
                                 </div>
                             {% endfor %}
                             </div>
+                            {% if post.comments %}
+                                <a class="page-link ml-2 mr-2 mt-2 mb-2" id="view-comments-{{ post.id }}">View Comments</a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#view-comments-{{ post.id }}").click(function(){
+                                            $("#view-comments-{{ post.id }}").addClass("hidden");
+                                            $("#hide-comments-{{ post.id }}").removeClass("hidden");
+                                            $("#post-{{ post.id }}-comment-list").fadeIn();
+                                            $("#post-{{ post.id }}-comment-list").scroll();
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
