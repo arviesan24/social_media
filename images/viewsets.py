@@ -62,3 +62,13 @@ class ImageViewSet(viewsets.ModelViewSet):
     # permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
     # filterset_class = CommentFilterSet
+
+
+class AlbumViewSet(viewsets.ModelViewSet):
+    """Viewset for CommentSerializer."""
+
+    queryset = models.Album.objects.all()
+    serializer_class = serializers.AlbumSerializer
+    # permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+    filter_backends = (django_filters.DjangoFilterBackend,)
+    # filterset_class = CommentFilterSet
