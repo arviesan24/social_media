@@ -38,35 +38,12 @@ class IsImageOwnerOrReadOnly(permissions.BasePermission):
         return obj.album.owner == request.user
 
 
-# class ImageFilterSet(django_filters.FilterSet):
-#     """FilterSet for CommentViewSet."""
+class ImageFilterSet(django_filters.FilterSet):
+    """FilterSet for ImageViewSet."""
 
-#     def get_content_type():
-#         """Return list for `content_type` choices."""
-#         item_list = []
-#         content_list = ContentType.objects.all()
-#         for item in content_list:
-#             item_list.append((item.name, item.name))
-#         return item_list
-
-#     def get_is_parent(self, queryset, name, value):
-#         """Filters queryset based on `is_parent` field."""
-#         if value == True:
-#             queryset = queryset.filter(parent__isnull=True)
-#         else:
-#             queryset = queryset.filter(parent__isnull=False)
-
-#         return queryset
-
-#     is_parent = django_filters.BooleanFilter(method='get_is_parent')
-#     content_type = django_filters.ChoiceFilter(
-#         choices=get_content_type(), field_name='content_type__model',
-#         lookup_expr='iexact')
-#     object_id = django_filters.CharFilter(lookup_expr='iexact')
-
-#     class Meta:
-#         model = models.Comment
-#         fields = ['content_type', 'object_id', 'parent__id', 'is_parent']
+    class Meta:
+        model = models.Image
+        fields = ['album__owner__id',]
 
 
 class ImageViewSet(viewsets.ModelViewSet):
@@ -76,7 +53,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ImageSerializer
     permission_classes = (permissions.IsAuthenticated, IsImageOwnerOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
-    # filterset_class = CommentFilterSet
+    filterset_class = ImageFilterSet
 
 
 class AlbumViewSet(viewsets.ModelViewSet):
