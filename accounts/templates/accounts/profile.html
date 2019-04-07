@@ -23,6 +23,10 @@
 .profile-placeholder {
     font-size:170px;
 }
+.profile-pic {
+    width: 151px;
+    height: 151px;
+}
 .profile-outer-div {
     border-radius: 15px;
     border-color: #41B6E6;
@@ -92,11 +96,12 @@
 {% endblock css %}
 
 {% block content %}
-<div class="card row-div col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
+<div id="root" class="card row-div col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
     
     <div class="card-body">
         <div class="profile-outer-div"><div class="profile-inner-div">
-            <i class="fas fa-user-tie profile-placeholder"></i>
+            <img v-if="profilePic" v-bind:src="profilePic" class="profile-pic">
+            <i v-else class="fas fa-user-tie profile-placeholder"></i>
             <div id="edit-profilepic-btn-container"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
         </div></div>
         <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
@@ -503,5 +508,35 @@
         // populate the div by the new contents
         $(parentDiv).html(parentDivContent);
     };
+</script>
+<script>
+// vue js code here
+
+new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#root',
+    data: {
+        profilePic: '',
+        userAuthKey: '{{ user.auth_token }}',
+        apiRootUrl: '{{ API_ROOT_URL }}',
+        userId: '{{ user.id }}',
+
+    },
+    methods: {
+        loadProfilePic: function() {
+            axios.get(`${this.apiRootUrl}images/?album__owner__id=${this.userId}`,
+            {
+                //set header but still works without it
+                headers: {'Authorization': 'Token ' + this.userAuthKey}
+            })
+            .then(response => {
+                this.profilePic = response.data.slice(-1)[0].location;
+            });
+        }
+    },
+    mounted: function(){
+        this.loadProfilePic();
+    }
+})
 </script>
 {% endblock js %}
