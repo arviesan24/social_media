@@ -91,7 +91,13 @@
     position: absolute; /* not relative anymore */
     /* z-index:5; It's already stacked above if positioned.
     Needed if other positioned elements are there (a value of 1 would be enough) */
+    
+}
+.higher-y {
     transform: translate(130px, -170px); /* replaces relative positioning (left and top => X and Y) */
+}
+.lower-y {
+    transform: translate(130px, -150px); /* replaces relative positioning (left and top => X and Y) */
 }
 {% endblock css %}
 
@@ -102,7 +108,7 @@
         <div class="profile-outer-div"><div class="profile-inner-div">
             <img v-if="profilePic" v-bind:src="profilePic" class="profile-pic">
             <i v-else class="fas fa-user-tie profile-placeholder"></i>
-            <div id="edit-profilepic-btn-container"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
+            <div id="edit-profilepic-btn-container" class="higher-y" v-bind:class="{ 'lower-y': hasProfilePic }"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
         </div></div>
         <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
         <!--start of Slider-->
@@ -516,6 +522,7 @@ new Vue({
     delimiters: ['[[', ']]'],
     el: '#root',
     data: {
+        hasProfilePic: false,
         profilePic: '',
         userAuthKey: '{{ user.auth_token }}',
         apiRootUrl: '{{ API_ROOT_URL }}',
@@ -531,6 +538,9 @@ new Vue({
             })
             .then(response => {
                 this.profilePic = response.data.slice(-1)[0].location;
+                if (this.profilePic.length > 0) {
+                    this.hasProfilePic = true;
+                }
             });
         }
     },
