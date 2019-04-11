@@ -108,7 +108,7 @@
         <div class="profile-outer-div"><div class="profile-inner-div">
             <img v-if="profilePic" v-bind:src="profilePic" class="profile-pic">
             <i v-else class="fas fa-user-tie profile-placeholder"></i>
-            <div id="edit-profilepic-btn-container" v-bind:class="{ 'lower-y': profilePic.length > 0, 'higher-y': profilePic.length < 1 }"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
+            <div id="edit-profilepic-btn-container" v-bind:class="[profilePic.length > 0 ? 'lower-y' : 'higher-y']"><a id="edit-btn" class="text-info"><i class="fas fa-edit"></i></a></div>
         </div></div>
         <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
         <!--start of Slider-->
