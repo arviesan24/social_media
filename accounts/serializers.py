@@ -19,3 +19,11 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             'url', 'user', 'first_name', 'last_name', 'gender', 'preference',
             'birth_date', 'phone_number', 'address', 'description',
             'datetime_created', 'datetime_modified')
+
+
+class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Relationship
+        fields = (
+            'sender', 'receiver', 'type', 'datetime_created',
+            'datetime_modified')
