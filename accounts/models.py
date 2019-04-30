@@ -78,6 +78,9 @@ class Relationship(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='receive_relationships',
         related_query_name='receive_relationship')
+    request = models.ForeignKey('Request', on_delete=models.PROTECT,
+        related_name='relationships',
+        related_query_name='relationship', null=True)
     type = models.CharField(max_length=7, choices=TYPE_CHOICES)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
