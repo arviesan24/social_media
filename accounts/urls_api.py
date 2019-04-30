@@ -6,6 +6,7 @@ from . import viewsets
 
 router.register('profiles', viewsets.ProfileViewSet)
 router.register('relationships', viewsets.RelationshipViewSet)
+router.register('requests', viewsets.RequestViewSet)
 router.register('users', viewsets.UserViewSet)
 
 urlpatterns = []
