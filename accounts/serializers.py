@@ -25,5 +25,5 @@ class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Relationship
         fields = (
-            'sender', 'receiver', 'type', 'datetime_created',
+            'sender', 'receiver', 'request', 'type', 'datetime_created',
             'datetime_modified')
