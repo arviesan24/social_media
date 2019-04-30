@@ -105,7 +105,7 @@ class RelationshipViewSet(viewsets.ModelViewSet):
     """Viewset for RelationshipSerializer"""
 
     queryset = models.Relationship.objects.all()
-    serializers_class = serializers.RelationshipSerializer
+    serializer_class = serializers.RelationshipSerializer
     permission_classes = (
         permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
