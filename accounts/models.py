@@ -89,7 +89,7 @@ class Relationship(models.Model):
 class Request(models.Model):
     """Model for Request."""
 
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, unique=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
