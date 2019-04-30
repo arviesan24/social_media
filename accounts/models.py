@@ -94,9 +94,6 @@ class Request(models.Model):
         (CHOICE_CONFIRMED, 'Confirmed'),
     )
 
-    relationship = models.ForeignKey('Relationship', on_delete=models.CASCADE,
-        related_name='requests',
-        related_query_name='request')
     status = models.CharField(max_length=7, choices=STATUS_CHOICES)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
