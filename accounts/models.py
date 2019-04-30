@@ -60,16 +60,6 @@ class Profile(models.Model):
 class Relationship(models.Model):
     """Model for Relationship."""
 
-    CHOICE_BLOCKED = 'blocked'
-    CHOICE_FRIEND = 'friend'
-    CHOICE_PARTNER = 'partner'
-
-    TYPE_CHOICES = (
-        (CHOICE_BLOCKED, 'Blocked'),
-        (CHOICE_FRIEND, 'Friend'),
-        (CHOICE_PARTNER, 'Partner'),
-    )
-
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='sent_relationships',
@@ -81,7 +71,9 @@ class Relationship(models.Model):
     request = models.ForeignKey('Request', on_delete=models.PROTECT,
         related_name='relationships',
         related_query_name='relationship', null=True)
-    type = models.CharField(max_length=7, choices=TYPE_CHOICES)
+    type = models.ForeignKey('RelationshipType', on_delete=models.PROTECT,
+        related_name='relationships',
+        related_query_name='relationship')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
