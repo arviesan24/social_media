@@ -86,6 +86,14 @@ class Relationship(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
 
 
+class RelationshipType(models.Model):
+    """Model for Relationship types."""
+
+    type = models.CharField(max_length=50, unique=True)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
+
+
 class Request(models.Model):
     """Model for Relationship requests."""
 
