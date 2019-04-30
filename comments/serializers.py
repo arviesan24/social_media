@@ -37,6 +37,9 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         data = dj_serializers.serialize('json', obj.children())
         # change `data` string to json
         json_data = json.loads(data)
+        # set content_type of children item equal to the parent
+        for item in json_data:
+            item['fields']['content_type'] = obj.content_type.name
         return json_data
 
     def get_date_to_display(self, obj):
