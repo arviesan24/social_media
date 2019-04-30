@@ -89,15 +89,7 @@ class Relationship(models.Model):
 class Request(models.Model):
     """Model for Request."""
 
-    CHOICE_PENDING = 'pending'
-    CHOICE_CONFIRMED = 'confirmed'
-
-    STATUS_CHOICES = (
-        (CHOICE_PENDING, 'Pending'),
-        (CHOICE_CONFIRMED, 'Confirmed'),
-    )
-
-    status = models.CharField(max_length=7, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=50)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
