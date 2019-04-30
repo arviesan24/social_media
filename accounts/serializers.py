@@ -35,3 +35,11 @@ class RequestSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url', 'status',
             'datetime_created', 'datetime_modified')
+
+
+class RelationshipTypeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.RelationshipType
+        fields = (
+            'url', 'name',
+            'datetime_created', 'datetime_modified')
