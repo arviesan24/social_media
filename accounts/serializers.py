@@ -1,8 +1,7 @@
 """Serializers for Accounts app."""
 from rest_framework import serializers
 
-from .models import Profile
-from .models import User
+from . import models
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
