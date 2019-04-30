@@ -119,3 +119,12 @@ class RequestViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.RequestSerializer
     permission_classes = (
         permissions.IsAuthenticated, IsAdminOrReadOnly,)
+
+
+class RelationshipTypeViewSet(viewsets.ModelViewSet):
+    """Viewset for RelationshipTypeSerializer"""
+
+    queryset = models.RelationshipType.objects.all()
+    serializer_class = serializers.RelationshipTypeSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsAdminOrReadOnly,)
