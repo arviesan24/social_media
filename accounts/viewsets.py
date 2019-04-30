@@ -110,3 +110,12 @@ class RelationshipViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
     filterset_class = RelationShipFilterSet
+
+
+class RequestViewSet(viewsets.ModelViewSet):
+    """Viewset for RequestSerializer"""
+
+    queryset = models.Request.objects.all()
+    serializer_class = serializers.RequestSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsAdminOrReadOnly,)
