@@ -60,6 +60,13 @@ class ProfileFilterSet(django_filters.FilterSet):
         model = models.Profile
         fields = ['user', 'first_name', 'last_name']
 
+class RelationShipFilterSet(django_filters.FilterSet):
+    """FilterSet for RelationShipViewSet."""
+
+    class Meta:
+        models = models.Relationship
+        fields = ['sender__id', 'receiver__id', 'request__status', 'type']
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """Viewset for UserSerializer"""
