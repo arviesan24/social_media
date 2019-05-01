@@ -258,8 +258,6 @@
 {% block js %}
 <script>
     $(document).ready(function(){
-        apiRootUrl = '{{ API_ROOT_URL }}';
-        userAuthKey = '{{ user.auth_token }}';
         userUrl = apiRootUrl + 'users/' + {{ user.id }} + "/";
     });
 
