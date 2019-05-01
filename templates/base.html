@@ -27,6 +27,12 @@
         .hidden {
             display: none;
         }
+        #search-results {
+            margin-top: 80px;
+        }
+        .card-results {
+            margin-top: 0.5em !important;
+        }
         @media (max-width: 1024px) {                  
             .lg-screen-hide {
                 display: none;
@@ -71,9 +77,8 @@
                 {% block navbar %}
                 {% endblock navbar %}
                 <li>
-                    <form method="post" id="search-form" class="form-inline my-2 my-lg-0">
-                        {% csrf_token %}
-                        <input class="form-control outline-light mr-sm-2" name="search" type="search" placeholder="Search Profiles" aria-label="Search Profiles">
+                    <form id="search-form" class="form-inline my-2 my-lg-0">
+                        <input class="form-control outline-light mr-sm-2" id="search_field" name="search_field" type="search" placeholder="Search Profiles" aria-label="Search Profiles">
                         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
@@ -86,7 +91,7 @@
             {% block content %}
             {% endblock content %}
         </div>
-        <div id="search-results" class="hidden">
+        <div id="search-results" class="hidden row">
         </div>
     </div>
 <script>
@@ -95,6 +100,46 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
     apiRootUrl = '{{ API_ROOT_URL }}';
     userAuthKey = '{{ user.auth_token }}';
+    $("#search-results").removeClass("hidden");
+    // override `search-form` submission
+    $("#search-form").submit(function(e) {
+        e.preventDefault();
+        var serializedSearch = $("#search_field").val();
+        console.log(serializedSearch);
+        searchResults(serializedSearch);
+    });
+
+    // returns search form results
+    var searchResults = serializedSearch => {
+        $.ajax({
+            type: "get",
+            url: `${apiRootUrl}profiles/?multiple_fields=${serializedSearch}`,
+            headers: {
+                    Authorization: 'Token ' + userAuthKey,
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+        .then(function(res) {
+            $("#main-content").addClass("hidden");
+            $("#search-results").removeClass("hidden");
+            var searchResults = '';
+            res.forEach(function(item) {
+                searchResults += `
+                <div class="card card-results pt-2 pb-2 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 row">
+                    <div class="col-sm-2">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="col-sm-8">
+                        ${item.first_name} ${item.last_name}
+                    </div>
+                </div>
+                `;
+            });
+            $("#search-results").html(searchResults);
+        });
+    }
 });
 </script>
 </body>
