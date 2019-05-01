@@ -55,7 +55,7 @@ class ProfileFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Profile
-        fields = ['user', 'first_name', 'last_name']
+        fields = ['user', 'first_name', 'last_name', 'multiple_fields']
 
 
 class UserViewSet(viewsets.ModelViewSet):
