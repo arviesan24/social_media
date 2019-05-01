@@ -71,6 +71,15 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 class ProfileFilterSet(django_filters.FilterSet):
     """FilterSet for ProfileViewSet."""
 
+    def get_multiple_fields(self, queryset, name, value):
+        """Method for searching multiple fields."""
+        return queryset.filter(
+            Q(first_name__contains=value) |
+            Q(last_name__contains=value) |
+            Q(description__contains=value) |
+            Q(user__username__contains=value) |
+            Q(user__email__contains=value))
+
     class Meta:
         model = models.Profile
         fields = ['user', 'first_name', 'last_name']
