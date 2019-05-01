@@ -80,6 +80,8 @@ class ProfileFilterSet(django_filters.FilterSet):
             Q(user__username__contains=value) |
             Q(user__email__contains=value))
 
+    multiple_fields = django_filters.CharFilter(method='get_multiple_fields')
+
     class Meta:
         model = models.Profile
         fields = ['user', 'first_name', 'last_name']
