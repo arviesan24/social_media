@@ -82,8 +82,12 @@
     </nav>
     <div class="container-fluid main-div">
         <img class="background-img lg-screen-hide" src="{% static 'home-bg.jpg' %}" />
-        {% block content %}
-        {% endblock content %}
+        <div id="main-content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <div id="search-results" class="hidden">
+        </div>
     </div>
 <script>
 $(document).ready(function() {
