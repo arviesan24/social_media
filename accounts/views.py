@@ -18,7 +18,7 @@ from posts import forms as post_form
 from posts import models as post_model
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class MyProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
     template_name='accounts/profile.html'
