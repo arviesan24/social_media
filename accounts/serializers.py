@@ -18,5 +18,5 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = Profile
         fields = (
             'url', 'user', 'first_name', 'last_name', 'gender', 'preference',
-            'birth_date', 'phone_number', 'address', 'description',
+            'birth_date', 'phone_number', 'address', 'description', 'slug',
             'datetime_created', 'datetime_modified')
