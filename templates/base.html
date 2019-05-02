@@ -136,6 +136,7 @@ $(document).ready(function() {
             $("#search-results").removeClass("hidden");
             if (res.length > 0) {
                 var searchResults = '';
+                var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
                 res.forEach(function(item) {
                     searchResults += `
                     <div class="card card-results pt-2 pb-2 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 row">
@@ -143,7 +144,7 @@ $(document).ready(function() {
                             <i class="fas fa-user-tie"></i>
                         </div>
                         <div class="col-sm-8">
-                            ${item.first_name} ${item.last_name}
+                            <a href="${baseProfileUrl.replace('slug', item.slug)}">${item.first_name} ${item.last_name}</a>
                         </div>
                     </div>
                     `;
