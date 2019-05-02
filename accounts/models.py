@@ -117,3 +117,5 @@ def profile_slug(sender, instance, **kwargs):
         slug_username = slugify(instance.user.username)
         str_id = str(instance.user.id)
         instance.slug = f'{slug_username}-{str_id}'
+
+pre_save.connect(profile_slug, sender=Profile)
