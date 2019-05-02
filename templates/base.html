@@ -139,12 +139,14 @@ $(document).ready(function() {
                 var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
                 res.forEach(function(item) {
                     searchResults += `
-                    <div class="card card-results pt-2 pb-2 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 row">
-                        <div class="col-sm-2">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <div class="col-sm-8">
-                            <a href="${baseProfileUrl.replace('slug', item.slug)}">${item.first_name} ${item.last_name}</a>
+                    <div class="card card-results pt-2 pb-2 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="row">
+                            <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="col-10 col-sm-11 col-md-11 col-lg-11">
+                                <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
+                            </div>
                         </div>
                     </div>
                     `;
