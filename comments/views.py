@@ -11,7 +11,7 @@ class BasePostCommentCreateView(LoginRequiredMixin, CreateView):
     """Base view for comment CreateView"""
 
     form_class = CommentForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def get_form_kwargs(self):
         """Pass `content_type_value` value to `CommentForm`."""

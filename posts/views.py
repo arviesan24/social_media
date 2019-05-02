@@ -10,7 +10,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     """View for Creating posts."""
 
     form_class = PostForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def form_valid(self, form):
         """Add `owner` in post."""

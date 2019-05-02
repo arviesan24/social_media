@@ -54,13 +54,13 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
 
     template_name = 'accounts/create_profile.html'
     form_class = ProfileForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def dispatch(self, request, *args, **kwargs):
         """Redirect to create profile form if user has no profile set."""
         if Profile.objects.filter(user__id=request.user.id):
             return HttpResponseRedirect(
-                reverse_lazy('accounts:profile'))
+                reverse_lazy('accounts:my-profile'))
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -84,7 +84,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     template_name = 'accounts/edit_profile.html'
     form_class = ProfileForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def get_object(self, queryset=None):
         """
