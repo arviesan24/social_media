@@ -109,3 +109,11 @@ class Request(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         return Token.objects.create(user=instance)
+
+
+def profile_slug(sender, instance, **kwargs):
+    """Set Profile slug everytime the instance is saved."""
+    if not instance.slug:
+        slug_username = slugify(instance.user.username)
+        str_id = str(instance.user.id)
+        instance.slug = f'{slug_username}-{str_id}'
