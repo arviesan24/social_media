@@ -19,7 +19,7 @@ from posts import models as post_model
 
 
 class MyProfileView(LoginRequiredMixin, DetailView):
-    """View for User Profile"""
+    """View for User Profile."""
 
     template_name='accounts/my_profile.html'
 
@@ -39,6 +39,13 @@ class MyProfileView(LoginRequiredMixin, DetailView):
         # add `comment form` in context data
         kwargs['comment_form'] = comment_form.CommentForm
         return kwargs
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    """View for other User's Profile."""
+
+    template_name = 'accounts/profile.html'
+    model = Profile
 
 
 class RegisterView(CreateView):
