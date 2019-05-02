@@ -21,7 +21,7 @@ from posts import models as post_model
 class MyProfileView(LoginRequiredMixin, DetailView):
     """View for User Profile"""
 
-    template_name='accounts/profile.html'
+    template_name='accounts/my_profile.html'
 
     def get_object(self):
         """Get user object without using URL kwargs."""
