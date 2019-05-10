@@ -1,6 +1,7 @@
 from django.contrib import admin
 from accounts.models import Profile
 from accounts.models import Relationship
+from accounts.models import RelationshipType
 from accounts.models import Request
 from accounts.models import User
 
@@ -16,5 +17,6 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile)
 admin.site.register(Relationship)
+admin.site.register(RelationshipType)
 admin.site.register(Request)
 admin.site.register(User, UserAdmin)

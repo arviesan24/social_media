@@ -60,16 +60,6 @@ class Profile(models.Model):
 class Relationship(models.Model):
     """Model for Relationship."""
 
-    CHOICE_BLOCKED = 'blocked'
-    CHOICE_FRIEND = 'friend'
-    CHOICE_PARTNER = 'partner'
-
-    TYPE_CHOICES = (
-        (CHOICE_BLOCKED, 'Blocked'),
-        (CHOICE_FRIEND, 'Friend'),
-        (CHOICE_PARTNER, 'Partner'),
-    )
-
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='sent_relationships',
@@ -78,26 +68,28 @@ class Relationship(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='receive_relationships',
         related_query_name='receive_relationship')
-    type = models.CharField(max_length=7, choices=TYPE_CHOICES)
+    request = models.ForeignKey('Request', on_delete=models.PROTECT,
+        related_name='relationships',
+        related_query_name='relationship', null=True)
+    type = models.ForeignKey('RelationshipType', on_delete=models.PROTECT,
+        related_name='relationships',
+        related_query_name='relationship')
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
+
+
+class RelationshipType(models.Model):
+    """Model for Relationship types."""
+
+    name = models.CharField(max_length=50, unique=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
 
 class Request(models.Model):
-    """Model for Request."""
+    """Model for Relationship requests."""
 
-    CHOICE_PENDING = 'pending'
-    CHOICE_CONFIRMED = 'confirmed'
-
-    STATUS_CHOICES = (
-        (CHOICE_PENDING, 'Pending'),
-        (CHOICE_CONFIRMED, 'Confirmed'),
-    )
-
-    relationship = models.ForeignKey('Relationship', on_delete=models.CASCADE,
-        related_name='requests',
-        related_query_name='request')
-    status = models.CharField(max_length=7, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=50, unique=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
