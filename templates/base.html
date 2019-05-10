@@ -27,6 +27,20 @@
         .hidden {
             display: none;
         }
+        #search-results {
+            margin-top: 80px;
+        }
+        .card-results {
+            margin-top: 0.5em !important;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 5px !important;
+            display: block;
+        }
+        #search-results > .alert {
+            margin-left: auto;
+            margin-right: auto;
+        }
         @media (max-width: 1024px) {                  
             .lg-screen-hide {
                 display: none;
@@ -34,6 +48,9 @@
             .main-div {
                 background-image: linear-gradient(rgb(3, 169, 244, 0.5), rgba(255, 255, 255, 0.5));
             }
+        }
+        .fa-user-tie {
+            font-size: 40px;
         }
         {% block css %}
         {% endblock css %}
@@ -50,6 +67,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li>
+                    <form id="search-form" class="form-inline my-2 my-lg-0">
+                        <input
+                            class="form-control outline-light mr-sm-2"
+                            id="search_field" name="search_field"
+                            type="search" placeholder="Search Profiles"
+                            aria-label="Search Profiles" data-toggle="tooltip"
+                            data-placement="bottom" title="Enter name, email, username or description">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -75,13 +105,78 @@
     </nav>
     <div class="container-fluid main-div">
         <img class="background-img lg-screen-hide" src="{% static 'home-bg.jpg' %}" />
-        {% block content %}
-        {% endblock content %}
+        <div id="main-content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <div id="search-results" class="hidden row">
+        </div>
     </div>
 <script>
 $(document).ready(function() {
     $('body').bootstrapMaterialDesign();
     $('[data-toggle="tooltip"]').tooltip();
+    apiRootUrl = '{{ API_ROOT_URL }}';
+    userAuthKey = '{{ user.auth_token }}';
+    $("#search-results").removeClass("hidden");
+    // override `search-form` submission
+    $("#search-form").submit(function(e) {
+        e.preventDefault();
+        var serializedSearch = $("#search_field").val();
+        console.log(serializedSearch);
+        searchResults(serializedSearch);
+    });
+
+    // returns search form results
+    var searchResults = serializedSearch => {
+        $.ajax({
+            type: "get",
+            url: `${apiRootUrl}profiles/?multiple_fields=${serializedSearch}`,
+            headers: {
+                    Authorization: 'Token ' + userAuthKey,
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+        .then(function(res) {
+            $("#main-content").addClass("hidden");
+            $("#search-results").removeClass("hidden");
+            if (res.length > 0) {
+                var searchResults = '';
+                var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
+                res.forEach(function(item) {
+                    searchResults += `
+                    <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
+                        <div class="row">
+                            <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+                                <i class="fas fa-user-tie mt-3"></i>
+                            </div>
+                            <div class="col-10 col-sm-11 col-md-11 col-lg-11">
+                                <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
+                                <p class="text-secondary"><small>${item.address}</small></p>
+                                <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
+                                <hr />
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>
+                                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                });
+                $("#search-results").html(searchResults);
+            }
+            else {
+                var alertMessage=`
+                <div class="alert alert-warning col-md-8" role="alert">
+                    No results found. Try another search.
+                </div>`;
+                $("#search-results").html(alertMessage);
+            }
+        });
+    }
 });
 </script>
 </body>

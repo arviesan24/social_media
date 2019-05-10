@@ -18,10 +18,10 @@ from posts import forms as post_form
 from posts import models as post_model
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
-    """View for User Profile"""
+class MyProfileView(LoginRequiredMixin, DetailView):
+    """View for User Profile."""
 
-    template_name='accounts/profile.html'
+    template_name='accounts/my_profile.html'
 
     def get_object(self):
         """Get user object without using URL kwargs."""
@@ -41,6 +41,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
         return kwargs
 
 
+class ProfileView(LoginRequiredMixin, DetailView):
+    """View for other User's Profile."""
+
+    template_name = 'accounts/profile.html'
+    model = Profile
+
+
 class RegisterView(CreateView):
     """View for User Registration"""
 
@@ -54,13 +61,13 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
 
     template_name = 'accounts/create_profile.html'
     form_class = ProfileForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def dispatch(self, request, *args, **kwargs):
         """Redirect to create profile form if user has no profile set."""
         if Profile.objects.filter(user__id=request.user.id):
             return HttpResponseRedirect(
-                reverse_lazy('accounts:profile'))
+                reverse_lazy('accounts:my-profile'))
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -84,7 +91,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     template_name = 'accounts/edit_profile.html'
     form_class = ProfileForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:my-profile')
 
     def get_object(self, queryset=None):
         """
