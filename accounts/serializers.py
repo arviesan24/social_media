@@ -16,9 +16,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Profile
         fields = (
-            'url', 'user', 'first_name', 'last_name', 'gender', 'preference',
-            'birth_date', 'phone_number', 'address', 'description', 'slug',
-            'datetime_created', 'datetime_modified')
+            'url', 'id', 'user', 'first_name', 'last_name', 'gender',
+            'preference', 'birth_date', 'phone_number', 'address',
+            'description', 'slug', 'datetime_created', 'datetime_modified')
 
 
 class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
