@@ -118,6 +118,7 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
     apiRootUrl = '{{ API_ROOT_URL }}';
     userAuthKey = '{{ user.auth_token }}';
+    userId = '{{ user.id }}';
     $("#search-results").removeClass("hidden");
     // override `search-form` submission
     $("#search-form").submit(function(e) {
