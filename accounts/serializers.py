@@ -5,6 +5,8 @@ from . import models
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for User model."""
+
     class Meta:
         model = models.User
         fields = (
@@ -13,6 +15,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Profile model."""
 
     user_id = serializers.SerializerMethodField()
     class Meta:
@@ -29,6 +32,8 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Relationship model."""
+
     class Meta:
         model = models.Relationship
         fields = (
@@ -37,6 +42,8 @@ class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RequestSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Request model."""
+
     class Meta:
         model = models.Request
         fields = (
@@ -45,6 +52,8 @@ class RequestSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class RelationshipTypeSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for RelationshipType model."""
+
     class Meta:
         model = models.RelationshipType
         fields = (
