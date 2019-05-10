@@ -39,6 +39,35 @@ class IsProfileOwnerOrReadOnly(permissions.BasePermission):
         return obj.user == request.user
 
 
+class IsRequestSenderOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow request sender to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        # Write permissions are only allowed to the sender of the snippet.
+        return obj.sender == request.user
+
+
+class IsAdminOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow admin user to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        # Write permissions are only allowed to the admin users.
+        return request.user.is_staff
+
 class ProfileFilterSet(django_filters.FilterSet):
     """FilterSet for ProfileViewSet."""
 
@@ -58,6 +87,14 @@ class ProfileFilterSet(django_filters.FilterSet):
         fields = ['user', 'first_name', 'last_name', 'multiple_fields']
 
 
+class RelationShipFilterSet(django_filters.FilterSet):
+    """FilterSet for RelationShipViewSet."""
+
+    class Meta:
+        models = models.Relationship
+        fields = ['sender__id', 'receiver__id', 'request__status', 'type']
+
+
 class UserViewSet(viewsets.ModelViewSet):
     """Viewset for UserSerializer"""
 
@@ -75,3 +112,32 @@ class ProfileViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated, IsProfileOwnerOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
     filterset_class = ProfileFilterSet
+
+
+class RelationshipViewSet(viewsets.ModelViewSet):
+    """Viewset for RelationshipSerializer"""
+
+    queryset = models.Relationship.objects.all()
+    serializer_class = serializers.RelationshipSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
+    filter_backends = (django_filters.DjangoFilterBackend,)
+    filterset_class = RelationShipFilterSet
+
+
+class RequestViewSet(viewsets.ModelViewSet):
+    """Viewset for RequestSerializer"""
+
+    queryset = models.Request.objects.all()
+    serializer_class = serializers.RequestSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsAdminOrReadOnly,)
+
+
+class RelationshipTypeViewSet(viewsets.ModelViewSet):
+    """Viewset for RelationshipTypeSerializer"""
+
+    queryset = models.RelationshipType.objects.all()
+    serializer_class = serializers.RelationshipTypeSerializer
+    permission_classes = (
+        permissions.IsAuthenticated, IsAdminOrReadOnly,)
