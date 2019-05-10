@@ -84,7 +84,7 @@ class ProfileFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Profile
-        fields = ['user', 'first_name', 'last_name', 'multiple_fields']
+        fields = ['user', 'id', 'first_name', 'last_name', 'multiple_fields']
 
 
 class RelationShipFilterSet(django_filters.FilterSet):
