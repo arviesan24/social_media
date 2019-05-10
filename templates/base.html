@@ -147,6 +147,7 @@ $(document).ready(function() {
                 var searchResults = '';
                 var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
                 res.forEach(function(item) {
+                    var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
                     searchResults += `
                     <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
                         <div class="row">
@@ -159,7 +160,7 @@ $(document).ready(function() {
                                 <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
                                 <hr />
                                 <div class="float-right">
-                                    <button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>
+                                    ${userId != item.user_id ? addFriendButton : '' }
                                     <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
                                 </div>
                             </div>
