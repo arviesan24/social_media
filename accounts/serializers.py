@@ -13,12 +13,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+
+    user_id = serializers.SerializerMethodField()
     class Meta:
         model = models.Profile
         fields = (
-            'url', 'id', 'user', 'first_name', 'last_name', 'gender',
+            'url', 'id', 'user', 'user_id', 'first_name', 'last_name', 'gender',
             'preference', 'birth_date', 'phone_number', 'address',
             'description', 'slug', 'datetime_created', 'datetime_modified')
+
+    def get_user_id(self, obj):
+        """Returns user id of Profile owner."""
+        return obj.user.id
+
 
 
 class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
