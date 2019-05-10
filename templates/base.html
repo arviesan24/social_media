@@ -164,8 +164,7 @@ $(document).ready(function() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    `;
+                    </div>`;
                 });
                 $("#search-results").html(searchResults);
             }
@@ -179,6 +178,27 @@ $(document).ready(function() {
         });
     }
 });
+//add friend function
+function addFriend(receiverProfileId, receiverUrl) {
+    $.ajax({
+        type: "POST",
+        url: `${apiRootUrl}relationships/`,
+        headers: {
+                    Authorization: 'Token ' + userAuthKey,
+        },
+        data: {
+            sender: `${apiRootUrl}users/${userId}/`,
+            receiver: receiverUrl,
+            request: `${apiRootUrl}requests/1/`,
+            type: `${apiRootUrl}relationship-types/2/`,
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    }).then(function(res) {
+        $("#add-profile-"+receiverProfileId).prop( "disabled", true );
+    });
+}
 </script>
 </body>
 </html>
