@@ -331,7 +331,8 @@
                 content_type: "post",
                 object_id: postId,
             }
-        }).then(function(replies) {
+        }).then(function(resReplies) {
+            var replies = resReplies.results;
             comments.forEach(function(comment) {
                 var parentDiv ="#post-"+postId+"-comment-"+comment.id+"-reply-list";
                 var formParent = '#post-'+postId+'-comment-'+comment.id+'-parent';
@@ -414,7 +415,9 @@
             // return 2 promises
             return Promise.all([promiseComments, promiseProfiles])
         })
-        .then(function([resultComments, resultProfiles]) {
+        .then(function([resComments, resProfiles]) {
+            var resultComments = resComments.results;
+            var resultProfiles = resProfiles.results;
             displayComments(postId, resultProfiles, resultComments);
             return [resultComments, resultProfiles];
         })
@@ -470,7 +473,9 @@
             // return 2 promises
             return Promise.all([resultReplies, promiseProfiles])
         })
-        .then(function([resultReplies, resultProfiles]) {
+        .then(function([resReplies, resProfiles]) {
+            var resultReplies = resReplies.results;
+            var resultProfiles = resProfiles.results;
             displayReplies(postId, parentId, resultProfiles, resultReplies);
         });
     };
