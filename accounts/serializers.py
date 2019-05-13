@@ -33,12 +33,18 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for Relationship model."""
+    
+    sender_id = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Relationship
         fields = (
-            'url', 'sender', 'receiver', 'request', 'type',
+            'url', 'sender', 'sender_id', 'receiver', 'receiver', 'request', 'type',
             'datetime_created', 'datetime_modified')
+
+    def get_sender_id(self, obj):
+        """Return id of `sender`."""
+        return obj.sender.id
 
 
 class RequestSerializer(serializers.HyperlinkedModelSerializer):
