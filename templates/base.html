@@ -133,6 +133,46 @@ $(document).ready(function() {
         searchProfiles(serializedSearch);
     });
 
+    // ajax request to retrieve previous/next records of pagination
+    var navigateProfilesPagination = paginationLink =>  {
+        return $.ajax({
+            type: "get",
+            url: paginationLink,
+            headers: {
+                    Authorization: 'Token ' + userAuthKey,
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+        .then(function(res) {
+            populateProfileCards(res);
+        });
+    };
+
+    // ajax request to search profiles based on the searchbox
+    var searchProfiles = serializedSearch => {
+        return $.ajax({
+            type: "get",
+            url: `${apiRootUrl}profiles/`,
+            headers: {
+                    Authorization: 'Token ' + userAuthKey,
+            },
+            data: {
+                multiple_fields: serializedSearch
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+        .then(function(res) {
+            populateProfileCards(res);
+        })
+        .then(function() {
+            addedAsFriendChecker(serializedSearch);
+        });
+    };
+
     // populates the cards based on the ajax get requests against `profiles` endpoints
     var populateProfileCards = res => {
         $("#main-content").addClass("hidden");
@@ -180,46 +220,6 @@ $(document).ready(function() {
             </div>`;
             $("#search-results").html(alertMessage);
         }
-    };
-
-    // ajax request to retrieve previous/next records of pagination
-    var navigateProfilesPagination = paginationLink =>  {
-        return $.ajax({
-            type: "get",
-            url: paginationLink,
-            headers: {
-                    Authorization: 'Token ' + userAuthKey,
-            },
-            error: function(err){
-                console.log(err);
-            }
-        })
-        .then(function(res) {
-            populateProfileCards(res);
-        });
-    };
-
-    // ajax request to search profiles based on the searchbox
-    var searchProfiles = serializedSearch => {
-        return $.ajax({
-            type: "get",
-            url: `${apiRootUrl}profiles/`,
-            headers: {
-                    Authorization: 'Token ' + userAuthKey,
-            },
-            data: {
-                multiple_fields: serializedSearch
-            },
-            error: function(err){
-                console.log(err);
-            }
-        })
-        .then(function(res) {
-            populateProfileCards(res);
-        })
-        .then(function() {
-            addedAsFriendChecker(serializedSearch);
-        });
     };
 
     //check if a profile result is already added by the user
