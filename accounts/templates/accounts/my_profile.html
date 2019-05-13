@@ -465,13 +465,13 @@
             $("#post-"+postId+"-comment-"+parentId)[0].reset();
 
             // reload replies
-            var resultReplies = loadReplies(postId, parentId);
+            var promiseReplies = loadReplies(postId, parentId);
 
             // load profiles
             var promiseProfiles = loadProfiles();
 
             // return 2 promises
-            return Promise.all([resultReplies, promiseProfiles])
+            return Promise.all([promiseReplies, promiseProfiles])
         })
         .then(function([resReplies, resProfiles]) {
             var resultReplies = resReplies.results;
