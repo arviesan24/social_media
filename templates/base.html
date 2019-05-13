@@ -130,7 +130,7 @@ $(document).ready(function() {
 
     // returns search form results
     var searchResults = serializedSearch => {
-        $.ajax({
+        return $.ajax({
             type: "get",
             url: `${apiRootUrl}profiles/?multiple_fields=${serializedSearch}`,
             headers: {
@@ -178,6 +178,29 @@ $(document).ready(function() {
                 </div>`;
                 $("#search-results").html(alertMessage);
             }
+        })
+        .then(function() {
+            // check if searched profiles were already added
+            return $.ajax({
+                type: "get",
+                url: `${apiRootUrl}relationships/`,
+                headers: {
+                    Authorization: 'Token ' + userAuthKey,
+                },
+                data: {
+                    receiver_multifield_search: serializedSearch,
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        })
+        .then(function(items) {
+            // update the add button depending on relationship request status
+            items.forEach(function(item) {
+                $("#add-profile-"+item.receiver_profile_id).addClass("hidden");
+                $("#cancel-add-profile-"+item.receiver_profile_id).removeClass("hidden");
+            });
         });
     }
 });
