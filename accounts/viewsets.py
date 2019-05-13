@@ -91,7 +91,7 @@ class RelationshipFilterSet(django_filters.FilterSet):
     """FilterSet for RelationShipViewSet."""
 
     class Meta:
-        models = models.Relationship
+        model = models.Relationship
         fields = ['sender__id', 'receiver__id', 'request__status', 'type']
 
 
