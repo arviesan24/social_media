@@ -65,7 +65,7 @@ class Relationship(models.Model):
     """Model for Relationship."""
 
     class Meta:
-            unique_together = ('sender', 'receiver', 'type')
+        unique_together = ('sender', 'receiver', 'type')
 
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
