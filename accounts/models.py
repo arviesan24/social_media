@@ -45,7 +45,8 @@ class Profile(models.Model):
     )
     
     user = models.OneToOneField(
-        User, related_name='profile', on_delete=models.CASCADE)
+        User, related_name='profiles', related_query_name='profile',
+        on_delete=models.CASCADE)
     slug = models.SlugField(null=True)
     first_name = models.CharField(max_length=250, blank=False, null=False)
     last_name = models.CharField(max_length=250, blank=False, null=False)
