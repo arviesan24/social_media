@@ -87,7 +87,7 @@ class ProfileFilterSet(django_filters.FilterSet):
         fields = ['user', 'id', 'first_name', 'last_name', 'multiple_fields']
 
 
-class RelationShipFilterSet(django_filters.FilterSet):
+class RelationshipFilterSet(django_filters.FilterSet):
     """FilterSet for RelationShipViewSet."""
 
     class Meta:
@@ -122,7 +122,7 @@ class RelationshipViewSet(viewsets.ModelViewSet):
     permission_classes = (
         permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
-    filterset_class = RelationShipFilterSet
+    filterset_class = RelationshipFilterSet
 
 
 class RequestViewSet(viewsets.ModelViewSet):
