@@ -406,13 +406,13 @@
             // reload comments.
 
             // load comments
-            var resultComments = loadComments(postId);
+            var promiseComments = loadComments(postId);
 
             // load profiles
             var promiseProfiles = loadProfiles();
 
             // return 2 promises
-            return Promise.all([resultComments, promiseProfiles])
+            return Promise.all([promiseComments, promiseProfiles])
         })
         .then(function([resultComments, resultProfiles]) {
             displayComments(postId, resultProfiles, resultComments);
