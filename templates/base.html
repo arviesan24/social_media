@@ -206,7 +206,7 @@ $(document).ready(function() {
 });
 //add friend function
 function addFriend(receiverProfileId, receiverUrl) {
-    $.ajax({
+    return $.ajax({
         type: "POST",
         url: `${apiRootUrl}relationships/`,
         headers: {
