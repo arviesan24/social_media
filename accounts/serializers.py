@@ -49,7 +49,7 @@ class RelationshipSerializer(serializers.HyperlinkedModelSerializer):
         return obj.sender.id
 
     def get_receiver_id(self, obj):
-        """Return id of `sender`."""
+        """Return id of `receiver`."""
         return obj.receiver.id
 
 
