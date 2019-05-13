@@ -198,7 +198,42 @@ function addFriend(receiverProfileId, receiverUrl) {
             console.log(err.responseText);
         }
     }).then(function(res) {
-        $("#add-profile-"+receiverProfileId).prop( "disabled", true );
+        $("#add-profile-"+receiverProfileId).addClass("hidden");
+        $("#cancel-add-profile-"+receiverProfileId).removeClass("hidden");
+    });
+}
+
+//delete friend request function
+function cancelAddFriend(receiverProfileId, receiverUserId) {
+    return $.ajax({
+        type: "GET",
+        url: `${apiRootUrl}relationships/`,
+        headers: {
+                    Authorization: 'Token ' + userAuthKey,
+        },
+        data: {
+            sender: userId,
+            receiver: receiverUserId,
+            request: 1,
+            type: 2,
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    }).then(function(res) {
+        return $.ajax({
+            type: "DELETE",
+            url: `${res[0].url}`,
+            headers: {
+                        Authorization: 'Token ' + userAuthKey,
+            },
+            error: function(err){
+                console.log(err.responseText);
+            }
+        });
+    }).then(function() {
+        $("#add-profile-"+receiverProfileId).removeClass("hidden");
+        $("#cancel-add-profile-"+receiverProfileId).addClass("hidden");
     });
 }
 </script>
