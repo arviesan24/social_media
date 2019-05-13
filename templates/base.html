@@ -143,10 +143,11 @@ $(document).ready(function() {
         .then(function(res) {
             $("#main-content").addClass("hidden");
             $("#search-results").removeClass("hidden");
-            if (res.length > 0) {
+            var items = res.results;
+            if (items.length > 0) {
                 var searchResults = '';
                 var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
-                res.forEach(function(item) {
+                items.forEach(function(item) {
                     var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
                     var cancelAddFriendButton = `<button id="cancel-add-profile-${item.id}" onClick="cancelAddFriend(${item.id}, '${item.user_id}')" type="button" class="btn btn-outline-warning hidden"><i class="fas fa-user-minus"></i> Cancel Friend Request</button>`;
                     searchResults += `
@@ -195,8 +196,9 @@ $(document).ready(function() {
                 }
             });
         })
-        .then(function(items) {
+        .then(function(res) {
             // update the add button depending on relationship request status
+            var items = res.results;
             items.forEach(function(item) {
                 $("#add-profile-"+item.receiver_profile_id).addClass("hidden");
                 $("#cancel-add-profile-"+item.receiver_profile_id).removeClass("hidden");
@@ -245,9 +247,10 @@ function cancelAddFriend(receiverProfileId, receiverUserId) {
             console.log(err.responseText);
         }
     }).then(function(res) {
+        var items = res.results;
         return $.ajax({
             type: "DELETE",
-            url: `${res[0].url}`,
+            url: `${items[0].url}`,
             headers: {
                         Authorization: 'Token ' + userAuthKey,
             },
