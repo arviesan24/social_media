@@ -130,14 +130,63 @@ $(document).ready(function() {
         e.preventDefault();
         var serializedSearch = $("#search_field").val();
         console.log(serializedSearch);
-        searchResults(serializedSearch);
+        searchProfiles(serializedSearch);
     });
 
-    // returns search form results
-    var searchResults = serializedSearch => {
+    // populates the cards based on the ajax get requests against `profiles` endpoints
+    var populateProfileCards = res => {
+        $("#main-content").addClass("hidden");
+        $("#search-results").removeClass("hidden");
+        var items = res.results;
+        if (items.length > 0) {
+            var searchResults = '';
+            var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
+            items.forEach(function(item) {
+                var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
+                var cancelAddFriendButton = `<button id="cancel-add-profile-${item.id}" onClick="cancelAddFriend(${item.id}, '${item.user_id}')" type="button" class="btn btn-outline-warning hidden"><i class="fas fa-user-minus"></i> Cancel Friend Request</button>`;
+                var previousButton = `<button id="previous-button" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
+                var nextButton = `<button id="next-button" class="btn btn-info">Next <i class="fas fa-angle-double-right"></i></button>`;
+                searchResults += `
+                <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
+                    <div class="row">
+                        <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+                            <i class="fas fa-user-tie mt-3"></i>
+                        </div>
+                        <div class="col-10 col-sm-11 col-md-11 col-lg-11">
+                            <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
+                            <p class="text-secondary"><small>${item.address}</small></p>
+                            <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
+                            <hr />
+                            <div class="float-right">
+                                ${userId != item.user_id ? addFriendButton : '' }
+                                ${cancelAddFriendButton}
+                                <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination-div">
+                    ${previousButton}
+                    ${nextButton}
+                </div>
+                `;
+            });
+            $("#search-results").html(searchResults);
+        }
+        else {
+            var alertMessage=`
+            <div class="alert alert-warning col-md-8" role="alert">
+                No results found. Try another search.
+            </div>`;
+            $("#search-results").html(alertMessage);
+        }
+    };
+
+    // ajax request to retrieve previous/next records of pagination
+    var navigateProfilesPagination = paginationLink =>  {
         return $.ajax({
             type: "get",
-            url: `${apiRootUrl}profiles/?multiple_fields=${serializedSearch}`,
+            url: paginationLink,
             headers: {
                     Authorization: 'Token ' + userAuthKey,
             },
@@ -146,67 +195,44 @@ $(document).ready(function() {
             }
         })
         .then(function(res) {
-            $("#main-content").addClass("hidden");
-            $("#search-results").removeClass("hidden");
-            var items = res.results;
-            if (items.length > 0) {
-                var searchResults = '';
-                var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
-                items.forEach(function(item) {
-                    var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
-                    var cancelAddFriendButton = `<button id="cancel-add-profile-${item.id}" onClick="cancelAddFriend(${item.id}, '${item.user_id}')" type="button" class="btn btn-outline-warning hidden"><i class="fas fa-user-minus"></i> Cancel Friend Request</button>`;
-                    var previousButton = `<button id="previous-button" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
-                    var nextButton = `<button id="next-button" class="btn btn-info">Next <i class="fas fa-angle-double-right"></i></button>`;
-                    searchResults += `
-                    <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
-                        <div class="row">
-                            <div class="col-2 col-sm-1 col-md-1 col-lg-1">
-                                <i class="fas fa-user-tie mt-3"></i>
-                            </div>
-                            <div class="col-10 col-sm-11 col-md-11 col-lg-11">
-                                <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
-                                <p class="text-secondary"><small>${item.address}</small></p>
-                                <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
-                                <hr />
-                                <div class="float-right">
-                                    ${userId != item.user_id ? addFriendButton : '' }
-                                    ${cancelAddFriendButton}
-                                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pagination-div">
-                        ${previousButton}
-                        ${nextButton}
-                    </div>
-                    `;
-                });
-                $("#search-results").html(searchResults);
-            }
-            else {
-                var alertMessage=`
-                <div class="alert alert-warning col-md-8" role="alert">
-                    No results found. Try another search.
-                </div>`;
-                $("#search-results").html(alertMessage);
+            populateProfileCards(res);
+        });
+    };
+
+    // ajax request to search profiles based on the searchbox
+    var searchProfiles = serializedSearch => {
+        return $.ajax({
+            type: "get",
+            url: `${apiRootUrl}profiles/`,
+            headers: {
+                    Authorization: 'Token ' + userAuthKey,
+            },
+            data: {
+                multiple_fields: serializedSearch
+            },
+            error: function(err){
+                console.log(err);
             }
         })
-        .then(function() {
-            // check if searched profiles were already added
-            return $.ajax({
-                type: "get",
-                url: `${apiRootUrl}relationships/`,
-                headers: {
-                    Authorization: 'Token ' + userAuthKey,
-                },
-                data: {
-                    receiver_multifield_search: serializedSearch,
-                },
-                error: function(err){
-                    console.log(err);
-                }
-            });
+        .then(function(res) {
+            populateProfileCards(res);
+        });
+    };
+
+    //check if a profile result is already added by the user
+    var addedAsFriendChecker = () => {
+        return $.ajax({
+            type: "get",
+            url: `${apiRootUrl}relationships/`,
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            data: {
+                receiver_multifield_search: serializedSearch,
+            },
+            error: function(err){
+                console.log(err);
+            }
         })
         .then(function(res) {
             // update the add button depending on relationship request status
@@ -217,6 +243,7 @@ $(document).ready(function() {
             });
         });
     }
+
 });
 //add friend function
 function addFriend(receiverProfileId, receiverUrl) {
