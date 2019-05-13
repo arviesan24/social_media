@@ -92,7 +92,7 @@ class RelationshipFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Relationship
-        fields = ['sender__id', 'receiver__id', 'request__status', 'type']
+        fields = ['sender', 'receiver', 'request', 'type']
 
 
 class UserViewSet(viewsets.ModelViewSet):
