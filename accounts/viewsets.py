@@ -90,9 +90,23 @@ class ProfileFilterSet(django_filters.FilterSet):
 class RelationshipFilterSet(django_filters.FilterSet):
     """FilterSet for RelationShipViewSet."""
 
+    def get_receiver_multifield_search(self, queryset, name, value):
+        """Method for searching multiple fields."""
+        return queryset.filter(
+            Q(receiver__first_name__contains=value) |
+            Q(receiver__last_name__contains=value) |
+            Q(receiver__profile__description__contains=value) |
+            Q(receiver__username__contains=value) |
+            Q(receiver__email__contains=value))
+
+    receiver_multifield_search = django_filters.CharFilter(
+        method='get_receiver_multifield_search')
+
     class Meta:
         model = models.Relationship
-        fields = ['sender', 'receiver', 'request', 'type']
+        fields = [
+            'sender', 'receiver', 'request', 'type',
+            'receiver_multifield_search']
 
 
 class UserViewSet(viewsets.ModelViewSet):
