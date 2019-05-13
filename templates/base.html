@@ -216,11 +216,14 @@ $(document).ready(function() {
         })
         .then(function(res) {
             populateProfileCards(res);
+        })
+        .then(function(res) {
+            addedAsFriendChecker(serializedSearch);
         });
     };
 
     //check if a profile result is already added by the user
-    var addedAsFriendChecker = () => {
+    var addedAsFriendChecker = serializedSearch => {
         return $.ajax({
             type: "get",
             url: `${apiRootUrl}relationships/`,
