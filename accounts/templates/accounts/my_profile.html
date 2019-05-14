@@ -136,7 +136,7 @@
                     {% for post in post_list %}
                         <div class="card post-card">
                             <h6 class="card-subtitle mb-2 mt-2 ml-3">
-                                <i class="fas fa-user-tie"></i> {{ post.owner.profile.first_name }} {{ post.owner.profile.last_name }}
+                                <i class="fas fa-user-tie"></i> {{ post.owner.profiles.first_name }} {{ post.owner.profiles.last_name }}
                             </h6>
                             <div class="card-body">
                                 {{ post.content|safe }}
@@ -175,7 +175,7 @@
                             {% for comment in post.comments %}
                                 <div class="comment-card">
                                     <h6 class="card-subtitle mb-2 mt-2">
-                                        <i class="fas fa-user-tie"></i> {{ comment.owner.profile.first_name }} {{ comment.owner.profile.last_name }}
+                                        <i class="fas fa-user-tie"></i> {{ comment.owner.profiles.first_name }} {{ comment.owner.profiles.last_name }}
                                     </h6>
                                     <div class="comment-body ml-3">
                                         {{ comment.content }}
@@ -192,7 +192,7 @@
                                 {% for reply in comment.children %}
                                     <div class="reply-card">
                                         <h6 class="card-subtitle mb-2 mt-2">
-                                            <i class="fas fa-user-tie"></i> {{ reply.owner.profile.first_name }} {{ reply.owner.profile.last_name }}
+                                            <i class="fas fa-user-tie"></i> {{ reply.owner.profiles.first_name }} {{ reply.owner.profiles.last_name }}
                                         </h6>
                                         <div class="comment-body ml-3">
                                             {{ reply.content }}
