@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'posts',
 
     #third party apps
+    'actstream',
     'django_filters',
     'django_summernote',
     'rest_framework',
