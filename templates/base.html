@@ -244,6 +244,7 @@ function cancelAddFriend(receiverProfileId, receiverUserId) {
 var populateProfileCards = res => {
     $("#main-content").addClass("hidden");
     $("#search-results").removeClass("hidden");
+    console.log(res);
     var items = res.results;
     if (items.length > 0) {
         var searchResults = '';
@@ -273,8 +274,8 @@ var populateProfileCards = res => {
                 </div>
             </div>
             <div class="pagination-div">
-                ${previousButton}
-                ${nextButton}
+                ${res.previous != null ? previousButton : ''}
+                ${res.next != null ? nextButton : ''}
             </div>
             `;
         });
