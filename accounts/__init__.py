@@ -1,1 +1,1 @@
-default_app_config = 'posts.apps.AccountsConfig'
+default_app_config = 'accounts.apps.AccountsConfig'
