@@ -269,15 +269,14 @@ var populateProfileCards = res => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="pagination-div">
-                ${res.previous != null ? previousButton : ''}
-                ${res.next != null ? nextButton : ''}
-            </div>
-            `;
+            </div>`;
         });
         var previousButton = `<button id="previous-button" onClick="navigateProfilesPagination('${res.previous}')" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
         var nextButton = `<button id="next-button" onClick="navigateProfilesPagination('${res.next}')" class="btn btn-info">Next <i class="fas fa-angle-double-right"></i></button>`;
+        searchResults += `<div class="pagination-div">
+            ${res.previous != null ? previousButton : ''}
+            ${res.next != null ? nextButton : ''}
+            </div>`;
         $("#search-results").html(searchResults);
     }
     else {
