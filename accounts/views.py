@@ -47,6 +47,17 @@ class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'accounts/profile.html'
     model = Profile
 
+    def get_context_data(self, **kwargs):
+        """Retuns context data needed in user's `Profile`"""
+        kwargs = super().get_context_data()
+        # add `post list` in context data
+        kwargs['post_list'] = (
+            post_model.Post.objects.filter(
+                owner=self.object.user).order_by('-id'))
+        # add `comment form` in context data
+        kwargs['comment_form'] = comment_form.CommentForm
+        return kwargs
+
 
 class RegisterView(CreateView):
     """View for User Registration"""
