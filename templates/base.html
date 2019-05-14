@@ -41,6 +41,11 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .pagination-div {
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
         @media (max-width: 1024px) {                  
             .lg-screen-hide {
                 display: none;
@@ -118,66 +123,215 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
     apiRootUrl = '{{ API_ROOT_URL }}';
     userAuthKey = '{{ user.auth_token }}';
+    userId = '{{ user.id }}';
     $("#search-results").removeClass("hidden");
     // override `search-form` submission
     $("#search-form").submit(function(e) {
         e.preventDefault();
         var serializedSearch = $("#search_field").val();
         console.log(serializedSearch);
-        searchResults(serializedSearch);
+        searchProfiles(serializedSearch);
     });
 
-    // returns search form results
-    var searchResults = serializedSearch => {
-        $.ajax({
+    // ajax request to search profiles based on the searchbox
+    var searchProfiles = serializedSearch => {
+        return $.ajax({
             type: "get",
-            url: `${apiRootUrl}profiles/?multiple_fields=${serializedSearch}`,
+            url: `${apiRootUrl}profiles/`,
             headers: {
                     Authorization: 'Token ' + userAuthKey,
+            },
+            data: {
+                multiple_fields: serializedSearch
             },
             error: function(err){
                 console.log(err);
             }
         })
         .then(function(res) {
-            $("#main-content").addClass("hidden");
-            $("#search-results").removeClass("hidden");
-            if (res.length > 0) {
-                var searchResults = '';
-                var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
-                res.forEach(function(item) {
-                    searchResults += `
-                    <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
-                        <div class="row">
-                            <div class="col-2 col-sm-1 col-md-1 col-lg-1">
-                                <i class="fas fa-user-tie mt-3"></i>
-                            </div>
-                            <div class="col-10 col-sm-11 col-md-11 col-lg-11">
-                                <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
-                                <p class="text-secondary"><small>${item.address}</small></p>
-                                <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
-                                <hr />
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>
-                                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                });
-                $("#search-results").html(searchResults);
+            populateProfileCards(res);
+        })
+        .then(function() {
+            addedAsFriendChecker(serializedSearch);
+        });
+    };
+
+    //check if a profile result is already added by the user
+    var addedAsFriendChecker = serializedSearch => {
+        return $.ajax({
+            type: "get",
+            url: `${apiRootUrl}relationships/`,
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            data: {
+                receiver_multifield_search: serializedSearch,
+            },
+            error: function(err){
+                console.log(err);
             }
-            else {
-                var alertMessage=`
-                <div class="alert alert-warning col-md-8" role="alert">
-                    No results found. Try another search.
-                </div>`;
-                $("#search-results").html(alertMessage);
+        })
+        .then(function(res) {
+            // update the add button depending on relationship request status
+            var items = res.results;
+            items.forEach(function(item) {
+                $("#add-profile-"+item.receiver_profile_id).addClass("hidden");
+                $("#cancel-add-profile-"+item.receiver_profile_id).removeClass("hidden");
+            });
+        });
+    };
+
+});
+//add friend function
+function addFriend(receiverProfileId, receiverUrl) {
+    return $.ajax({
+        type: "POST",
+        url: `${apiRootUrl}relationships/`,
+        headers: {
+                    Authorization: 'Token ' + userAuthKey,
+        },
+        data: {
+            sender: `${apiRootUrl}users/${userId}/`,
+            receiver: receiverUrl,
+            request: `${apiRootUrl}requests/1/`,
+            type: `${apiRootUrl}relationship-types/2/`,
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    }).then(function(res) {
+        $("#add-profile-"+receiverProfileId).addClass("hidden");
+        $("#cancel-add-profile-"+receiverProfileId).removeClass("hidden");
+    });
+}
+
+//delete friend request function
+function cancelAddFriend(receiverProfileId, receiverUserId) {
+    return $.ajax({
+        type: "GET",
+        url: `${apiRootUrl}relationships/`,
+        headers: {
+                    Authorization: 'Token ' + userAuthKey,
+        },
+        data: {
+            sender: userId,
+            receiver: receiverUserId,
+            request: 1,
+            type: 2,
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    }).then(function(res) {
+        var items = res.results;
+        return $.ajax({
+            type: "DELETE",
+            url: `${items[0].url}`,
+            headers: {
+                        Authorization: 'Token ' + userAuthKey,
+            },
+            error: function(err){
+                console.log(err.responseText);
             }
         });
+    }).then(function() {
+        $("#add-profile-"+receiverProfileId).removeClass("hidden");
+        $("#cancel-add-profile-"+receiverProfileId).addClass("hidden");
+    });
+}
+
+// populates the cards based on the ajax get requests against `profiles` endpoints
+var populateProfileCards = res => {
+    $("#main-content").addClass("hidden");
+    $("#search-results").removeClass("hidden");
+    var items = res.results;
+    if (items.length > 0) {
+        var searchResults = '';
+        var baseProfileUrl = "{% url 'accounts:profile' 'slug' %}";
+        items.forEach(function(item) {
+            var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
+            var cancelAddFriendButton = `<button id="cancel-add-profile-${item.id}" onClick="cancelAddFriend(${item.id}, '${item.user_id}')" type="button" class="btn btn-outline-warning hidden"><i class="fas fa-user-minus"></i> Cancel Friend Request</button>`;
+            var previousButton = `<button id="previous-button" onClick="navigateProfilesPagination('${res.previous}')" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
+            var nextButton = `<button id="next-button" onClick="navigateProfilesPagination('${res.next}')" class="btn btn-info">Next <i class="fas fa-angle-double-right"></i></button>`;
+            searchResults += `
+            <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
+                <div class="row">
+                    <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+                        <i class="fas fa-user-tie mt-3"></i>
+                    </div>
+                    <div class="col-10 col-sm-11 col-md-11 col-lg-11">
+                        <a href="${baseProfileUrl.replace('slug', item.slug)}"><strong>${item.first_name} ${item.last_name}</strong></a>
+                        <p class="text-secondary"><small>${item.address}</small></p>
+                        <p>${jQuery.trim(item.description).substring(0, 100).trim(this) + (item.description.length > 100 ? "..." : "")}</p>
+                        <hr />
+                        <div class="float-right">
+                            ${userId != item.user_id ? addFriendButton : '' }
+                            ${cancelAddFriendButton}
+                            <button type="button" class="btn btn-outline-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination-div">
+                ${res.previous != null ? previousButton : ''}
+                ${res.next != null ? nextButton : ''}
+            </div>
+            `;
+        });
+        $("#search-results").html(searchResults);
     }
-});
+    else {
+        var alertMessage=`
+        <div class="alert alert-warning col-md-8" role="alert">
+            No results found. Try another search.
+        </div>`;
+        $("#search-results").html(alertMessage);
+    }
+};
+
+// ajax request to retrieve previous/next records of pagination
+var navigateProfilesPagination = paginationLink => {
+    return $.ajax({
+        type: "get",
+        url: paginationLink,
+        headers: {
+                Authorization: 'Token ' + userAuthKey,
+        },
+        error: function(err){
+            console.log(err);
+        }
+    })
+    .then(function(res) {
+        populateProfileCards(res);
+        return res;
+    })
+    .then(function(res) {
+        var profiles = res.results;
+        profiles.forEach(function(profile) {
+            return $.ajax({
+                type: "get",
+                url: `${apiRootUrl}relationships/`,
+                header: {
+                    Authorization: 'Token ' + userAuthKey,
+                },
+                data: {
+                    receiver: profile.user_id,
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(resProf) {
+                    var resProfiles = resProf.results;
+                    resProfiles.forEach(function(resProfile) {
+                        console.log(resProfile.receiver_profile_id);
+                        $("#add-profile-"+resProfile.receiver_profile_id).addClass("hidden");
+                        $("#cancel-add-profile-"+resProfile.receiver_profile_id).removeClass("hidden");
+                    });
+                }
+            });
+        });
+    });
+};
 </script>
 </body>
 </html>

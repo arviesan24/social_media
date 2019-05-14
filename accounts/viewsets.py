@@ -84,15 +84,29 @@ class ProfileFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = models.Profile
-        fields = ['user', 'first_name', 'last_name', 'multiple_fields']
+        fields = ['user', 'id', 'first_name', 'last_name', 'multiple_fields']
 
 
-class RelationShipFilterSet(django_filters.FilterSet):
+class RelationshipFilterSet(django_filters.FilterSet):
     """FilterSet for RelationShipViewSet."""
 
+    def get_receiver_multifield_search(self, queryset, name, value):
+        """Method for searching multiple fields."""
+        return queryset.filter(
+            Q(receiver__first_name__contains=value) |
+            Q(receiver__last_name__contains=value) |
+            Q(receiver__profile__description__contains=value) |
+            Q(receiver__username__contains=value) |
+            Q(receiver__email__contains=value))
+
+    receiver_multifield_search = django_filters.CharFilter(
+        method='get_receiver_multifield_search')
+
     class Meta:
-        models = models.Relationship
-        fields = ['sender__id', 'receiver__id', 'request__status', 'type']
+        model = models.Relationship
+        fields = [
+            'sender', 'receiver', 'request', 'type',
+            'receiver_multifield_search']
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -122,7 +136,7 @@ class RelationshipViewSet(viewsets.ModelViewSet):
     permission_classes = (
         permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
-    filterset_class = RelationShipFilterSet
+    filterset_class = RelationshipFilterSet
 
 
 class RequestViewSet(viewsets.ModelViewSet):
