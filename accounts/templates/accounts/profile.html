@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.first_name }} {{ object.last_name }} {% endblock title %}
+
+{% block css %}
+.row-div {
+    margin-top: 160px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+.errorlist {
+    padding: 5px;
+    list-style-type: none;
+}
+.form-group .errorlist li {
+    color: #F4433C;
+    list-style: none;
+}
+.profile-placeholder {
+    font-size:170px;
+}
+.profile-outer-div {
+    border-radius: 15px;
+    border-color: #41B6E6;
+    border-style: solid;
+    width: 170px;
+    height: 170px;
+    padding: 5px 5px 5px 5px;
+    margin: -100px auto auto auto;
+    background-color: #fff;
+}
+.profile-inner-div {
+    border-radius: 15px;
+    border-color: #41B6E6;
+    border-style: solid;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.post-card {
+    border-color: #41B6E6;
+    border-style: solid;
+    margin: 5px 0px 5px 0px;
+    padding-bottom: 1em;
+}
+.comments-parent > .comment-card {
+    margin: 3px 1em 3px 1em;
+    background-color: #90CAF9;
+    width: 95%;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    overflow: auto;
+}
+.replies-parent > .reply-card {
+    margin: 3px 1em 3px 2em;
+    background-color: #69F0AE;
+    width: 93%;
+    border-radius: 10px;
+    padding: 5px 10px 30px 10px
+}
+@media (max-width: 600px) {
+    .card {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .main-div {
+        padding-left: 0.1em;
+        padding-right: 0.2em;
+    }
+    .card-body {
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    .reply-card {
+        width: 90.4%;
+    }
+}
+{% endblock css %}
+
+{% block content %}
+<div class="card row-div col-xl-8 col-lg-10 col-md-10 col-sm-12 col-12">
+    
+    <div class="card-body">
+        <div class="profile-outer-div"><div class="profile-inner-div">
+            <i class="fas fa-user-tie profile-placeholder"></i>
+        </div></div>
+        <h1 class="text-center mt-2">{{ object.first_name }} {{ object.last_name }}</h1>
+        <!--start of Slider-->
+        <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+            <header class="bmd-layout-header">
+                <div class="navbar navbar-light bg-faded">
+                    <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-p1">
+                        <span class="sr-only">Toggle drawer</span>
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">Posts</li>
+                    </ul>
+                </div>
+            </header>
+        <div id="dw-p1" class="bmd-layout-drawer bg-faded">
+            <header>
+                <span class="navbar-brand">About <span class="small">[<a href="{% url 'accounts:edit-profile' %}">Edit</a>]</span></span>
+            </header>
+            <ul class="list-group">
+                <p><strong>Gender: </strong>{{ profile.get_gender_display }}</p>
+                <p><strong>Preference: </strong>{{ profile.get_preference_display }}</p>
+                <p><strong>Birthday: </strong>{{ profile.birth_date }}</p>
+                <p><strong>Contact No: </strong>{{ profile.phone_number }}</p>
+                <p><strong>Address:</strong></p>
+                <p>{{ profile.address }}</p>
+                <p><strong>Description:</strong></p>
+                <p>{{ profile.description }}</p>
+            </ul>
+        </div>
+            <main class="bmd-layout-content ml-0 mr-0">
+                <div class="container">
+                    <!-- main content -->
+                    {% for post in post_list %}
+                        <div class="card post-card">
+                            <h6 class="card-subtitle mb-2 mt-2 ml-3">
+                                <i class="fas fa-user-tie"></i> {{ post.owner.profiles.first_name }} {{ post.owner.profiles.last_name }}
+                            </h6>
+                            <div class="card-body">
+                                {{ post.content|safe }}
+                            </div>
+                            <div class="card-footer text-muted">
+                                {% if post.datetime_created|timesince == post.datetime_modified|timesince %}
+                                    <span class="float-right">Posted {{ post.datetime_created|timesince }} ago</span>
+                                {% else %}
+                                    <span class="float-right">Last edited {{ post.datetime_modified|timesince }} ago</span>
+                                {% endif %}
+                            </div>
+                            <div class="comment-form mx-3">
+                                <form method="post" id="post-{{ post.id }}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="content_type" value="post">
+                                    <input type="hidden" name="object_id" value="{{ post.id }}">
+                                    <div class="form-group">
+                                        <label for="content" class="bmd-label-floating">Comment on this post...</label>
+                                        <input type="text" class="form-control" name="content" id="comment-content-{{ post.id }}">
+                                        {{ comment_form.content.errors }}
+                                    </div>
+                                    <input class="btn btn-info btn-raised float-right" type="submit" value="Comment">
+                                </form>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#post-{{ post.id }}").submit(function(e){
+                                            e.preventDefault();
+                                            var serializeData = $(this).serialize() + "&owner=" + userUrl;
+                                            var postId = "{{ post.id }}";
+                                            postComment(postId, serializeData);
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div id="post-{{ post.id }}-comment-list" class="comments-parent hidden">
+                            {% for comment in post.comments %}
+                                <div class="comment-card">
+                                    <h6 class="card-subtitle mb-2 mt-2">
+                                        <i class="fas fa-user-tie"></i> {{ comment.owner.profiles.first_name }} {{ comment.owner.profiles.last_name }}
+                                    </h6>
+                                    <div class="comment-body ml-3">
+                                        {{ comment.content }}
+                                    </div>
+                                    <div class="footer text-muted mt-1 float-right">
+                                        {% if comment.datetime_created|timesince == comment.datetime_modified|timesince %}
+                                            <small>Commented {{ comment.datetime_created|timesince }} ago</small>
+                                        {% else %}
+                                            <small>Edited {{ comment.datetime_modified|timesince }} ago</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div id="post-{{ post.id }}-comment-{{ comment.id }}-reply-list" class="replies-parent">
+                                {% for reply in comment.children %}
+                                    <div class="reply-card">
+                                        <h6 class="card-subtitle mb-2 mt-2">
+                                            <i class="fas fa-user-tie"></i> {{ reply.owner.profiles.first_name }} {{ reply.owner.profiles.last_name }}
+                                        </h6>
+                                        <div class="comment-body ml-3">
+                                            {{ reply.content }}
+                                        </div>
+                                        <div class="footer text-muted mt-1 float-right">
+                                            {% if reply.datetime_created|timesince == reply.datetime_modified|timesince %}
+                                                <small>Replied {{ reply.datetime_created|timesince }} ago</small>
+                                            {% else %}
+                                                <small>Edited {{ reply.datetime_modified|timesince }} ago</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                <div class="reply-form mx-5">
+                                    <form method="post" id="post-{{ post.id }}-comment-{{ comment.id }}" action="{% url 'comments:create-reply' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="content_type" value="post">
+                                        <input type="hidden" name="object_id" value="{{ post.id }}">
+                                        <div class="form-group">
+                                            <label for="content" class="bmd-label-floating">Reply to this comment...</label>
+                                            <input type="text" class="form-control" name="content" id="reply-content">
+                                            {{ comment_form.content.errors }}
+                                        </div>
+                                        <input class="btn btn-success btn-raised float-right" type="submit" value="Reply">
+                                    </form>
+                                    <script>
+                                        $(document).ready(function(){
+                                            $("#post-{{ post.id }}-comment-{{ comment.id }}").submit(function(e){
+                                                e.preventDefault();
+                                                var serializeData = $(this).serialize() + "&owner=" + userUrl;
+                                                var postId = "{{ post.id }}";
+                                                var parentId = "{{ comment.id }}";
+                                                postReply(postId, parentId, serializeData);
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            {% endfor %}
+                            </div>
+                            {% if post.comments %}
+                                <a class="page-link ml-2 mr-2 mt-2 mb-2" id="view-comments-{{ post.id }}">View Comments</a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#view-comments-{{ post.id }}").click(function(){
+                                            $("#view-comments-{{ post.id }}").addClass("hidden");
+                                            $("#hide-comments-{{ post.id }}").removeClass("hidden");
+                                            $("#post-{{ post.id }}-comment-list").fadeIn();
+                                            $("#post-{{ post.id }}-comment-list").scroll();
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+    $(document).ready(function(){
+        userUrl = apiRootUrl + 'users/' + {{ user.id }} + "/";
+    });
+
+    // load all profiles
+    var loadProfiles = function() {
+        return $.ajax({
+            type: "GET",
+            url : apiRootUrl + 'profiles/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            }
+        });
+    };
+
+    // get the profile base on the owner url
+    var commentOwnerProfile = function(profile_owner, profiles) {
+        for (var p=0; p<profiles.length; p++) {
+            if (profiles[p]['user'] == profile_owner) {
+                return profiles[p];
+            }
+        }
+    };
+
+    // load comments based on `post id`.
+    var loadComments = function(postId) {
+        return $.ajax({
+            // fetch comments via ajax get request.
+            type: "GET",
+            url : apiRootUrl + 'comments/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            format: 'json',
+            data: {
+                content_type: "post",
+                object_id: postId,
+                is_parent: true,
+            }
+        });
+    };
+
+    // load replies based on `post id` and `parent id`.
+    var loadReplies = function(postId, parentId) {
+        return $.ajax({
+            // fetch replies via ajax get request.
+            type: "GET",
+            url : apiRootUrl + 'comments/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            format: 'json',
+            data: {
+                content_type: "post",
+                object_id: postId,
+                parent__id: parentId,
+            }
+        });
+    };
+
+    // load replies after post comment based only on `post id`.
+    var commentPostEventLoadReplies = function(postId, comments, profiles) {
+        return $.ajax({
+            // fetch replies via ajax get request.
+            type: "GET",
+            url : apiRootUrl + 'comments/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            format: 'json',
+            data: {
+                content_type: "post",
+                object_id: postId,
+            }
+        }).then(function(resReplies) {
+            var replies = resReplies.results;
+            comments.forEach(function(comment) {
+                var parentDiv ="#post-"+postId+"-comment-"+comment.id+"-reply-list";
+                var formParent = '#post-'+postId+'-comment-'+comment.id+'-parent';
+                $(parentDiv).empty();
+                var parentDivContent = '';
+                // loop through replies
+                replies.forEach(function(reply) {
+                    // get the owner info
+                    var ownerInfo = commentOwnerProfile(reply.owner, profiles);
+                    if (reply.parent === comment.url) {
+                        parentDivContent += '<div class="reply-card">'
+                        +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+ownerInfo['first_name']+' '+ownerInfo['last_name']+'</h6>'
+                        +'<div class="comment-body ml-3">'+reply.content+'</div>'
+                        +'<div class="footer text-muted mt-1 float-right">'
+                        +'<small>'+reply.date_to_display+'</small>'
+                        +'</div></div>';
+                    }
+                });
+                // populate the `parentDiv` by the `parentDivContent`
+                $(parentDiv).html(parentDivContent);
+                var replyFormContent = '';
+                // generate html form
+                replyFormContent += '<div class="reply-form mx-5" id="post-'+postId+'-comment-'+comment.id+'-parent">'
+                    +'<form method="post" id="post-'+postId+'-comment-'+comment.id+'">'
+                    +'{% csrf_token %}'
+                    +'<input type="hidden" name="content_type" value="post">'
+                    +'<input type="hidden" name="object_id" value="'+postId+'">'
+                    +'<div class="form-group bmd-form-group">'
+                    +'<label for="content" class="bmd-label-floating">Reply to this comment...</label>'
+                    +'<input type="text" class="form-control" name="content" id="reply-content-'+comment.id+'">'
+                    +'</div>'
+                    +'<input class="btn btn-success btn-raised float-right" type="submit" value="Reply">'
+                    +'</form></div>';
+                // append `replyFormContent` after `parentDiv` element
+                $(parentDiv).after(replyFormContent);
+                var replyFormEventCatcher = '';
+                // create the jquery code to catch the reply form event
+                // converting string to javascript function
+                replyFormEventCatcher = Function('$(document).ready(function(){'
+                    // override submit button for reply form
+                    +'$("#post-'+postId+'-comment-'+comment.id+'").submit(function(e){'
+                    +'e.preventDefault();'
+                    +'var serializeData = $(this).serialize() + "&owner=" + userUrl;'
+                    +'postReply('+postId+', '+comment.id+', serializeData);});'
+                    // animate label upwards when focussed
+                    +'$("#post-'+postId+'-comment-'+comment.id+' #reply-content-'+comment.id+'").focus(function() {$("#post-'+postId+'-comment-'+comment.id+' .bmd-form-group").addClass("is-focused");});'
+                    // animate label downwards when not focussed
+                    +'$("#post-'+postId+'-comment-'+comment.id+' #reply-content-'+comment.id+'").blur(function() {$("#post-'+postId+'-comment-'+comment.id+' .bmd-form-group").removeClass("is-focused");});'
+                    +'});');
+
+                // render `replyFormEventCatcher` after `formParent` element
+                $(formParent).after(replyFormEventCatcher);
+            });
+        });
+    };
+
+    var postComment = function(postId, serializeData) {
+        $.ajax({
+            // Submit comment via ajax post request.
+            type: "POST",
+            url : apiRootUrl + 'comments/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            format: 'json',
+            csrfmiddlewaretoken: serializeData.csrfmiddlewaretoken,
+            data: serializeData
+        })
+        .then(function() {
+            // clear form fields.
+            $("#post-"+postId)[0].reset();
+            // reload comments.
+
+            // load comments
+            var promiseComments = loadComments(postId);
+
+            // load profiles
+            var promiseProfiles = loadProfiles();
+
+            // return 2 promises
+            return Promise.all([promiseComments, promiseProfiles])
+        })
+        .then(function([resComments, resProfiles]) {
+            var resultComments = resComments.results;
+            var resultProfiles = resProfiles.results;
+            displayComments(postId, resultProfiles, resultComments);
+            return [resultComments, resultProfiles];
+        })
+        .then(function([resultComments, resultProfiles]) {
+            commentPostEventLoadReplies(postId, resultComments, resultProfiles);
+        });
+    };
+
+    var displayComments = function(postId, profiles, comments) {
+
+        var parentDiv ="#post-"+postId+"-comment-list";
+        $(parentDiv).empty();
+        var parentDivContent = '';
+        comments.forEach(function(comment) {
+            // get the owner info
+            var ownerInfo = commentOwnerProfile(comment.owner, profiles);
+            parentDivContent += '<div class="comment-card">'
+            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+ownerInfo['first_name']+' '+ownerInfo['last_name']+'</h6>'
+            +'<div class="comment-body ml-3">'+comment.content+'</div>'
+            +'<div class="footer text-muted mt-1 float-right">'
+            +'<small>'+comment.date_to_display+'</small>'
+            +'</div></div>'
+            +'<div id="post-'+postId+'-comment-'+comment.id+'-reply-list" class="replies-parent">'
+            +'</div>';
+        });
+        // populate the div by the new contents
+        $(parentDiv).html(parentDivContent);
+    };
+
+    var postReply = function(postId, parentId, serializeData) {
+        serializeData += "&parent=" + apiRootUrl + 'comments/' + parentId + "/";
+        $.ajax({
+            // Submit reply via ajax post request.
+            type: "POST",
+            url : apiRootUrl + 'comments/',
+            headers: {
+                Authorization: 'Token ' + userAuthKey,
+            },
+            format: 'json',
+            csrfmiddlewaretoken: serializeData.csrfmiddlewaretoken,
+            data: serializeData,
+        })
+        .then(function() {
+            // clear form fields.
+            $("#post-"+postId+"-comment-"+parentId)[0].reset();
+
+            // reload replies
+            var promiseReplies = loadReplies(postId, parentId);
+
+            // load profiles
+            var promiseProfiles = loadProfiles();
+
+            // return 2 promises
+            return Promise.all([promiseReplies, promiseProfiles])
+        })
+        .then(function([resReplies, resProfiles]) {
+            var resultReplies = resReplies.results;
+            var resultProfiles = resProfiles.results;
+            displayReplies(postId, parentId, resultProfiles, resultReplies);
+        });
+    };
+
+    var displayReplies = function(postId, commentId, profiles, replies) {
+        var parentDiv ="#post-"+postId+"-comment-"+commentId+"-reply-list";
+        $(parentDiv).empty();
+        var parentDivContent = '';
+        replies.forEach(function(reply) {
+            // get the owner info
+            var ownerInfo = commentOwnerProfile(reply.owner, profiles);
+            parentDivContent += '<div class="reply-card">'
+            +'<h6 class="card-subtitle mb-2 mt-2"><i class="fas fa-user-tie"></i> '+ownerInfo['first_name']+' '+ownerInfo['last_name']+'</h6>'
+            +'<div class="comment-body ml-3">'+reply.content+'</div>'
+            +'<div class="footer text-muted mt-1 float-right">'
+            +'<small>'+reply.date_to_display+'</small>'
+            +'</div></div>';
+        });
+        // populate the div by the new contents
+        $(parentDiv).html(parentDivContent);
+    };
+</script>
+{% endblock js %}
