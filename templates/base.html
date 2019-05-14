@@ -304,6 +304,33 @@ var navigateProfilesPagination = paginationLink => {
     })
     .then(function(res) {
         populateProfileCards(res);
+        return res;
+    })
+    .then(function(res) {
+        var profiles = res.results;
+        profiles.forEach(function(profile) {
+            return $.ajax({
+                type: "get",
+                url: `${apiRootUrl}relationships/`,
+                header: {
+                    Authorization: 'Token ' + userAuthKey,
+                },
+                data: {
+                    receiver: profile.user_id,
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                success: function(resProf) {
+                    var resProfiles = resProf.results;
+                    resProfiles.forEach(function(resProfile) {
+                        console.log(resProfile.receiver_profile_id);
+                        $("#add-profile-"+resProfile.receiver_profile_id).addClass("hidden");
+                        $("#cancel-add-profile-"+resProfile.receiver_profile_id).removeClass("hidden");
+                    });
+                }
+            });
+        });
     });
 };
 </script>
