@@ -251,7 +251,6 @@ var populateProfileCards = res => {
         items.forEach(function(item) {
             var addFriendButton = `<button id="add-profile-${item.id}" onClick="addFriend(${item.id}, '${item.user}')" type="button" class="btn btn-outline-info"><i class="fas fa-user-plus"></i> Add Friend</button>`;
             var cancelAddFriendButton = `<button id="cancel-add-profile-${item.id}" onClick="cancelAddFriend(${item.id}, '${item.user_id}')" type="button" class="btn btn-outline-warning hidden"><i class="fas fa-user-minus"></i> Cancel Friend Request</button>`;
-            var previousButton = `<button id="previous-button" onClick="navigateProfilesPagination('${res.previous}')" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
             var nextButton = `<button id="next-button" onClick="navigateProfilesPagination('${res.next}')" class="btn btn-info">Next <i class="fas fa-angle-double-right"></i></button>`;
             searchResults += `
             <div class="card card-results pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
@@ -278,6 +277,7 @@ var populateProfileCards = res => {
             </div>
             `;
         });
+        var previousButton = `<button id="previous-button" onClick="navigateProfilesPagination('${res.previous}')" class="btn btn-info"><i class="fas fa-angle-double-left"></i> Previous</button>`;
         $("#search-results").html(searchResults);
     }
     else {
