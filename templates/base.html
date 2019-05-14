@@ -244,7 +244,6 @@ function cancelAddFriend(receiverProfileId, receiverUserId) {
 var populateProfileCards = res => {
     $("#main-content").addClass("hidden");
     $("#search-results").removeClass("hidden");
-    console.log(res);
     var items = res.results;
     if (items.length > 0) {
         var searchResults = '';
