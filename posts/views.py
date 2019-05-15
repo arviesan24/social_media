@@ -38,6 +38,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         # send actstream signal
         action.send(
             self.request.user, verb='created a new post',
-            action_object=self.object, profile=profile_json)
+            action_object=self.object, actor_profile=profile_json)
 
         return response
