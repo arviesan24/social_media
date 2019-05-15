@@ -1,5 +1,7 @@
 """Posts app's views."""
 
+import json
+
 from actstream import action
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
