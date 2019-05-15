@@ -18,6 +18,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     success_url = reverse_lazy('accounts:my-profile')
 
+    def jsonify_instance(self, instance):
+        """Returns json formatted model instance."""
+        # serialize model instance
+        serialized_instance = serializers.serialize('json', [instance,])
+        # jsonify serialized instance
+        struct = json.loads(serialized_instance)
+        # stringify json to eliminate `[]`
+        instance_data = json.dumps(struct[0])
+        # change string back to json
+        return json.loads(instance_data)
+
     def form_valid(self, form):
         """Add `owner` in post."""
         post = form.save(commit=False)
