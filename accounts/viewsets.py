@@ -154,6 +154,15 @@ class RelationshipViewSet(viewsets.ModelViewSet):
 
         return response
 
+    def destroy(self, request, *args, **kwargs):
+        """Deletes `Relationship` instance."""
+        # make the friend request sender unfollow the receiver.
+        unfollow(request.user, self.get_object().receiver)
+        # make the friend request receiver unfollow the sender.
+        unfollow(self.get_object().receiver, request.user)
+
+        return super().destroy(request, *args, **kwargs)
+
 
 class RequestViewSet(viewsets.ModelViewSet):
     """Viewset for RequestSerializer"""
