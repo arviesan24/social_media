@@ -34,9 +34,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         post = form.save(commit=False)
         post.owner = self.request.user
         response = super().form_valid(form)
+        profile_json = self.jsonify_instance(self.request.user.profiles)
         # send actstream signal
         action.send(
             self.request.user, verb='created a new post',
-            action_object=self.object)
+            action_object=self.object, profile=profile_json)
 
         return response
