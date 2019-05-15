@@ -141,6 +141,20 @@ class RelationshipViewSet(viewsets.ModelViewSet):
     filterset_class = RelationshipFilterSet
 
 
+    def partial_update(self, request, *args, **kwargs):
+        """Returns `patched` Relationship instance."""
+        response = super().partial_update(request, *args, **kwargs)
+        # check if request contains `request` field and was set to `confirmed`.
+        if (request.data['request'] and
+                self.get_object().request.status == 'confirmed'):
+            # make the friend request sender follow the receiver.
+            follow(request.user, self.get_object().receiver)
+            # make the friend request receiver follow the sender.
+            follow(self.get_object().receiver, request.user)
+
+        return response
+
+
 class RequestViewSet(viewsets.ModelViewSet):
     """Viewset for RequestSerializer"""
 
