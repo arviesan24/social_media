@@ -194,7 +194,7 @@ function addFriend(receiverProfileId, receiverUrl) {
             sender: `${apiRootUrl}users/${userId}/`,
             receiver: receiverUrl,
             request: `${apiRootUrl}requests/1/`,
-            type: `${apiRootUrl}relationship-types/2/`,
+            type: `${apiRootUrl}relationship-types/1/`,
         },
         error: function(err){
             console.log(err.responseText);
