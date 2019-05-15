@@ -1,6 +1,7 @@
 """Viewsets for Accounts app."""
 
 from actstream.actions import follow
+from actstream.actions import unfollow
 from django.db.models import Q
 from django_filters import rest_framework as django_filters
 from rest_framework import viewsets
