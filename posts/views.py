@@ -21,6 +21,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         post.owner = self.request.user
         response = super().form_valid(form)
         # send actstream signal
-        action.send(self.request.user, verb='created a new post', action_object=self.object)
+        action.send(
+            self.request.user, verb='created a new post',
+            action_object=self.object)
 
         return response
