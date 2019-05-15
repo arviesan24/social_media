@@ -4,6 +4,7 @@ import json
 
 from actstream import action
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
