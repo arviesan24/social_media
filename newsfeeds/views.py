@@ -13,3 +13,11 @@ class NewsFeedListView(LoginRequiredMixin, ListView):
 
     template_name = 'newsfeeds/list.html'
     context_object_name = 'feeds'
+
+    def get_queryset(self):
+        """Returns listview's queryset."""
+        # use `actstream.user_stream` as the listview queryset
+        usr_stream = user_stream(
+            self.request.user).prefetch_related('actor', 'action_object')
+
+        return usr_stream
