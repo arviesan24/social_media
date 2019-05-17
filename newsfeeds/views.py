@@ -13,13 +13,3 @@ class NewsFeedListView(LoginRequiredMixin, ListView):
 
     template_name = 'newsfeeds/list.html'
     context_object_name = 'feeds'
-
-    def get_context_data(self, **kwargs):
-        """Return context data to the template."""
-        context = super().get_context_data(**kwargs)
-        usr_stream = user_stream(
-            self.request.user).prefetch_related('actor', 'action_object')
-        # add `user_stream` to context variable.
-        context['feeds'] = usr_stream
-
-        return context
