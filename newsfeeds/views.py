@@ -8,8 +8,8 @@ from django.views.generic import ListView
 from accounts.models import Profile
 
 
-class NewsFeedTemplateView(LoginRequiredMixin, TemplateView):
-    """Display actstream `user_stream` instances."""
+class NewsFeedListView(LoginRequiredMixin, ListView):
+    """ListView containing `user_stream` instances."""
 
     template_name = 'newsfeeds/list.html'
 
