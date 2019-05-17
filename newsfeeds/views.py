@@ -3,7 +3,7 @@
 from actstream.models import user_stream
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 
 from accounts.models import Profile
 
