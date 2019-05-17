@@ -12,6 +12,7 @@ class NewsFeedListView(LoginRequiredMixin, ListView):
     """ListView containing `user_stream` instances."""
 
     template_name = 'newsfeeds/list.html'
+    context_object_name = 'feeds'
 
     def get_context_data(self, **kwargs):
         """Return context data to the template."""
