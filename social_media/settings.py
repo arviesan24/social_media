@@ -45,18 +45,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # project apps
     'accounts',
     'comments',
+    'newsfeeds',
     'posts',
 
     #third party apps
+    'actstream',
     'django_filters',
     'django_summernote',
     'rest_framework',
     'rest_framework.authtoken',
 ]
+
+SITE_ID = 1
+
+ACTSTREAM_SETTINGS = {
+    'USE_JSONFIELD': True,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

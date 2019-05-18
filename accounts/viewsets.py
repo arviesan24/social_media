@@ -1,5 +1,7 @@
 """Viewsets for Accounts app."""
 
+from actstream.actions import follow
+from actstream.actions import unfollow
 from django.db.models import Q
 from django_filters import rest_framework as django_filters
 from rest_framework import viewsets
@@ -137,6 +139,29 @@ class RelationshipViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated, IsRequestSenderOrReadOnly,)
     filter_backends = (django_filters.DjangoFilterBackend,)
     filterset_class = RelationshipFilterSet
+
+
+    def partial_update(self, request, *args, **kwargs):
+        """Returns `patched` Relationship instance."""
+        response = super().partial_update(request, *args, **kwargs)
+        # check if request contains `request` field and was set to `confirmed`.
+        if (request.data['request'] and
+                self.get_object().request.status == 'confirmed'):
+            # make the friend request sender follow the receiver.
+            follow(request.user, self.get_object().receiver)
+            # make the friend request receiver follow the sender.
+            follow(self.get_object().receiver, request.user)
+
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        """Deletes `Relationship` instance."""
+        # make the friend request sender unfollow the receiver.
+        unfollow(request.user, self.get_object().receiver)
+        # make the friend request receiver unfollow the sender.
+        unfollow(self.get_object().receiver, request.user)
+
+        return super().destroy(request, *args, **kwargs)
 
 
 class RequestViewSet(viewsets.ModelViewSet):

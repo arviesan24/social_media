@@ -31,10 +31,13 @@ urlpatterns = [
         include(('accounts.urls', 'accounts'), namespace="accounts")),
     path('comments/',
         include(('comments.urls', 'comments'), namespace="comments")),
+    path('newsfeeds/',
+        include(('newsfeeds.urls', 'newsfeeds'), namespace="newsfeeds")),
     path('posts/',
         include(('posts.urls', 'posts'), namespace="posts")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+    path('activity/', include('actstream.urls')),
 
     # DRF URLs
     path('', include('comments.urls_api')),

@@ -1,4 +1,8 @@
+"""Posts app's views."""
+
+from actstream import action
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
@@ -16,5 +20,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         """Add `owner` in post."""
         post = form.save(commit=False)
         post.owner = self.request.user
+        response = super().form_valid(form)
+        # send actstream signal
+        action.send(
+            self.request.user, verb='created a new post',
+            action_object=self.object)
 
-        return super().form_valid(form)
+        return response

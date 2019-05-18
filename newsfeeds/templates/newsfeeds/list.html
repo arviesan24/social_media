@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Newsfeeds{% endblock %}
+
+{% block css %}
+.streams-container {
+  margin-top: 70px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.card-feeds {
+    margin-top: 0.5em !important;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px !important;
+    display: block;
+}
+{% endblock css %}
+
+{% block content %}
+<div class="streams-container">
+    {% for feed in feeds %}
+      <div class="card card-feeds pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
+        <div class="row">
+          <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+              <i class="fas fa-user-tie mt-3"></i>
+          </div>
+          <div class="col-10 col-sm-11 col-md-11 col-lg-11 pt-2">
+            <a href="{% url 'accounts:profile' slug=feed.actor.profiles.slug %}"><strong>{{ feed.actor.profiles.first_name }} {{ feed.actor.profiles.last_name }}</strong></a>
+              <strong> {{ feed.verb }}
+                {% if feed.target.profiles %} 
+                  <a href="
+                    {% if feed.target.id == user.id %}
+                      {% url 'accounts:my-profile' %}
+                    {% else %}
+                      {% url 'accounts:profile' slug=feed.target.profiles.slug %}
+                    {% endif %}"
+                  > {{ feed.target.profiles.first_name }} {{ feed.target.profiles.last_name }}</a>
+                {% endif %}
+              </strong>
+            {% if feed.action_object.content %}
+              <hr />
+              <p>{{ feed.action_object.content|safe }}</p>
+            {% endif %}
+            <hr />
+            <small class="text-muted">{{ feed.timestamp|timesince }} ago</small>
+            {% if feed.action_object.content %}
+              <a href="" class="float-right">Read more...</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% if not page_obj.paginator.num_pages == 1 %}
+      <div class="card card-feeds pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1">
+        <div class="text-center">
+          <span>
+            {% if page_obj.has_previous %}
+              <a class="btn btn-info btn-sm" href="?page=1">&laquo; first</a>
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+            <a class="btn btn-info btn-sm active">{{ page_obj.number }}</a>
+            {% if page_obj.has_next %}
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    {% endif %}
+</div>
+{% endblock content %}
