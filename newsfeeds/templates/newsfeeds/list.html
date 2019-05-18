@@ -16,10 +16,20 @@
     border-radius: 5px !important;
     display: block;
 }
+.streams-container > .alert {
+  max-width: 500px;
+  margin: 2em auto auto auto;
+}
 {% endblock css %}
 
 {% block content %}
 <div class="streams-container">
+    {% if not feeds %}
+    <div class="alert alert-info col-md-8" role="alert">
+      <strong>Nothing to display.</strong><br/>
+      You're not following any post or user. <a href="#search_field" class="alert-link">Search</a> and add friends to start.
+    </div>
+    {% endif %}
     {% for feed in feeds %}
       <div class="card card-feeds pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1 d-block">
         <div class="row">
