@@ -13,6 +13,7 @@ class NewsFeedListView(LoginRequiredMixin, ListView):
 
     template_name = 'newsfeeds/list.html'
     context_object_name = 'feeds'
+    paginate_by = 50
 
     def get_queryset(self):
         """Returns listview's queryset."""
