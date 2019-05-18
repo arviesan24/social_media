@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -16,6 +17,20 @@ from comments import forms as comment_form
 
 from posts import forms as post_form
 from posts import models as post_model
+
+
+class UserLoginView(LoginView):
+    """View for user authentication."""
+
+    template_name = 'accounts/login.html'
+
+    def get_success_url(self):
+        """Return URL to use when user successfully logged-in."""
+        has_profile = Profile.objects.filter(user__id=self.request.user.id)
+        if has_profile:
+            return reverse_lazy('newsfeeds:list')
+
+        return reverse_lazy('accounts:create-profile')
 
 
 class MyProfileView(LoginRequiredMixin, DetailView):
