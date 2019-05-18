@@ -52,20 +52,22 @@
         </div>
       </div>
     {% endfor %}
-    <div class="card card-feeds pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1">
-      <div class="text-center">
-        <span>
-          {% if page_obj.has_previous %}
-            <a class="btn btn-info btn-sm" href="?page=1">&laquo; first</a>
-            <a class="btn btn-info btn-sm" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-          {% endif %}
-          <a class="btn btn-info btn-sm active">{{ page_obj.number }}</a>
-          {% if page_obj.has_next %}
-            <a class="btn btn-info btn-sm" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-            <a class="btn btn-info btn-sm" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-        </span>
+    {% if not page_obj.paginator.num_pages == 1 %}
+      <div class="card card-feeds pt-2 pb-2 col-lg-7 col-lg-offset-3 col-md-10 col-md-offset-1">
+        <div class="text-center">
+          <span>
+            {% if page_obj.has_previous %}
+              <a class="btn btn-info btn-sm" href="?page=1">&laquo; first</a>
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+            <a class="btn btn-info btn-sm active">{{ page_obj.number }}</a>
+            {% if page_obj.has_next %}
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+              <a class="btn btn-info btn-sm" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
       </div>
-    </div>
+    {% endif %}
 </div>
 {% endblock content %}
