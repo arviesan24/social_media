@@ -26,10 +26,9 @@
           <div class="col-2 col-sm-1 col-md-1 col-lg-1">
               <i class="fas fa-user-tie mt-3"></i>
           </div>
-          <div class="col-10 col-sm-11 col-md-11 col-lg-11">
+          <div class="col-10 col-sm-11 col-md-11 col-lg-11 pt-2">
             <a href="{% url 'accounts:profile' slug=feed.actor.profiles.slug %}"><strong>{{ feed.actor.profiles.first_name }} {{ feed.actor.profiles.last_name }}</strong></a>
-            <p class="mt-2">
-              <strong>{{ feed.verb|capfirst }}
+              <strong> {{ feed.verb }}
                 {% if feed.target.profiles %} 
                   <a href="
                     {% if feed.target.id == user.id %}
@@ -40,8 +39,10 @@
                   > {{ feed.target.profiles.first_name }} {{ feed.target.profiles.last_name }}</a>
                 {% endif %}
               </strong>
-            </p>
-            <p>{{ feed.action_object.content|safe }}</p>
+            {% if feed.action_object.content %}
+              <hr />
+              <p>{{ feed.action_object.content|safe }}</p>
+            {% endif %}
             <hr />
             <small class="text-muted">{{ feed.timestamp|timesince }} ago</small>
             {% if feed.action_object.content %}
