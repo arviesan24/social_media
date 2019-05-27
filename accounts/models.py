@@ -99,19 +99,3 @@ class Request(models.Model):
     status = models.CharField(max_length=50, unique=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        return Token.objects.create(user=instance)
-
-
-def profile_slug(sender, instance, **kwargs):
-    """Set Profile slug everytime the instance is saved."""
-    if not instance.slug:
-        slug_username = slugify(instance.user.username)
-        str_id = str(instance.user.id)
-        instance.slug = f'{slug_username}-{str_id}'
-
-pre_save.connect(profile_slug, sender=Profile)
