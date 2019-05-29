@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'comments',
     'newsfeeds',
     'posts',
+    'searches',
 
     #third party apps
     'actstream',
