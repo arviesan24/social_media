@@ -1,4 +1,4 @@
-Django==2.2
+Django==2.2.27
 django-activity-stream==0.7.0
 django-filter==2.1.0
 django-jsonfield==1.2.0
